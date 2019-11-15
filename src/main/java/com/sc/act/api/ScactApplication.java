@@ -40,6 +40,7 @@ public class ScactApplication {
 
 	@Bean
 	public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
+		//添加线程池
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(10);
 		executor.setMaxPoolSize(30);
