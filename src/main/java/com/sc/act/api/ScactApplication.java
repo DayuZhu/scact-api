@@ -71,8 +71,6 @@ public class ScactApplication {
 		ApplicationContext context = SpringApplication.run(ScactApplication.class, args);
 		ExecutorService sendExecutorService = (ExecutorService) context.getBean("sendExecutorService");
 		// 优雅关闭线程池
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			sendExecutorService.shutdown();
-		}));
+		Runtime.getRuntime().addShutdownHook(new Thread(sendExecutorService::shutdown));
 	}
 }
