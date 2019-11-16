@@ -23,4 +23,4 @@ php功能
 3.订单明细下载；
 
 # 流程图
-document/流程图.png
+https://github.com/DayuZhu/scact-api/blob/master/document/%E6%B5%81%E7%A8%8B%E5%9B%BE.png
