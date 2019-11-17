@@ -49,7 +49,7 @@ spring:
           statement-close-after-log-enabled: false
 mybatis:
   mapper-locations: classpath:mappings/*/*.xml
-  type-aliases-package: com.sc.act.api.model.auto
+  type-aliases-package: com.sc.act.api.model
   configuration:
     # 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。
     lazy-loading-enabled: false
