@@ -3,6 +3,7 @@ package com.sc.act.api;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.sc.act.api.constant.ScactConstant;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -16,9 +17,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 @SpringBootApplication
 @MapperScan("com.sc.act.api.mapper")
@@ -46,7 +45,8 @@ public class ScactApplication {
         executor.setMaxPoolSize(30);
         executor.setQueueCapacity(8);
         executor.setThreadNamePrefix(ScactConstant.SCACT_THREAD_NAME_PREFIX);
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy()); // 对拒绝task的处理策略
+        // 对拒绝task的处理策略
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setKeepAliveSeconds(60);
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(60);
@@ -56,14 +56,23 @@ public class ScactApplication {
 
     @Bean(name = "sendExecutorService")
     public ExecutorService sendThreadPoolTaskExecutor() {
-        return Executors.newFixedThreadPool(60);
+        return new ThreadPoolExecutor(
+                5,
+                10,
+                0L,
+                TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(1024),
+                new ThreadFactoryBuilder().setNameFormat(ScactConstant.SCACT_ASYNC_THREAD_NAME_PREFIX).build(),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     @Bean
     public RestTemplate restTemplate() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setReadTimeout(30000);// 单位为ms
-        factory.setConnectTimeout(30000);// 单位为ms
+        // 单位为ms
+        factory.setReadTimeout(30000);
+        // 单位为ms
+        factory.setConnectTimeout(30000);
         return new RestTemplate(factory);
     }
 
