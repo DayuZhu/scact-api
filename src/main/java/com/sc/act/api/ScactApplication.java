@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @SpringBootApplication
-@MapperScan("com.sc.act.api.mapper.auto")
+@MapperScan("com.sc.act.api.mapper")
 @EnableTransactionManagement
 public class ScactApplication {
 
