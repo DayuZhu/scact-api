@@ -41,7 +41,7 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
     public void insertAccSepRecord(AccSepRecordRequest accSepRecordRequest) {
         LOG.info("进入创建分账流水服务请求参数{}", accSepRecordRequest.toString());
 
-        //TODO 必要的校验，如去重校验
+        //TODO 必要的校验，如去重校验 需要修改
 
         //TODO 统一入库时间
         Date currentTime = new Date();
