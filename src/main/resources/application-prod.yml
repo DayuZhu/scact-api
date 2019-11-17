@@ -1,3 +1,5 @@
+swagger2:
+  enable : false
 server:
   port: 8324
   tomcat:
