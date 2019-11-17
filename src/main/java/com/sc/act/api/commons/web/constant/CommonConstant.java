@@ -33,5 +33,6 @@ public interface CommonConstant {
     String OBJECT_USERINFO = "UserInfo";
     String MD5 = "MD5";
     String STRING_LINE_BREAK = "\n";
+    String STRING_SEMICOLON = ";";
 
 }

@@ -1,5 +1,7 @@
 package com.sc.act.api.commons.web.exception.handler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -9,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -17,6 +22,7 @@ import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.commons.web.base.Result;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,6 +49,33 @@ public class ControllerExceptionHandler {
                         + ",errorMessage=" + exception.getExceptionMessage()
                         + ",errorDesc=" + exception.getExceptionDesc()
                 , exception);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<Result<String>> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        Result<String> vo = new Result<>();
+        vo.setRetCode(ResultEnum.FAIL.getCode());
+        vo.setData(null);
+        List<ObjectError> errors = exception.getBindingResult().getAllErrors();
+        StringBuilder errorMsg = new StringBuilder();
+        errors.forEach(x -> errorMsg.append(x.getDefaultMessage()).append(CommonConstant.STRING_SEMICOLON));
+        StringBuilder message = new StringBuilder();
+        Iterator iterator = errors.iterator();
+
+        if (iterator.hasNext()) {
+            ObjectError error = (ObjectError) iterator.next();
+            message.append(((FieldError) error).getField());
+            message.append(CommonConstant.STRING_COLON);
+            message.append(error.getDefaultMessage());
+            message.append(CommonConstant.STRING_SEMICOLON);
+        }
+        vo.setRetMsg(message.toString());
+        logger.error("参数校验异常:errorCode=" + ResultEnum.FAIL.getCode()
+                + ",errorMessage=" + ResultEnum.FAIL.getMessage()
+                + ",errorDesc=" + ResultEnum.FAIL.getDesc()
+                + " exceptionInfo=" + exception.getMessage()
+                + "校验参数=" + message.toString(), exception);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 

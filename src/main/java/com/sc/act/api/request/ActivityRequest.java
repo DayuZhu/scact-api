@@ -4,6 +4,7 @@ import com.sc.act.api.commons.web.base.BasePojo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Date;
 
@@ -22,6 +23,7 @@ public class ActivityRequest extends BasePojo {
     private Integer activityId;
 
     @ApiModelProperty("活动名称")
+    @NotBlank
     private String activityName;
 
     @ApiModelProperty("活动描述")
