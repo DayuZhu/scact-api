@@ -1,6 +1,8 @@
 package com.sc.act.api.commons.web.base;
 
 
+import com.sc.act.api.commons.web.enums.ResultEnum;
+
 /**
  * @param <T>
  */
@@ -11,6 +13,10 @@ public class Result<T> {
     private String retMsg;
 
     private T data;
+
+    public Result() {
+        this.retCode = ResultEnum.SUCCESS.getCode();
+    }
 
     public String getRetCode() {
         return retCode;
