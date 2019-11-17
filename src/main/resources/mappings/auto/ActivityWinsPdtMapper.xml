@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.act.api.mapper.auto.ActivityWinsPdtMapper">
+  <resultMap id="BaseResultMap" type="com.sc.act.api.model.auto.ActivityWinsPdt">
+    <id column="activity_wins_pdt_id" jdbcType="INTEGER" property="activityWinsPdtId" />
+    <result column="activity_winners_id" jdbcType="INTEGER" property="activityWinnersId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    activity_wins_pdt_id, activity_winners_id, product_id, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.sc.act.api.model.auto.ActivityWinsPdtExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sc_activity_wins_pdt
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sc_activity_wins_pdt
+    where activity_wins_pdt_id = #{activityWinsPdtId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sc_activity_wins_pdt
+    where activity_wins_pdt_id = #{activityWinsPdtId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.sc.act.api.model.auto.ActivityWinsPdtExample">
+    delete from sc_activity_wins_pdt
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.sc.act.api.model.auto.ActivityWinsPdt">
+    <selectKey keyProperty="activityWinsPdtId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sc_activity_wins_pdt (activity_winners_id, product_id, create_time, 
+      update_time)
+    values (#{activityWinnersId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.ActivityWinsPdt">
+    <selectKey keyProperty="activityWinsPdtId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sc_activity_wins_pdt
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityWinnersId != null">
+        activity_winners_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityWinnersId != null">
+        #{activityWinnersId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.sc.act.api.model.auto.ActivityWinsPdtExample" resultType="java.lang.Long">
+    select count(*) from sc_activity_wins_pdt
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sc_activity_wins_pdt
+    <set>
+      <if test="record.activityWinsPdtId != null">
+        activity_wins_pdt_id = #{record.activityWinsPdtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityWinnersId != null">
+        activity_winners_id = #{record.activityWinnersId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sc_activity_wins_pdt
+    set activity_wins_pdt_id = #{record.activityWinsPdtId,jdbcType=INTEGER},
+      activity_winners_id = #{record.activityWinnersId,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sc.act.api.model.auto.ActivityWinsPdt">
+    update sc_activity_wins_pdt
+    <set>
+      <if test="activityWinnersId != null">
+        activity_winners_id = #{activityWinnersId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where activity_wins_pdt_id = #{activityWinsPdtId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sc.act.api.model.auto.ActivityWinsPdt">
+    update sc_activity_wins_pdt
+    set activity_winners_id = #{activityWinnersId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where activity_wins_pdt_id = #{activityWinsPdtId,jdbcType=INTEGER}
+  </update>
+</mapper>
