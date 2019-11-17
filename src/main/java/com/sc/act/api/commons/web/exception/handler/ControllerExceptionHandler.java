@@ -130,7 +130,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler({BindException.class})
-    public ResponseEntity<Result<String>> BindExceptionHandler(BindException bindException) {
+    public ResponseEntity<Result<String>> bindExceptionHandler(BindException bindException) {
         String message = bindException.getBindingResult()
                 .getAllErrors()
                 .stream()
