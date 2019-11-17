@@ -56,6 +56,7 @@ public class ControllerExceptionHandler {
     public ResponseEntity<Result<String>> validationException(ValidationException exception) {
         Result<String> vo = new Result<>();
         vo.setRetCode(ResultEnum.FAIL.getCode());
+
         vo.setData(null);
         ConstraintViolationException e = (ConstraintViolationException) exception;
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
@@ -66,13 +67,14 @@ public class ControllerExceptionHandler {
             strBuilder.append(violation.getPropertyPath().toString());
             strBuilder.append(CommonConstant.STRING_COLON);
             strBuilder.append(violation.getMessage());
-            strBuilder.append(CommonConstant.STRING_LINE_BREAK);
         }
-        vo.setRetMsg(strBuilder.toString());
+        String string = strBuilder.toString();
+        vo.setRetMsg(string);
         logger.error("参数校验异常:errorCode=" + ResultEnum.FAIL.getCode()
                 + ",errorMessage=" + ResultEnum.FAIL.getMessage()
                 + ",errorDesc=" + ResultEnum.FAIL.getDesc()
-                + " exceptionInfo=" + exception.getMessage(), exception);
+                + " exceptionInfo=" + exception.getMessage()
+                + "校验参数=" + string, exception);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
