@@ -1,12 +1,12 @@
-package com.sc.act.api.util;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.sc.act.api.commons.web.util;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListBatchHelper {
 

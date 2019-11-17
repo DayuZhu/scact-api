@@ -1,4 +1,4 @@
-package com.sc.act.api.util;
+package com.sc.act.api.commons.web.util;
 
 import java.util.UUID;
 
