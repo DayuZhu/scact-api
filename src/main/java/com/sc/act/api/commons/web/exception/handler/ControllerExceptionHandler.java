@@ -33,8 +33,10 @@ public class ControllerExceptionHandler {
         vo.setRetCode(exception.getExceptionCode());
         vo.setRetMsg(exception.getExceptionMessage());
         vo.setData(null);
-        logger.error("业务异常:errorCode={},errorMessage={},errorDesc={}", exception.getExceptionCode(),
-                exception.getExceptionMessage(), exception.getExceptionDesc());
+        logger.error("业务异常:errorCode=" + exception.getExceptionCode()
+                        + ",errorMessage=" + exception.getExceptionMessage()
+                        + ",errorDesc=" + exception.getExceptionDesc()
+                , exception);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
@@ -50,25 +52,29 @@ public class ControllerExceptionHandler {
         vo.setRetCode(ResultEnum.FAIL.getCode());
         vo.setRetMsg(ResultEnum.FAIL.getCode());
         vo.setData(null);
-        logger.error("参数校验异常:errorCode={},errorMessage={},errorDesc={} exceptionInfo={}", ResultEnum.FAIL.getCode(),
-                ResultEnum.FAIL.getMessage(), ResultEnum.FAIL.getDesc(), exception.getMessage());
+        logger.error("参数校验异常:errorCode=" + ResultEnum.FAIL.getCode()
+                + ",errorMessage=" + ResultEnum.FAIL.getMessage()
+                + ",errorDesc=" + ResultEnum.FAIL.getDesc()
+                + " exceptionInfo=" + exception.getMessage(), exception);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
     /**
-     * @param exception
+     * @param throwable
      * @return
      * @Title handleServiceException
      * @Description 统一异常处理，捕获Exception异常
      */
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity<Result<String>> handleServiceThrowable(Exception exception) {
+    public ResponseEntity<Result<String>> handleServiceThrowable(Throwable throwable) {
         Result<String> vo = new Result<>();
         vo.setRetCode(ResultEnum.FAIL.getCode());
         vo.setRetMsg(ResultEnum.FAIL.getMessage());
         vo.setData(null);
-        logger.error("系统异常:errorCode={},errorMessage={},errorDesc={} exceptionInfo={}", ResultEnum.FAIL.getCode(),
-                ResultEnum.FAIL.getMessage(), ResultEnum.FAIL.getDesc(), exception.getMessage());
+        logger.error("系统异常:errorCode=" + ResultEnum.FAIL.getCode()
+                + ",errorMessage=" + ResultEnum.FAIL.getMessage()
+                + ",errorDesc=" + ResultEnum.FAIL.getDesc()
+                + " exceptionInfo=" + throwable.getMessage(), throwable);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 }
