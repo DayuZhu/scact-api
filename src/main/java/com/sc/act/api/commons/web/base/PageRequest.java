@@ -9,10 +9,8 @@ import javax.validation.constraints.NotNull;
 /**
  * 功能描述:
  *
- * @className:Page
- * @projectName:20190808-idis-common
- * @author:Dayu
- * @date: 2019/7/26 16:25
+ * @className:
+ * @projectName:
  */
 @ApiModel(value = "分页DTO请求参数", description = "分页DTO请求参数")
 public class PageRequest extends BasePojo {
