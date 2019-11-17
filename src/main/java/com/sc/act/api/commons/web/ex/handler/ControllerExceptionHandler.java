@@ -1,4 +1,4 @@
-package com.sc.act.api.commons.web.exception.handler;
+package com.sc.act.api.commons.web.ex.handler;
 
 import com.sc.act.api.commons.web.base.BaseRunTimeException;
 import com.sc.act.api.commons.web.base.Result;
