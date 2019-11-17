@@ -70,9 +70,9 @@ public class ScactApplication {
     public RestTemplate restTemplate() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         // 单位为ms
-        factory.setReadTimeout(30000);
+        factory.setReadTimeout(10000);
         // 单位为ms
-        factory.setConnectTimeout(30000);
+        factory.setConnectTimeout(10000);
         return new RestTemplate(factory);
     }
 
