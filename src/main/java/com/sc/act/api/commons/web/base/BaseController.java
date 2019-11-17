@@ -4,6 +4,7 @@ import com.sc.act.api.commons.web.constant.CommonConstant;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.util.HtmlUtils;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @ClassName BaseController
  * @Description 特殊通用的Controller方法都在这里实现
  */
+@Validated
 public class BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);

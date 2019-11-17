@@ -32,5 +32,6 @@ public interface CommonConstant {
     String STRING_TOKEN_KEY = "key";
     String OBJECT_USERINFO = "UserInfo";
     String MD5 = "MD5";
+    String STRING_LINE_BREAK = "\n";
 
 }

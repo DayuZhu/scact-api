@@ -1,7 +1,10 @@
 package com.sc.act.api.commons.web.exception.handler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
+import com.sc.act.api.commons.web.constant.CommonConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,6 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.sc.act.api.commons.web.base.BaseRunTimeException;
 import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.commons.web.base.Result;
+
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @ClassName ControllerExceptionHanler
@@ -50,8 +56,19 @@ public class ControllerExceptionHandler {
     public ResponseEntity<Result<String>> validationException(ValidationException exception) {
         Result<String> vo = new Result<>();
         vo.setRetCode(ResultEnum.FAIL.getCode());
-        vo.setRetMsg(ResultEnum.FAIL.getCode());
         vo.setData(null);
+        ConstraintViolationException e = (ConstraintViolationException) exception;
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        StringBuilder strBuilder = new StringBuilder();
+        Iterator iterator = violations.iterator();
+        if (iterator.hasNext()) {
+            ConstraintViolation<?> violation = (ConstraintViolation) iterator.next();
+            strBuilder.append(violation.getPropertyPath().toString());
+            strBuilder.append(CommonConstant.STRING_COLON);
+            strBuilder.append(violation.getMessage());
+            strBuilder.append(CommonConstant.STRING_LINE_BREAK);
+        }
+        vo.setRetMsg(strBuilder.toString());
         logger.error("参数校验异常:errorCode=" + ResultEnum.FAIL.getCode()
                 + ",errorMessage=" + ResultEnum.FAIL.getMessage()
                 + ",errorDesc=" + ResultEnum.FAIL.getDesc()
