@@ -1,13 +1,15 @@
 package com.sc.act.api.service.impl;
 
-import com.sc.act.api.request.ActivityRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.sc.act.api.commons.web.base.PageResponse;
 import com.sc.act.api.mapper.auto.ActivityMapper;
+import com.sc.act.api.mapper.auto.ActivityWinnersMapper;
 import com.sc.act.api.model.auto.Activity;
 import com.sc.act.api.model.auto.ActivityExample;
+import com.sc.act.api.model.auto.ActivityWinners;
 import com.sc.act.api.request.ActivityListRequest;
+import com.sc.act.api.request.ActivityRequest;
 import com.sc.act.api.response.ActivityContentResponse;
 import com.sc.act.api.response.ActivityResponse;
 import com.sc.act.api.service.ActivityService;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +40,11 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityMapper activityMapper;
 
+    @Autowired
+    private ActivityWinnersMapper activityWinnersMapper;
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertActivity(ActivityRequest activityRequest) {
         LOG.info("进入创建活动服务请求参数{}", activityRequest.toString());
 
@@ -48,11 +55,19 @@ public class ActivityServiceImpl implements ActivityService {
 
 
         Activity activity = new Activity();
+        activity.setCreateTime(currentTime);
         BeanUtils.copyProperties(activityRequest, activity);
 
         //TODO 必要的逻辑补充，如默认数据状态补充
 
         activityMapper.insertSelective(activity);
+
+        ActivityWinners activityWinners = new ActivityWinners();
+        activityWinners.setCreateTime(currentTime);
+        activityWinnersMapper.insertSelective(activityWinners);
+
+        System.out.println("pppp");
+
 
     }
 

@@ -149,22 +149,17 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
-    /**
-     * @param throwable
-     * @return
-     * @Title handleServiceException
-     * @Description 统一异常处理，捕获Exception异常
-     */
-    @ExceptionHandler(Throwable.class)
-    public ResponseEntity<Result<String>> handleServiceThrowable(Throwable throwable) {
-        Result<String> vo = new Result<>();
-        vo.setRetCode(ResultEnum.FAIL.getCode());
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Result> handleServiceException(Exception ex) {
+        Result vo = new Result();
         vo.setRetMsg(ResultEnum.FAIL.getMessage());
+        vo.setRetCode(ResultEnum.FAIL.getCode());
         vo.setData(null);
         logger.error("系统异常:errorCode=" + ResultEnum.FAIL.getCode()
                 + ",errorMessage=" + ResultEnum.FAIL.getMessage()
                 + ",errorDesc=" + ResultEnum.FAIL.getDesc()
-                + " exceptionInfo=" + throwable.getMessage(), throwable);
+                + " exceptionInfo=" + ex.getMessage(), ex);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
+
 }
