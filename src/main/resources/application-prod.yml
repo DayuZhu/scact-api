@@ -24,29 +24,13 @@ spring:
       validation-query: SELECT 'x'
       validation-query-timeout: 1
       pool-prepared-statements: false
-      filters: stat,wall
+      stat-view-servlet:
+        enabled: false
+      web-stat-filter:
+        enabled: false
       filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 4000
-          merge-sql: true
-          enabled: true
-        wall:
-          enabled: true
-          config:
-            drop-table-allow: false
-        slf4j:
-          enabled: true
-          result-set-log-enabled: false
-          connection-log-enabled: false
-          data-source-log-enabled: false
-          statement-log-enabled: true
-          statement-sql-pretty-format: true
-          statement-executable-sql-log-enable: true
-          statement-create-after-log-enabled: false
-          statement-parameter-set-log-enabled: false
-          statement-prepare-after-log-enabled: false
-          statement-close-after-log-enabled: false
+        config:
+          enabled: false
 mybatis:
   mapper-locations: classpath:mappings/*/*.xml
   type-aliases-package: com.sc.act.api.model
