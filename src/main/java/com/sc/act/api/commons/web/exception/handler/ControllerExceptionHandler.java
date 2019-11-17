@@ -1,29 +1,31 @@
 package com.sc.act.api.commons.web.exception.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-
+import com.sc.act.api.commons.web.base.BaseRunTimeException;
+import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
+import com.sc.act.api.commons.web.enums.ResultEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 
-import com.sc.act.api.commons.web.base.BaseRunTimeException;
-import com.sc.act.api.commons.web.enums.ResultEnum;
-import com.sc.act.api.commons.web.base.Result;
-
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ControllerExceptionHanler
@@ -108,6 +110,42 @@ public class ControllerExceptionHandler {
                 + ",errorDesc=" + ResultEnum.FAIL.getDesc()
                 + " exceptionInfo=" + exception.getMessage()
                 + "校验参数=" + string, exception);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
+
+    @ExceptionHandler({HttpServerErrorException.class, HttpClientErrorException.class})
+    public ResponseEntity<Result<Integer>> httpServerErrorException(Exception ex) {
+        HttpStatusCodeException httpStatusCodeException = (HttpStatusCodeException) ex;
+        Result<Integer> vo = new Result<>();
+        vo.setRetCode(httpStatusCodeException.getStatusCode().toString());
+        vo.setData(null);
+        vo.setRetMsg(httpStatusCodeException.getMessage());
+        logger.error("HttpServerError异常:errorCode=" + ResultEnum.FAIL.getCode()
+                + ",errorMessage=" + ResultEnum.FAIL.getMessage()
+                + ",errorDesc=" + ResultEnum.FAIL.getDesc()
+                + " exceptionInfo=" + ex.getMessage()
+                + "校验参数=" + httpStatusCodeException.getMessage(), ex);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
+    @ExceptionHandler({BindException.class})
+    public ResponseEntity<Result<String>> BindExceptionHandler(BindException bindException) {
+        String message = bindException.getBindingResult()
+                .getAllErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining());
+
+        Result<String> vo = new Result<>();
+        vo.setRetCode(HttpStatus.BAD_REQUEST.toString());
+        vo.setRetMsg(message);
+        vo.setData(null);
+        logger.error("BindException异常:errorCode=" + ResultEnum.FAIL.getCode()
+                + ",errorMessage=" + ResultEnum.FAIL.getMessage()
+                + ",errorDesc=" + ResultEnum.FAIL.getDesc()
+                + " exceptionInfo=" + bindException.getMessage()
+                + "校验参数=" + bindException.getMessage(), bindException);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
