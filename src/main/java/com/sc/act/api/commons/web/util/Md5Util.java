@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sc.act.api.commons.web.constant.Constant;
+import com.sc.act.api.commons.web.constant.CommonConstant;
 
 /**
  * @ClassName MD5Util
@@ -61,7 +61,7 @@ public class Md5Util {
         String resultString = null;
         try {
             resultString = origin;
-            MessageDigest md = MessageDigest.getInstance(Constant.MD5);
+            MessageDigest md = MessageDigest.getInstance(CommonConstant.MD5);
             resultString = byteArrayToHexString(md.digest(resultString.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             LOG.error("MD5异常：", e);

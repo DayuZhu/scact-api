@@ -1,6 +1,6 @@
 package com.sc.act.api.commons.web.base;
 
-import com.sc.act.api.commons.web.constant.Constant;
+import com.sc.act.api.commons.web.constant.CommonConstant;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +25,12 @@ public class BaseController {
     protected void initBinder(WebDataBinder binder, HttpServletRequest request, HttpServletResponse response) {
         binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
             public void setAsText(String text) {
-                this.setValue(text == null ? null : HtmlUtils.htmlEscape(text.trim(), Constant.ENCODING_UTF8));
+                this.setValue(text == null ? null : HtmlUtils.htmlEscape(text.trim(), CommonConstant.ENCODING_UTF8));
             }
 
             public String getAsText() {
                 Object value = this.getValue();
-                return value != null ? value.toString() : Constant.STRING_EMPTY;
+                return value != null ? value.toString() : CommonConstant.STRING_EMPTY;
             }
         });
 

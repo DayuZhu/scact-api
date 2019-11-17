@@ -35,7 +35,7 @@ public class ControllerExceptionHandler {
         vo.setData(null);
         logger.error("业务异常:errorCode={},errorMessage={},errorDesc={}", exception.getExceptionCode(),
                 exception.getExceptionMessage(), exception.getExceptionDesc());
-        return new ResponseEntity<Result<String>>(vo, HttpStatus.OK);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
     /**
@@ -46,13 +46,13 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Result<String>> validationException(ValidationException exception) {
-        Result<String> vo = new Result<String>();
+        Result<String> vo = new Result<>();
         vo.setRetCode(ResultEnum.FAIL.getCode());
         vo.setRetMsg(ResultEnum.FAIL.getCode());
         vo.setData(null);
         logger.error("参数校验异常:errorCode={},errorMessage={},errorDesc={} exceptionInfo={}", ResultEnum.FAIL.getCode(),
                 ResultEnum.FAIL.getMessage(), ResultEnum.FAIL.getDesc(), exception.getMessage());
-        return new ResponseEntity<Result<String>>(vo, HttpStatus.OK);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
     /**
@@ -61,14 +61,14 @@ public class ControllerExceptionHandler {
      * @Title handleServiceException
      * @Description 统一异常处理，捕获Exception异常
      */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Result<String>> handleServiceException(Exception exception) {
-        Result<String> vo = new Result<String>();
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<Result<String>> handleServiceThrowable(Exception exception) {
+        Result<String> vo = new Result<>();
         vo.setRetCode(ResultEnum.FAIL.getCode());
         vo.setRetMsg(ResultEnum.FAIL.getMessage());
         vo.setData(null);
         logger.error("系统异常:errorCode={},errorMessage={},errorDesc={} exceptionInfo={}", ResultEnum.FAIL.getCode(),
                 ResultEnum.FAIL.getMessage(), ResultEnum.FAIL.getDesc(), exception.getMessage());
-        return new ResponseEntity<Result<String>>(vo, HttpStatus.OK);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 }

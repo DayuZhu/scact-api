@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sc.act.api.commons.web.constant.Constant;
+import com.sc.act.api.commons.web.constant.CommonConstant;
 
 /**
  * @ClassName SignUtil
@@ -163,12 +163,12 @@ public class SignUtil {
 	 */
 	private static String paramsSortAsc(String ps, String token) {
 		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
-		String[] params = ps.split(Constant.STRING_AND);
+		String[] params = ps.split(CommonConstant.STRING_AND);
 		int paramLen = params.length;
 		if (paramLen > 0) {
 			for (int i = 0; i < paramLen; i++) {
 				if (StringUtils.isNotBlank(params[i])) {
-					String[] mapstr = params[i].split(Constant.STRING_EQUAL);
+					String[] mapstr = params[i].split(CommonConstant.STRING_EQUAL);
 					int mapStrLen = mapstr.length;
 					if (mapStrLen == 2) {
 						String key = mapstr[0];
@@ -181,10 +181,10 @@ public class SignUtil {
 
 		if (treeMap.size() > 0) {
 			return StringHelper.stringAssembly(
-					JsonHelper.write2Json(treeMap).replaceAll(Constant.STRING_REGEXP, Constant.STRING_EMPTY)
-							.replaceAll(Constant.STRING_COLON, Constant.STRING_EQUAL)
-							.replaceAll(Constant.STRING_COMMA, Constant.STRING_AND),
-					Constant.STRING_AND, Constant.STRING_TOKEN_KEY, Constant.STRING_EQUAL, token);
+					JsonHelper.write2Json(treeMap).replaceAll(CommonConstant.STRING_REGEXP, CommonConstant.STRING_EMPTY)
+							.replaceAll(CommonConstant.STRING_COLON, CommonConstant.STRING_EQUAL)
+							.replaceAll(CommonConstant.STRING_COMMA, CommonConstant.STRING_AND),
+					CommonConstant.STRING_AND, CommonConstant.STRING_TOKEN_KEY, CommonConstant.STRING_EQUAL, token);
 		}
 		return null;
 	}

@@ -4,7 +4,7 @@ package com.sc.act.api.commons.web.constant;
  * @ClassName Constant
  * @Description 系统通用常量定义
  */
-public interface Constant {
+public interface CommonConstant {
     String MDC_REQ_UID = "REQ_UID";
     String MDC_USER_CODE = "USER_CODE";
     String MDC_USER_NAME = "USER_NAME";
