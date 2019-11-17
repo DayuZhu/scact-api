@@ -42,11 +42,10 @@ public class ControllerExceptionHandler {
      * @Description 统一异常处理，捕获BaseRunTimeException异常
      */
     @ExceptionHandler(BaseRunTimeException.class)
-    public ResponseEntity<Result<String>> baseRunTimeException(BaseRunTimeException exception) {
-        Result<String> vo = new Result<>();
+    public ResponseEntity<Result> baseRunTimeException(BaseRunTimeException exception) {
+        Result vo = new Result<>();
         vo.setRetCode(exception.getExceptionCode());
         vo.setRetMsg(exception.getExceptionMessage());
-        vo.setData(null);
         logger.error("业务异常:errorCode=" + exception.getExceptionCode()
                         + ",errorMessage=" + exception.getExceptionMessage()
                         + ",errorDesc=" + exception.getExceptionDesc()
@@ -55,10 +54,9 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<Result<String>> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        Result<String> vo = new Result<>();
+    public ResponseEntity<Result> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        Result vo = new Result<>();
         vo.setRetCode(ResultEnum.FAIL.getCode());
-        vo.setData(null);
         List<ObjectError> errors = exception.getBindingResult().getAllErrors();
         StringBuilder errorMsg = new StringBuilder();
         errors.forEach(x -> errorMsg.append(x.getDefaultMessage()).append(CommonConstant.STRING_SEMICOLON));
@@ -88,11 +86,9 @@ public class ControllerExceptionHandler {
      * @Description 统一异常处理，捕获ValidationException异常
      */
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<Result<String>> validationException(ValidationException exception) {
-        Result<String> vo = new Result<>();
+    public ResponseEntity<Result> validationException(ValidationException exception) {
+        Result vo = new Result<>();
         vo.setRetCode(ResultEnum.FAIL.getCode());
-
-        vo.setData(null);
         ConstraintViolationException e = (ConstraintViolationException) exception;
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
         StringBuilder strBuilder = new StringBuilder();
@@ -115,11 +111,10 @@ public class ControllerExceptionHandler {
 
 
     @ExceptionHandler({HttpServerErrorException.class, HttpClientErrorException.class})
-    public ResponseEntity<Result<Integer>> httpServerErrorException(Exception ex) {
+    public ResponseEntity<Result> httpServerErrorException(Exception ex) {
         HttpStatusCodeException httpStatusCodeException = (HttpStatusCodeException) ex;
-        Result<Integer> vo = new Result<>();
-        vo.setRetCode(httpStatusCodeException.getStatusCode().toString());
-        vo.setData(null);
+        Result vo = new Result<>();
+        vo.setRetCode(CommonConstant.STRING_HYPHEN + httpStatusCodeException.getStatusCode().toString());
         vo.setRetMsg(httpStatusCodeException.getMessage());
         logger.error("HttpServerError异常:errorCode=" + ResultEnum.FAIL.getCode()
                 + ",errorMessage=" + ResultEnum.FAIL.getMessage()
@@ -130,17 +125,16 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler({BindException.class})
-    public ResponseEntity<Result<String>> bindExceptionHandler(BindException bindException) {
+    public ResponseEntity<Result> bindExceptionHandler(BindException bindException) {
         String message = bindException.getBindingResult()
                 .getAllErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining());
 
-        Result<String> vo = new Result<>();
-        vo.setRetCode(HttpStatus.BAD_REQUEST.toString());
+        Result vo = new Result<>();
+        vo.setRetCode(CommonConstant.STRING_HYPHEN + HttpStatus.BAD_REQUEST.toString());
         vo.setRetMsg(message);
-        vo.setData(null);
         logger.error("BindException异常:errorCode=" + ResultEnum.FAIL.getCode()
                 + ",errorMessage=" + ResultEnum.FAIL.getMessage()
                 + ",errorDesc=" + ResultEnum.FAIL.getDesc()
@@ -154,7 +148,6 @@ public class ControllerExceptionHandler {
         Result vo = new Result();
         vo.setRetMsg(ResultEnum.FAIL.getMessage());
         vo.setRetCode(ResultEnum.FAIL.getCode());
-        vo.setData(null);
         logger.error("系统异常:errorCode=" + ResultEnum.FAIL.getCode()
                 + ",errorMessage=" + ResultEnum.FAIL.getMessage()
                 + ",errorDesc=" + ResultEnum.FAIL.getDesc()

@@ -50,27 +50,32 @@ public enum ResultEnum implements IResultEnum {
     private String message;
     private String desc;
 
+    @Override
     public String getCode() {
         return code;
     }
 
-    // 前台显示信息
+
+    /**
+     * B端显示信息
+     *
+     * @return
+     */
+    @Override
     public String getMessage() {
         return message;
     }
 
-    // 后台描述
+
+    /**
+     * 后台描述
+     *
+     * @return
+     */
+    @Override
     public String getDesc() {
         return desc;
     }
 
-    public static ResultEnum toEnum(String code) {
-        for (ResultEnum item : ResultEnum.values()) {
-            if (item.getCode().equalsIgnoreCase(code)) {
-                return item;
-            }
-        }
-        return null;
-    }
 
 }

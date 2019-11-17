@@ -26,10 +26,12 @@ public class BaseController {
     @InitBinder
     protected void initBinder(WebDataBinder binder, HttpServletRequest request, HttpServletResponse response) {
         binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
+            @Override
             public void setAsText(String text) {
                 this.setValue(text == null ? null : HtmlUtils.htmlEscape(text.trim(), CommonConstant.ENCODING_UTF8));
             }
 
+            @Override
             public String getAsText() {
                 Object value = this.getValue();
                 return value != null ? value.toString() : CommonConstant.STRING_EMPTY;
@@ -37,6 +39,7 @@ public class BaseController {
         });
 
         binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+            @Override
             public void setAsText(String text) {
                 try {
                     this.setValue(DateUtils.parseDate(text, "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss"));
