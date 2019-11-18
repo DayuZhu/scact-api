@@ -1,10 +1,8 @@
 package com.sc.act.api.service;
 
-import com.sc.act.api.request.ActivityWinnersRequest;
-import com.sc.act.api.commons.web.base.PageResponse;
-import com.sc.act.api.request.ActivityWinnersListRequest;
-import com.sc.act.api.response.ActivityWinnersContentResponse;
-import com.sc.act.api.response.ActivityWinnersResponse;
+import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
+
+import java.util.List;
 
 /**
  * 功能描述:活动中奖名服务类
@@ -17,37 +15,11 @@ import com.sc.act.api.response.ActivityWinnersResponse;
 public interface ActivityWinnersService {
 
     /**
-     * 新增活动中奖名
+     * 处理中奖名单
      *
-     * @param activityWinnersRequest
+     * @param list
      */
-    void insertActivityWinners(ActivityWinnersRequest activityWinnersRequest);
-
-
-    /**
-     * 更新活动中奖名
-     *
-     * @param activityWinnersRequest
-     */
-    void updateActivityWinners(ActivityWinnersRequest activityWinnersRequest);
-
-
-    /**
-     * 查询活动中奖名
-     *
-     * @param activityWinnersId
-     * @return
-     */
-    ActivityWinnersContentResponse selectActivityWinnersContent(Integer activityWinnersId);
-
-
-    /**
-     * 查询活动中奖名列表
-     *
-     * @param activityWinnersListRequest
-     * @return
-     */
-    PageResponse<ActivityWinnersResponse> selectActivityWinners(ActivityWinnersListRequest activityWinnersListRequest);
+    void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list);
 
 
 }

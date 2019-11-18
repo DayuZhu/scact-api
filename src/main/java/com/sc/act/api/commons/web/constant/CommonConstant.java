@@ -1,5 +1,7 @@
 package com.sc.act.api.commons.web.constant;
 
+import java.nio.charset.Charset;
+
 /**
  * @ClassName Constant
  * @Description 系统通用常量定义
@@ -16,6 +18,9 @@ public interface CommonConstant {
     String CONTENTTYPE_FORM = "application/x-www-form-urlencoded";
     String CONTENTTYPE_FORM_DATA = "multipart/form-data";
     String ENCODING_UTF8 = "UTF-8";
+    Charset UTF_8 = Charset.forName("UTF-8");
+    Charset US_ASCII = Charset.forName("US-ASCII");
+    Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
     String TOKEN_KEY = "Token";
     String SIGN_KEY = "Sign";
     String DEVICE_TYPE_KEY = "Device-Type";
@@ -24,6 +29,7 @@ public interface CommonConstant {
     String STRING_HYPHEN = "-";
     String STRING_EMPTY = "";
     String STRING_AND = "&";
+    String STRING_AND_BLANK = " & ";
     String STRING_EQUAL = "=";
     String STRING_REGEXP = "[\"{}]";
     String STRING_COMMA = ",";
@@ -35,5 +41,9 @@ public interface CommonConstant {
     String STRING_LINE_BREAK = "\n";
     String STRING_SEMICOLON = ";";
     String STRING_PERCENT = "%";
+    String EXCEL_XLS = "xls";
+    String EXCEL_XLSX = "xlsx";
+    String EXCEL_FILENAME_COMMA = ".";
+    Integer EXCEL_ROW_NUM = 51;
 
 }

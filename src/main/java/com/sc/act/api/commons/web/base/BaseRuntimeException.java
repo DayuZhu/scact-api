@@ -54,7 +54,7 @@ public class BaseRuntimeException extends RuntimeException {
         initCause(e);
     }
 
-    protected BaseRuntimeException(String code, String message) {
+    public BaseRuntimeException(String code, String message) {
         super();
         this.exceptionCode = code;
         this.exceptionMessage = message;
