@@ -33,3 +33,16 @@ php功能
 
 # 流程图
 ![流程](https://github.com/DayuZhu/scact-api/blob/master/document/%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
+
+# 任务
+1.活动赠加修改；
+
+2.中奖名单上传
+
+3.券明细下载
+
+4.模板下载
+
+5.订单产品明细下载；
+
+6.分账接口
