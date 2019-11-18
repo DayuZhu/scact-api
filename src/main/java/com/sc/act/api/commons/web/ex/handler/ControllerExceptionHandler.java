@@ -1,6 +1,6 @@
 package com.sc.act.api.commons.web.ex.handler;
 
-import com.sc.act.api.commons.web.base.BaseRunTimeException;
+import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.enums.ResultEnum;
@@ -41,8 +41,8 @@ public class ControllerExceptionHandler {
      * @Title baseRunTimeException
      * @Description 统一异常处理，捕获BaseRunTimeException异常
      */
-    @ExceptionHandler(BaseRunTimeException.class)
-    public ResponseEntity<Result> baseRunTimeException(BaseRunTimeException exception) {
+    @ExceptionHandler(BaseRuntimeException.class)
+    public ResponseEntity<Result> baseRunTimeException(BaseRuntimeException exception) {
         Result vo = new Result<>();
         vo.setRetCode(exception.getExceptionCode());
         vo.setRetMsg(exception.getExceptionMessage());

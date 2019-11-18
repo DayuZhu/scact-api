@@ -6,14 +6,14 @@ import com.sc.act.api.commons.web.util.StringHelper;
 /**
  * 运行时异常处理基类
  *
- * @ClassName BaseRunTimeException
+ * @ClassName BaseRuntimeException
  * @Description 系统基础异常类，每个系统需要扩展定义自己的异常类；继承自本类并修改sysKey<br/>
  * 并提供前4种构造方法，去掉构造方法中的sysKey参数<br/>
  * 所有枚举类型均实现IExceptionEnum接口
  * @updatedescription 去除sysKey id 以及其他静态方法
  */
 
-public class BaseRunTimeException extends RuntimeException {
+public class BaseRuntimeException extends RuntimeException {
 
     private static final long serialVersionUID = 8279619225047725584L;
 
@@ -32,36 +32,36 @@ public class BaseRunTimeException extends RuntimeException {
      */
     private String exceptionDesc;
 
-    public BaseRunTimeException() {
+    public BaseRuntimeException() {
 
     }
 
-    public BaseRunTimeException(IResultEnum exEnum) {
+    public BaseRuntimeException(IResultEnum exEnum) {
         this(exEnum.getCode(), exEnum.getMessage(), exEnum.getDesc());
     }
 
-    public BaseRunTimeException(IResultEnum exEnum, Throwable e) {
+    public BaseRuntimeException(IResultEnum exEnum, Throwable e) {
         this(exEnum.getCode(), exEnum.getMessage(), exEnum.getDesc());
         initCause(e);
     }
 
-    public BaseRunTimeException(IResultEnum exEnum, String message) {
+    public BaseRuntimeException(IResultEnum exEnum, String message) {
         this(exEnum.getCode(), message, exEnum.getDesc());
     }
 
-    public BaseRunTimeException(IResultEnum exEnum, String message, Throwable e) {
+    public BaseRuntimeException(IResultEnum exEnum, String message, Throwable e) {
         this(exEnum.getCode(), message, exEnum.getDesc());
         initCause(e);
     }
 
-    protected BaseRunTimeException(String code, String message) {
+    protected BaseRuntimeException(String code, String message) {
         super();
         this.exceptionCode = code;
         this.exceptionMessage = message;
         this.exceptionDesc = StringHelper.stringAssembly(code, CommonConstant.STRING_COLON, message);
     }
 
-    protected BaseRunTimeException(String code, String message, String desc) {
+    protected BaseRuntimeException(String code, String message, String desc) {
         super();
         this.exceptionCode = code;
         this.exceptionMessage = message;
