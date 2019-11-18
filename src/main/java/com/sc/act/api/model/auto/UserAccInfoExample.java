@@ -225,6 +225,76 @@ public class UserAccInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andCardNameIsNull() {
+            addCriterion("card_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameIsNotNull() {
+            addCriterion("card_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameEqualTo(String value) {
+            addCriterion("card_name =", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameNotEqualTo(String value) {
+            addCriterion("card_name <>", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameGreaterThan(String value) {
+            addCriterion("card_name >", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameGreaterThanOrEqualTo(String value) {
+            addCriterion("card_name >=", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameLessThan(String value) {
+            addCriterion("card_name <", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameLessThanOrEqualTo(String value) {
+            addCriterion("card_name <=", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameLike(String value) {
+            addCriterion("card_name like", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameNotLike(String value) {
+            addCriterion("card_name not like", value, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameIn(List<String> values) {
+            addCriterion("card_name in", values, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameNotIn(List<String> values) {
+            addCriterion("card_name not in", values, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameBetween(String value1, String value2) {
+            addCriterion("card_name between", value1, value2, "cardName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNameNotBetween(String value1, String value2) {
+            addCriterion("card_name not between", value1, value2, "cardName");
+            return (Criteria) this;
+        }
+
         public Criteria andBankNameIsNull() {
             addCriterion("bank_name is null");
             return (Criteria) this;

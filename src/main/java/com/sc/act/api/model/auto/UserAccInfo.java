@@ -8,6 +8,8 @@ public class UserAccInfo implements Serializable {
 
     private Integer userId;
 
+    private String cardName;
+
     private String bankName;
 
     private String cardNumber;
@@ -32,6 +34,14 @@ public class UserAccInfo implements Serializable {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName == null ? null : cardName.trim();
     }
 
     public String getBankName() {
