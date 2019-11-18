@@ -150,7 +150,7 @@ public class SignUtil {
 	@SuppressWarnings("unchecked")
 	public static String postSignString(String json, String token) {
 
-		Map<String, Object> paramMap = JsonHelper.readJson(json, Map.class);
+		Map<String, Object> paramMap = JsonUtil.readJson(json, Map.class);
 		return signMd5(paramMap, token);
 	}
 
@@ -180,8 +180,8 @@ public class SignUtil {
 		}
 
 		if (treeMap.size() > 0) {
-			return StringHelper.stringAssembly(
-					JsonHelper.write2Json(treeMap).replaceAll(CommonConstant.STRING_REGEXP, CommonConstant.STRING_EMPTY)
+			return StringUtil.stringAssembly(
+					JsonUtil.write2Json(treeMap).replaceAll(CommonConstant.STRING_REGEXP, CommonConstant.STRING_EMPTY)
 							.replaceAll(CommonConstant.STRING_COLON, CommonConstant.STRING_EQUAL)
 							.replaceAll(CommonConstant.STRING_COMMA, CommonConstant.STRING_AND),
 					CommonConstant.STRING_AND, CommonConstant.STRING_TOKEN_KEY, CommonConstant.STRING_EQUAL, token);

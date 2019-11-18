@@ -1,7 +1,7 @@
 package com.sc.act.api.commons.web.base;
 
 import com.sc.act.api.commons.web.constant.CommonConstant;
-import com.sc.act.api.commons.web.util.StringHelper;
+import com.sc.act.api.commons.web.util.StringUtil;
 
 /**
  * 运行时异常处理基类
@@ -58,7 +58,7 @@ public class BaseRuntimeException extends RuntimeException {
         super();
         this.exceptionCode = code;
         this.exceptionMessage = message;
-        this.exceptionDesc = StringHelper.stringAssembly(code, CommonConstant.STRING_COLON, message);
+        this.exceptionDesc = StringUtil.stringAssembly(code, CommonConstant.STRING_COLON, message);
     }
 
     protected BaseRuntimeException(String code, String message, String desc) {

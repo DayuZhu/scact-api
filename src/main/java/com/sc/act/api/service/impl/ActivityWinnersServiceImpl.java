@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,9 +29,10 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
     private ActivityWinnersMapper activityWinnersMapper;
 
     @Override
-    public void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list) {
+    @Transactional(rollbackFor = Exception.class)
+    public void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list, Integer activityId) {
         LOG.info("进入处理中奖名单服务请求参数list={}", JSON.toJSONString(list));
-
+        //
 
 
     }

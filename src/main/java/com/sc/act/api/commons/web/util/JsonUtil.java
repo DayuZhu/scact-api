@@ -13,11 +13,11 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * @author dayu
- * @ClassName JsonHelper
+ * @ClassName JsonUtil
  * @Description json转换工具类
  */
-public class JsonHelper {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
+public class JsonUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonUtil.class);
 
     public static ObjectMapper InstanceMapper() {
         ObjectMapper mapper = new ObjectMapper();

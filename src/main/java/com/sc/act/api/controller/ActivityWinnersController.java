@@ -21,7 +21,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -105,7 +104,7 @@ public class ActivityWinnersController extends BaseController {
      */
     @ApiOperation(value = "中奖名单上传")
     @PostMapping(value = "/upload/xlsx")
-    public Result<String> uploadSingleFile(MultipartFile file, @RequestHeader("activityId") Integer activityId) {
+    public Result<String> uploadSingleFile(MultipartFile file, @RequestParam(name = "activityId") Integer activityId) {
         LOG.info("中奖名单上传");
         // 获取文件名
         if (null == activityId) {
@@ -237,7 +236,7 @@ public class ActivityWinnersController extends BaseController {
                 throw new BaseRuntimeException("1001", "Excel中的内容全部校验不通过");
             }
 
-            activityWinnersService.handlerWinnersInfo(listSuccess);
+            activityWinnersService.handlerWinnersInfo(listSuccess, activityId);
 
             result.setRetMsg("操作成功");
             return result;

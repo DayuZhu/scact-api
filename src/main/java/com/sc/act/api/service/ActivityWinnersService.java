@@ -19,7 +19,7 @@ public interface ActivityWinnersService {
      *
      * @param list
      */
-    void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list);
+    void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list, Integer activityId);
 
 
 }

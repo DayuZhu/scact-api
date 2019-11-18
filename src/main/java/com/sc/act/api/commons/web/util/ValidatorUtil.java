@@ -12,7 +12,7 @@ import java.util.Set;
  * @Description 参数校验类
  * @date 2018年01月08日 下午15:15:49
  */
-public class ValidatorHelper {
+public class ValidatorUtil {
 
     /**
      * 获得验证器

@@ -8,10 +8,10 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * @ClassName ServiceIpHelper
+ * @ClassName ServiceIpUtil
  * @Description 获取单网卡IP
  */
-public class ServiceIpHelper {
+public class ServiceIpUtil {
 
 	/**
 	 * @Title: getLocalIp

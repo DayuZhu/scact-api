@@ -8,9 +8,9 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListBatchHelper {
+public class ListBatchUtil {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ListBatchHelper.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ListBatchUtil.class);
 
 	public static void main(String[] args) {
 		List<Integer> dataList = new ArrayList<Integer>();

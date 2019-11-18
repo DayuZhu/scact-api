@@ -4,11 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @ClassName StringHelper
+ * @ClassName StringUtil
  * @Description String操作类
  */
-public class StringHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(StringHelper.class);
+public class StringUtil {
+	private static final Logger LOG = LoggerFactory.getLogger(StringUtil.class);
 
 	/**
 	 * @Title stringAssembly
