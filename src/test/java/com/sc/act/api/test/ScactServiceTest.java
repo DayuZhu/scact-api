@@ -9,8 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ScactCommonConstantServiceTest {
-    private static final Logger LOG = LoggerFactory.getLogger(ScactCommonConstantServiceTest.class);
+public class ScactServiceTest {
+    private static final Logger LOG = LoggerFactory.getLogger(ScactServiceTest.class);
 
     @Test
     public void test01() {
