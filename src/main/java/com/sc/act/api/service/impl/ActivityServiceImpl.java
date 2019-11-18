@@ -3,16 +3,16 @@ package com.sc.act.api.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.sc.act.api.commons.web.base.PageResponse;
+import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.mapper.auto.ActivityMapper;
-import com.sc.act.api.mapper.auto.ActivityWinnersMapper;
 import com.sc.act.api.model.auto.Activity;
 import com.sc.act.api.model.auto.ActivityExample;
-import com.sc.act.api.model.auto.ActivityWinners;
 import com.sc.act.api.request.ActivityListRequest;
 import com.sc.act.api.request.ActivityRequest;
 import com.sc.act.api.response.ActivityContentResponse;
 import com.sc.act.api.response.ActivityResponse;
 import com.sc.act.api.service.ActivityService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -40,52 +40,56 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityMapper activityMapper;
 
-    @Autowired
-    private ActivityWinnersMapper activityWinnersMapper;
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertActivity(ActivityRequest activityRequest) {
         LOG.info("进入创建活动服务请求参数{}", activityRequest.toString());
 
-        //TODO 必要的校验，如去重校验
-
-        //TODO 统一入库时间
         Date currentTime = new Date();
 
-
         Activity activity = new Activity();
-        activity.setCreateTime(currentTime);
-        BeanUtils.copyProperties(activityRequest, activity);
 
-        //TODO 必要的逻辑补充，如默认数据状态补充
+        activity.setActivityName(activityRequest.getActivityName());
+        activity.setActivityDesc(activityRequest.getActivityDesc());
+        activity.setStartTime(activityRequest.getStartTime());
+        activity.setEndTime(activityRequest.getEndTime());
+        activity.setState(activityRequest.getState());
+
+        if (null != activityRequest.getCreateUserId()
+                && StringUtils.isNotBlank(activityRequest.getCreateUserName())) {
+            activity.setCreateUserId(activityRequest.getCreateUserId());
+            activity.setCreateUserName(activityRequest.getCreateUserName());
+            activity.setUpdateUserId(activityRequest.getCreateUserId());
+            activity.setUpdateUserName(activityRequest.getCreateUserName());
+        }
+
+        activity.setCreateTime(currentTime);
+        activity.setUpdateTime(currentTime);
 
         activityMapper.insertSelective(activity);
-
-        ActivityWinners activityWinners = new ActivityWinners();
-        activityWinners.setCreateTime(currentTime);
-        activityWinnersMapper.insertSelective(activityWinners);
-
-        System.out.println("pppp");
-
-
     }
+
 
     @Override
     public void updateActivity(ActivityRequest activityRequest) {
         LOG.info("进入更新活动服务请求参数{}", activityRequest.toString());
 
-        //TODO 必要的业务校验
-
-        //TODO 统一入库时间
         Date currentTime = new Date();
 
-
         Activity activity = new Activity();
-        BeanUtils.copyProperties(activityRequest, activity);
+        activity.setActivityId(activityRequest.getActivityId());
+        activity.setActivityName(activityRequest.getActivityName());
+        activity.setActivityDesc(activityRequest.getActivityDesc());
+        activity.setStartTime(activityRequest.getStartTime());
+        activity.setEndTime(activityRequest.getEndTime());
+        activity.setState(activityRequest.getState());
 
-        //TODO 必要的逻辑补充，如默认数据状态补充
-
+        if (null != activityRequest.getUpdateUserId()
+                && StringUtils.isNotBlank(activityRequest.getUpdateUserName())) {
+            activity.setUpdateUserId(activityRequest.getUpdateUserId());
+            activity.setUpdateUserName(activityRequest.getUpdateUserName());
+        }
+        activity.setUpdateTime(currentTime);
         activityMapper.updateByPrimaryKeySelective(activity);
     }
 
@@ -97,12 +101,7 @@ public class ActivityServiceImpl implements ActivityService {
         if (null == activity) {
             return activityContentResponse;
         }
-
-        //TODO 必要业务逻辑补充
-
-        //TODO 有些不需要的字段，可以不用 bean copy
         BeanUtils.copyProperties(activity, activityContentResponse);
-
         return activityContentResponse;
     }
 
@@ -113,9 +112,19 @@ public class ActivityServiceImpl implements ActivityService {
         activityExample.setOrderByClause("activity_id desc");
         ActivityExample.Criteria criteria = activityExample.createCriteria();
 
-        //TODO 必要的业务查询条件补充
         if (null != activityListRequest.getActivityId()) {
             criteria.andActivityIdEqualTo(activityListRequest.getActivityId());
+        }
+
+        if (StringUtils.isNotBlank(activityListRequest.getActivityName())) {
+            criteria.andActivityNameLike(
+                    CommonConstant.STRING_PERCENT
+                            + activityListRequest.getActivityName()
+                            + CommonConstant.STRING_PERCENT);
+        }
+
+        if (null != activityListRequest.getState()) {
+            criteria.andStateEqualTo(activityListRequest.getState());
         }
 
         PageHelper.startPage(activityListRequest.getPageIndex(), activityListRequest.getPageSize());
@@ -127,10 +136,7 @@ public class ActivityServiceImpl implements ActivityService {
         response.setList(list);
         activityList.forEach(activity -> {
             ActivityResponse activityResponse = new ActivityResponse();
-
-            //TODO 有些不需要的字段，可以不用 bean copy
             BeanUtils.copyProperties(activity, activityResponse);
-
             list.add(activityResponse);
         });
         return response;

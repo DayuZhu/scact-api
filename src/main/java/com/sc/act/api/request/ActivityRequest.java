@@ -4,8 +4,12 @@ import com.sc.act.api.commons.web.base.BasePojo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -24,18 +28,26 @@ public class ActivityRequest extends BasePojo {
 
     @ApiModelProperty("活动名称")
     @NotBlank
+    @Length(min = 1, max = 128)
     private String activityName;
 
     @ApiModelProperty("活动描述")
+    @NotBlank
+    @Length(min = 1, max = 1000)
     private String activityDesc;
 
     @ApiModelProperty("活动开始时间")
+    @NotNull
     private Date startTime;
 
     @ApiModelProperty("活动结束时间")
+    @NotNull
     private Date endTime;
 
     @ApiModelProperty("活动状态：0下线，1上线")
+    @NotNull
+    @Min(0)
+    @Max(1)
     private Integer state;
 
     @ApiModelProperty("创建人")
@@ -49,13 +61,6 @@ public class ActivityRequest extends BasePojo {
 
     @ApiModelProperty("最后一次更新人姓名")
     private String updateUserName;
-
-    @ApiModelProperty("创建时间")
-    private Date createTime;
-
-    @ApiModelProperty("更新时间")
-    private Date updateTime;
-
 
     public Integer getActivityId() {
         return this.activityId;
@@ -135,22 +140,6 @@ public class ActivityRequest extends BasePojo {
 
     public void setUpdateUserName(String updateUserName) {
         this.updateUserName = updateUserName;
-    }
-
-    public Date getCreateTime() {
-        return this.createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return this.updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
 

@@ -34,5 +34,6 @@ public interface CommonConstant {
     String MD5 = "MD5";
     String STRING_LINE_BREAK = "\n";
     String STRING_SEMICOLON = ";";
+    String STRING_PERCENT = "%";
 
 }
