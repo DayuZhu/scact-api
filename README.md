@@ -35,7 +35,7 @@ php功能
 ![流程](https://github.com/DayuZhu/scact-api/blob/master/document/%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 
 # 任务
-1.活动赠加修改；
+1.活动增加修改；
 
 2.中奖名单上传
 

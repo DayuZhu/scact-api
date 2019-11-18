@@ -8,7 +8,15 @@ public class AccSepRecord implements Serializable {
 
     private Integer userAccInfoId;
 
-    private Integer amount;
+    private Integer incomeAmount;
+
+    private Integer payoutAmount;
+
+    private Integer outOrderId;
+
+    private Integer outProductId;
+
+    private Integer productId;
 
     private Integer status;
 
@@ -36,12 +44,44 @@ public class AccSepRecord implements Serializable {
         this.userAccInfoId = userAccInfoId;
     }
 
-    public Integer getAmount() {
-        return amount;
+    public Integer getIncomeAmount() {
+        return incomeAmount;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setIncomeAmount(Integer incomeAmount) {
+        this.incomeAmount = incomeAmount;
+    }
+
+    public Integer getPayoutAmount() {
+        return payoutAmount;
+    }
+
+    public void setPayoutAmount(Integer payoutAmount) {
+        this.payoutAmount = payoutAmount;
+    }
+
+    public Integer getOutOrderId() {
+        return outOrderId;
+    }
+
+    public void setOutOrderId(Integer outOrderId) {
+        this.outOrderId = outOrderId;
+    }
+
+    public Integer getOutProductId() {
+        return outProductId;
+    }
+
+    public void setOutProductId(Integer outProductId) {
+        this.outProductId = outProductId;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Integer getStatus() {
