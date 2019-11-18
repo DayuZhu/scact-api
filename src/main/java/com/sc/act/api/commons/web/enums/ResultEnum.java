@@ -38,7 +38,9 @@ public enum ResultEnum implements IResultEnum {
     /**
      * 媒体类型不能为空
      */
-    CONTENT_TYPE_NULL("-105", "处理失败", "媒体类型不能为空");
+    CONTENT_TYPE_NULL("-105", "处理失败", "媒体类型不能为空"),
+
+    ACTIVITY_NULL("-106", "活动不能为空", "活动不能为空");
 
     ResultEnum(String code, String message, String desc) {
         this.code = code;

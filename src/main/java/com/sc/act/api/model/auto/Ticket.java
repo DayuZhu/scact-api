@@ -8,11 +8,17 @@ public class Ticket implements Serializable {
 
     private String ticketCode;
 
-    private Integer ticketPwd;
+    private String ticketPwd;
 
     private Integer nominalValue;
 
     private Integer state;
+
+    private String remark1;
+
+    private String remark2;
+
+    private String remark3;
 
     private Date createTime;
 
@@ -36,12 +42,12 @@ public class Ticket implements Serializable {
         this.ticketCode = ticketCode == null ? null : ticketCode.trim();
     }
 
-    public Integer getTicketPwd() {
+    public String getTicketPwd() {
         return ticketPwd;
     }
 
-    public void setTicketPwd(Integer ticketPwd) {
-        this.ticketPwd = ticketPwd;
+    public void setTicketPwd(String ticketPwd) {
+        this.ticketPwd = ticketPwd == null ? null : ticketPwd.trim();
     }
 
     public Integer getNominalValue() {
@@ -58,6 +64,30 @@ public class Ticket implements Serializable {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getRemark1() {
+        return remark1;
+    }
+
+    public void setRemark1(String remark1) {
+        this.remark1 = remark1 == null ? null : remark1.trim();
+    }
+
+    public String getRemark2() {
+        return remark2;
+    }
+
+    public void setRemark2(String remark2) {
+        this.remark2 = remark2 == null ? null : remark2.trim();
+    }
+
+    public String getRemark3() {
+        return remark3;
+    }
+
+    public void setRemark3(String remark3) {
+        this.remark3 = remark3 == null ? null : remark3.trim();
     }
 
     public Date getCreateTime() {

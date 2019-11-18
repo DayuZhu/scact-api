@@ -7,6 +7,9 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_acc_info_id" jdbcType="INTEGER" property="userAccInfoId" />
     <result column="award_amount" jdbcType="INTEGER" property="awardAmount" />
+    <result column="remark1" jdbcType="VARCHAR" property="remark1" />
+    <result column="remark2" jdbcType="VARCHAR" property="remark2" />
+    <result column="remark3" jdbcType="VARCHAR" property="remark3" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -69,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    activity_winners_id, activity_id, user_id, user_acc_info_id, award_amount, create_time, 
-    update_time
+    activity_winners_id, activity_id, user_id, user_acc_info_id, award_amount, remark1, 
+    remark2, remark3, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.sc.act.api.model.auto.ActivityWinnersExample" resultMap="BaseResultMap">
     select
@@ -107,10 +110,12 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into sc_activity_winners (activity_id, user_id, user_acc_info_id, 
-      award_amount, create_time, update_time
+      award_amount, remark1, remark2, 
+      remark3, create_time, update_time
       )
     values (#{activityId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userAccInfoId,jdbcType=INTEGER}, 
-      #{awardAmount,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{awardAmount,jdbcType=INTEGER}, #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, 
+      #{remark3,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.ActivityWinners">
@@ -131,6 +136,15 @@
       <if test="awardAmount != null">
         award_amount,
       </if>
+      <if test="remark1 != null">
+        remark1,
+      </if>
+      <if test="remark2 != null">
+        remark2,
+      </if>
+      <if test="remark3 != null">
+        remark3,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -150,6 +164,15 @@
       </if>
       <if test="awardAmount != null">
         #{awardAmount,jdbcType=INTEGER},
+      </if>
+      <if test="remark1 != null">
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null">
+        #{remark3,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -183,6 +206,15 @@
       <if test="record.awardAmount != null">
         award_amount = #{record.awardAmount,jdbcType=INTEGER},
       </if>
+      <if test="record.remark1 != null">
+        remark1 = #{record.remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark2 != null">
+        remark2 = #{record.remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark3 != null">
+        remark3 = #{record.remark3,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -201,6 +233,9 @@
       user_id = #{record.userId,jdbcType=INTEGER},
       user_acc_info_id = #{record.userAccInfoId,jdbcType=INTEGER},
       award_amount = #{record.awardAmount,jdbcType=INTEGER},
+      remark1 = #{record.remark1,jdbcType=VARCHAR},
+      remark2 = #{record.remark2,jdbcType=VARCHAR},
+      remark3 = #{record.remark3,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -222,6 +257,15 @@
       <if test="awardAmount != null">
         award_amount = #{awardAmount,jdbcType=INTEGER},
       </if>
+      <if test="remark1 != null">
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        remark2 = #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null">
+        remark3 = #{remark3,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -237,6 +281,9 @@
       user_id = #{userId,jdbcType=INTEGER},
       user_acc_info_id = #{userAccInfoId,jdbcType=INTEGER},
       award_amount = #{awardAmount,jdbcType=INTEGER},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      remark2 = #{remark2,jdbcType=VARCHAR},
+      remark3 = #{remark3,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where activity_winners_id = #{activityWinnersId,jdbcType=INTEGER}

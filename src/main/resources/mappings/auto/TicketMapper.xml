@@ -4,9 +4,12 @@
   <resultMap id="BaseResultMap" type="com.sc.act.api.model.auto.Ticket">
     <id column="ticket_id" jdbcType="INTEGER" property="ticketId" />
     <result column="ticket_code" jdbcType="VARCHAR" property="ticketCode" />
-    <result column="ticket_pwd" jdbcType="TINYINT" property="ticketPwd" />
+    <result column="ticket_pwd" jdbcType="VARCHAR" property="ticketPwd" />
     <result column="nominal_value" jdbcType="INTEGER" property="nominalValue" />
     <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="remark1" jdbcType="VARCHAR" property="remark1" />
+    <result column="remark2" jdbcType="VARCHAR" property="remark2" />
+    <result column="remark3" jdbcType="VARCHAR" property="remark3" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -69,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ticket_id, ticket_code, ticket_pwd, nominal_value, `state`, create_time, update_time
+    ticket_id, ticket_code, ticket_pwd, nominal_value, `state`, remark1, remark2, remark3, 
+    create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.sc.act.api.model.auto.TicketExample" resultMap="BaseResultMap">
     select
@@ -106,10 +110,12 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into sc_ticket (ticket_code, ticket_pwd, nominal_value, 
-      `state`, create_time, update_time
+      `state`, remark1, remark2, 
+      remark3, create_time, update_time
       )
-    values (#{ticketCode,jdbcType=VARCHAR}, #{ticketPwd,jdbcType=TINYINT}, #{nominalValue,jdbcType=INTEGER}, 
-      #{state,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    values (#{ticketCode,jdbcType=VARCHAR}, #{ticketPwd,jdbcType=VARCHAR}, #{nominalValue,jdbcType=INTEGER}, 
+      #{state,jdbcType=TINYINT}, #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, 
+      #{remark3,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.Ticket">
@@ -130,6 +136,15 @@
       <if test="state != null">
         `state`,
       </if>
+      <if test="remark1 != null">
+        remark1,
+      </if>
+      <if test="remark2 != null">
+        remark2,
+      </if>
+      <if test="remark3 != null">
+        remark3,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -142,13 +157,22 @@
         #{ticketCode,jdbcType=VARCHAR},
       </if>
       <if test="ticketPwd != null">
-        #{ticketPwd,jdbcType=TINYINT},
+        #{ticketPwd,jdbcType=VARCHAR},
       </if>
       <if test="nominalValue != null">
         #{nominalValue,jdbcType=INTEGER},
       </if>
       <if test="state != null">
         #{state,jdbcType=TINYINT},
+      </if>
+      <if test="remark1 != null">
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null">
+        #{remark3,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -174,13 +198,22 @@
         ticket_code = #{record.ticketCode,jdbcType=VARCHAR},
       </if>
       <if test="record.ticketPwd != null">
-        ticket_pwd = #{record.ticketPwd,jdbcType=TINYINT},
+        ticket_pwd = #{record.ticketPwd,jdbcType=VARCHAR},
       </if>
       <if test="record.nominalValue != null">
         nominal_value = #{record.nominalValue,jdbcType=INTEGER},
       </if>
       <if test="record.state != null">
         `state` = #{record.state,jdbcType=TINYINT},
+      </if>
+      <if test="record.remark1 != null">
+        remark1 = #{record.remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark2 != null">
+        remark2 = #{record.remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark3 != null">
+        remark3 = #{record.remark3,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -197,9 +230,12 @@
     update sc_ticket
     set ticket_id = #{record.ticketId,jdbcType=INTEGER},
       ticket_code = #{record.ticketCode,jdbcType=VARCHAR},
-      ticket_pwd = #{record.ticketPwd,jdbcType=TINYINT},
+      ticket_pwd = #{record.ticketPwd,jdbcType=VARCHAR},
       nominal_value = #{record.nominalValue,jdbcType=INTEGER},
       `state` = #{record.state,jdbcType=TINYINT},
+      remark1 = #{record.remark1,jdbcType=VARCHAR},
+      remark2 = #{record.remark2,jdbcType=VARCHAR},
+      remark3 = #{record.remark3,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -213,13 +249,22 @@
         ticket_code = #{ticketCode,jdbcType=VARCHAR},
       </if>
       <if test="ticketPwd != null">
-        ticket_pwd = #{ticketPwd,jdbcType=TINYINT},
+        ticket_pwd = #{ticketPwd,jdbcType=VARCHAR},
       </if>
       <if test="nominalValue != null">
         nominal_value = #{nominalValue,jdbcType=INTEGER},
       </if>
       <if test="state != null">
         `state` = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="remark1 != null">
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        remark2 = #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null">
+        remark3 = #{remark3,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -233,9 +278,12 @@
   <update id="updateByPrimaryKey" parameterType="com.sc.act.api.model.auto.Ticket">
     update sc_ticket
     set ticket_code = #{ticketCode,jdbcType=VARCHAR},
-      ticket_pwd = #{ticketPwd,jdbcType=TINYINT},
+      ticket_pwd = #{ticketPwd,jdbcType=VARCHAR},
       nominal_value = #{nominalValue,jdbcType=INTEGER},
       `state` = #{state,jdbcType=TINYINT},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      remark2 = #{remark2,jdbcType=VARCHAR},
+      remark3 = #{remark3,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where ticket_id = #{ticketId,jdbcType=INTEGER}

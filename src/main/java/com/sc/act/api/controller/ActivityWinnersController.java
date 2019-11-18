@@ -241,11 +241,6 @@ public class ActivityWinnersController extends BaseController {
             result.setRetMsg("操作成功");
             return result;
 
-        } catch (Exception ex) {
-
-            LOG.error("中奖名单上传处理失败", ex);
-            throw new BaseRuntimeException(ResultEnum.EXCEPTION);
-
         } finally {
 
 

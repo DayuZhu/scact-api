@@ -13,6 +13,7 @@
 4. 商品push,根据b2c商城push流程；
 5. 对应B2C商城订单明细下载；
 6. 代付分账；
+7. 券面额只有 1 5 10 100 500 1000
 
 # 页面：
 
@@ -31,6 +32,7 @@ php功能
 3.订单明细下载；
 
 
+根据外部产品ID关联
 # 流程图
 ![流程](https://github.com/DayuZhu/scact-api/blob/master/document/%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 
