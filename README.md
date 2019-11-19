@@ -27,6 +27,27 @@ php功能
 
 1.商品对接接口；
 
+
+```
+POST 请求 
+
+请求体(JSON 一个productID的列表):
+[1,2]
+
+响应体格式(对应productId和B2C的outProductId以及B2C的productName):
+{
+  "data": [
+    {
+      "outProductId": 1,
+      "productId": 123,
+      "productName": "hah哈哈"
+    }
+  ],
+  "retCode": "0"
+}
+
+```
+
 2.代付分账调用接口；
 
 3.订单明细下载；
