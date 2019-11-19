@@ -3,12 +3,14 @@ package com.sc.act.api.test;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.util.SnowflakeUitl;
 import com.sc.act.api.mapper.auto.TicketMapper;
 import com.sc.act.api.mapper.ext.TicketExtMapper;
 import com.sc.act.api.model.auto.Ticket;
 import com.sc.act.api.model.auto.TicketExample;
+import com.sc.act.api.model.bo.ProductShopXoBmo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,7 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +42,10 @@ public class ScactServiceTest {
 
     @Value("${shopxo.url}")
     private String b2cUrl;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
 
     @Test
     public void test01() {
@@ -166,6 +175,40 @@ public class ScactServiceTest {
     @Test
     public void test05() {
         System.out.println(b2cUrl);
+    }
+
+    @Test
+    public void test06() {
+        List<Integer> productIdList = new ArrayList<>();
+        productIdList.add(1);
+        productIdList.add(2);
+        productIdList.add(3);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+//        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+//        map.add("productIdList", JSON.toJSONString(productIdList));
+
+        HttpEntity<String> request = new HttpEntity<>(JSON.toJSONString(productIdList), headers);
+        ResponseEntity<Result> response = restTemplate.postForEntity(b2cUrl, request, Result.class);
+        Result body = response.getBody();
+
+
+        //Result<List<ProductShopXoBmo>>
+
+        System.out.println(response.getBody());
+
+        ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = this.restTemplate
+                .exchange(
+                        b2cUrl,
+                        HttpMethod.POST,
+                        new HttpEntity<>(JSON.toJSONString(productIdList), headers),
+                        new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
+                        });
+
+        Result<List<ProductShopXoBmo>> body1 = responseEntity.getBody();
+        System.out.println(body1);
+
     }
 
 

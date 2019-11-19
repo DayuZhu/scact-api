@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
+import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.mapper.auto.*;
@@ -17,9 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +51,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
     private static final List<Integer> LIST_TICKET_PRICE = Lists.newArrayList(100, 500, 1000, 10000, 50000, 100000);
 
     @Autowired
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private RestTemplate restTemplate;
 
     @Autowired
     private ActivityWinnersMapper activityWinnersMapper;
@@ -150,16 +153,32 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
 
             //调B2C
             try {
-                List<ProductShopXoBmo> listResponse = new ArrayList<>();
-                //更新product
-                for (ProductShopXoBmo productShopXoBmo : listResponse) {
-                    Product updRecord = new Product();
-                    updRecord.setProductId(productShopXoBmo.getProductId());
-                    updRecord.setProductName(productShopXoBmo.getProductName());
-                    updRecord.setOutProductId(productShopXoBmo.getOutProductId());
-                    updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
-                    productMapper.updateByPrimaryKeySelective(updRecord);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+                ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = restTemplate
+                        .exchange(
+                                b2cUrl,
+                                HttpMethod.POST,
+                                new HttpEntity<>(JSON.toJSONString(productIdList), headers),
+                                new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
+                                });
+
+                Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
+                if (ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
+                    List<ProductShopXoBmo> listResponse = body.getData();
+                    if (CollectionUtils.isNotEmpty(listResponse)) {
+                        //更新product
+                        for (ProductShopXoBmo productShopXoBmo : listResponse) {
+                            Product updRecord = new Product();
+                            updRecord.setProductId(productShopXoBmo.getProductId());
+                            updRecord.setProductName(productShopXoBmo.getProductName());
+                            updRecord.setOutProductId(productShopXoBmo.getOutProductId());
+                            updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
+                            productMapper.updateByPrimaryKeySelective(updRecord);
+                        }
+                    }
                 }
+
             } catch (Exception ex) {
                 LOG.error("进入处理中奖名单调用B2C新建产品信息出错productIdList={}服务参数list={} activityId={}",
                         JSON.toJSONString(productIdList), JSON.toJSONString(list), activityId);

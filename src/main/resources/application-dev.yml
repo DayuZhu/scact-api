@@ -1,7 +1,7 @@
 swagger2:
   enable : true
 shopxo:
-  url: wwww.baidu.com
+  url: http://localhost:8623/mis/product/ticket/info
 upload:
   path: D://upload/test
 server:
