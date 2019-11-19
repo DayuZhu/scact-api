@@ -2,6 +2,8 @@ swagger2:
   enable : false
 shopxo:
   url: wwww.baidu.com
+upload:
+  path: /upload
 server:
   port: 8324
   tomcat:

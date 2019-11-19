@@ -28,6 +28,7 @@ public interface CommonConstant {
     String DEVICETYPE_AND = "1";
     String DEVICETYPE_IOS = "2";
     String STRING_HYPHEN = "-";
+    String STRING_UNDERLINE = "_";
     String STRING_EMPTY = "";
     String STRING_AND = "&";
     String STRING_AND_BLANK = " & ";

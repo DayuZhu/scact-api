@@ -4,7 +4,6 @@ import com.sc.act.api.commons.web.base.BaseController;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
-import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.commons.web.util.ResourceUtil;
 import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
 import com.sc.act.api.service.ActivityWinnersService;
@@ -21,16 +20,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -46,7 +45,13 @@ import java.util.regex.Pattern;
 @Api(value = "活动中奖名控制类", tags = "活动中奖名控制类")
 public class ActivityWinnersController extends BaseController {
 
+    @Value("${upload.path}")
+    private String uploadPath;
+
     private static final Logger LOG = LoggerFactory.getLogger(ActivityWinnersController.class);
+
+    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Autowired
     private ActivityWinnersService activityWinnersService;
@@ -238,6 +243,8 @@ public class ActivityWinnersController extends BaseController {
 
             activityWinnersService.handlerWinnersInfo(listSuccess, activityId);
 
+            //上传的文件储存
+            threadPoolTaskExecutor.execute(() -> uploadSave(file, fileName));
             result.setRetMsg("操作成功");
             return result;
 
@@ -260,5 +267,32 @@ public class ActivityWinnersController extends BaseController {
 
 
     }
+
+    private void uploadSave(MultipartFile file, String fName) {
+        try {
+
+            String[] fileInfo = StringUtils.split(fName, CommonConstant.EXCEL_FILENAME_COMMA);
+            String filename = fileInfo[0]
+                    + CommonConstant.STRING_UNDERLINE
+                    + System.currentTimeMillis()
+                    + CommonConstant.EXCEL_FILENAME_COMMA + fileInfo[1];
+            LOG.info("保存中奖名单上传文件{}", filename);
+            //服务器端保存的文件对象
+            File serverFile = new File(uploadPath + filename);
+            if (!serverFile.exists()) {
+                //先得到文件的上级目录，并创建上级目录，在创建文件
+                serverFile.getParentFile().mkdir();
+                //创建文件
+                serverFile.createNewFile();
+            }
+            file.transferTo(serverFile);
+        } catch (Exception e) {
+            //打印错误堆栈信息
+            LOG.error("创建文件记录失败", e);
+
+        }
+
+    }
+
 
 }
