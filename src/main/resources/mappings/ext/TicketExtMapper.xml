@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.act.api.mapper.ext.TicketExtMapper">
+
+    <select id="selectDistinctNominalValue" resultType="java.lang.Integer">
+        select distinct nominal_value from sc_ticket where state = 0 order by nominal_value desc
+    </select>
+    <select id="selectNominalValueTotal" resultType="java.lang.Integer">
+        select sum(nominal_value) from sc_ticket where state = 0
+    </select>
+</mapper>

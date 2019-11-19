@@ -1,5 +1,7 @@
 swagger2:
   enable : true
+shopxo:
+  url: wwww.baidu.com
 server:
   port: 8323
   tomcat:

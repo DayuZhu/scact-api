@@ -48,6 +48,8 @@ public interface CommonConstant {
     Integer EXCEL_ROW_NUM = 51;
     Integer PRODUCT_STATE_1 = 1;
     Integer PRODUCT_PLATFORM_SHOPXO_0 = 0;
+    Integer PRODUCT_TICKET_0 = 0;
+    Integer PRODUCT_TICKET_1 = 1;
 
 
 }

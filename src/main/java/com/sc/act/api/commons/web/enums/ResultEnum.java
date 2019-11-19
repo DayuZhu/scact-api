@@ -40,7 +40,11 @@ public enum ResultEnum implements IResultEnum {
      */
     CONTENT_TYPE_NULL("-105", "处理失败", "媒体类型不能为空"),
 
-    ACTIVITY_NULL("-106", "活动不能为空", "活动不能为空");
+    ACTIVITY_NULL("-106", "活动不能为空", "活动不能为空"),
+
+    ACTIVITY_COUPON_NO("-108", "没有可用券", "没有可用券"),
+
+    ACTIVITY_COUPON_INSUFFICIENT("-107", "券数量金额不足", "券数量金额不足");
 
     ResultEnum(String code, String message, String desc) {
         this.code = code;
