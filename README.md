@@ -30,7 +30,6 @@ php功能
 
 ```
 POST 请求 
-
 请求体(JSON 一个productID的列表):
 [1,2]
 
