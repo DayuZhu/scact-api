@@ -4,11 +4,18 @@
   <resultMap id="BaseResultMap" type="com.sc.act.api.model.auto.AccSepRecord">
     <id column="acc_sep_record_id" jdbcType="INTEGER" property="accSepRecordId" />
     <result column="user_acc_info_id" jdbcType="INTEGER" property="userAccInfoId" />
-    <result column="income_amount" jdbcType="INTEGER" property="incomeAmount" />
+    <result column="po_card_name" jdbcType="VARCHAR" property="poCardName" />
+    <result column="po_bank_name" jdbcType="VARCHAR" property="poBankName" />
+    <result column="po_card_no" jdbcType="VARCHAR" property="poCardNo" />
     <result column="payout_amount" jdbcType="INTEGER" property="payoutAmount" />
+    <result column="card_name" jdbcType="VARCHAR" property="cardName" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
+    <result column="income_amount" jdbcType="INTEGER" property="incomeAmount" />
     <result column="out_order_id" jdbcType="INTEGER" property="outOrderId" />
     <result column="out_product_id" jdbcType="INTEGER" property="outProductId" />
     <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="handler_seq_no" jdbcType="VARCHAR" property="handlerSeqNo" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -73,8 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    acc_sep_record_id, user_acc_info_id, income_amount, payout_amount, out_order_id, 
-    out_product_id, product_id, `status`, reason, create_time, update_time
+    acc_sep_record_id, user_acc_info_id, po_card_name, po_bank_name, po_card_no, payout_amount, 
+    card_name, bank_name, card_number, income_amount, out_order_id, out_product_id, product_id, 
+    handler_seq_no, `status`, reason, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.sc.act.api.model.auto.AccSepRecordExample" resultMap="BaseResultMap">
     select
@@ -110,14 +118,18 @@
     <selectKey keyProperty="accSepRecordId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sc_acc_sep_record (user_acc_info_id, income_amount, payout_amount, 
+    insert into sc_acc_sep_record (user_acc_info_id, po_card_name, po_bank_name, 
+      po_card_no, payout_amount, card_name, 
+      bank_name, card_number, income_amount, 
       out_order_id, out_product_id, product_id, 
-      `status`, reason, create_time, 
-      update_time)
-    values (#{userAccInfoId,jdbcType=INTEGER}, #{incomeAmount,jdbcType=INTEGER}, #{payoutAmount,jdbcType=INTEGER}, 
+      handler_seq_no, `status`, reason, 
+      create_time, update_time)
+    values (#{userAccInfoId,jdbcType=INTEGER}, #{poCardName,jdbcType=VARCHAR}, #{poBankName,jdbcType=VARCHAR}, 
+      #{poCardNo,jdbcType=VARCHAR}, #{payoutAmount,jdbcType=INTEGER}, #{cardName,jdbcType=VARCHAR}, 
+      #{bankName,jdbcType=VARCHAR}, #{cardNumber,jdbcType=VARCHAR}, #{incomeAmount,jdbcType=INTEGER}, 
       #{outOrderId,jdbcType=INTEGER}, #{outProductId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
-      #{status,jdbcType=TINYINT}, #{reason,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{handlerSeqNo,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{reason,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.AccSepRecord">
     <selectKey keyProperty="accSepRecordId" order="AFTER" resultType="java.lang.Integer">
@@ -128,11 +140,29 @@
       <if test="userAccInfoId != null">
         user_acc_info_id,
       </if>
-      <if test="incomeAmount != null">
-        income_amount,
+      <if test="poCardName != null">
+        po_card_name,
+      </if>
+      <if test="poBankName != null">
+        po_bank_name,
+      </if>
+      <if test="poCardNo != null">
+        po_card_no,
       </if>
       <if test="payoutAmount != null">
         payout_amount,
+      </if>
+      <if test="cardName != null">
+        card_name,
+      </if>
+      <if test="bankName != null">
+        bank_name,
+      </if>
+      <if test="cardNumber != null">
+        card_number,
+      </if>
+      <if test="incomeAmount != null">
+        income_amount,
       </if>
       <if test="outOrderId != null">
         out_order_id,
@@ -142,6 +172,9 @@
       </if>
       <if test="productId != null">
         product_id,
+      </if>
+      <if test="handlerSeqNo != null">
+        handler_seq_no,
       </if>
       <if test="status != null">
         `status`,
@@ -160,11 +193,29 @@
       <if test="userAccInfoId != null">
         #{userAccInfoId,jdbcType=INTEGER},
       </if>
-      <if test="incomeAmount != null">
-        #{incomeAmount,jdbcType=INTEGER},
+      <if test="poCardName != null">
+        #{poCardName,jdbcType=VARCHAR},
+      </if>
+      <if test="poBankName != null">
+        #{poBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="poCardNo != null">
+        #{poCardNo,jdbcType=VARCHAR},
       </if>
       <if test="payoutAmount != null">
         #{payoutAmount,jdbcType=INTEGER},
+      </if>
+      <if test="cardName != null">
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNumber != null">
+        #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeAmount != null">
+        #{incomeAmount,jdbcType=INTEGER},
       </if>
       <if test="outOrderId != null">
         #{outOrderId,jdbcType=INTEGER},
@@ -174,6 +225,9 @@
       </if>
       <if test="productId != null">
         #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="handlerSeqNo != null">
+        #{handlerSeqNo,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -204,11 +258,29 @@
       <if test="record.userAccInfoId != null">
         user_acc_info_id = #{record.userAccInfoId,jdbcType=INTEGER},
       </if>
-      <if test="record.incomeAmount != null">
-        income_amount = #{record.incomeAmount,jdbcType=INTEGER},
+      <if test="record.poCardName != null">
+        po_card_name = #{record.poCardName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poBankName != null">
+        po_bank_name = #{record.poBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poCardNo != null">
+        po_card_no = #{record.poCardNo,jdbcType=VARCHAR},
       </if>
       <if test="record.payoutAmount != null">
         payout_amount = #{record.payoutAmount,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardName != null">
+        card_name = #{record.cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankName != null">
+        bank_name = #{record.bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardNumber != null">
+        card_number = #{record.cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incomeAmount != null">
+        income_amount = #{record.incomeAmount,jdbcType=INTEGER},
       </if>
       <if test="record.outOrderId != null">
         out_order_id = #{record.outOrderId,jdbcType=INTEGER},
@@ -218,6 +290,9 @@
       </if>
       <if test="record.productId != null">
         product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.handlerSeqNo != null">
+        handler_seq_no = #{record.handlerSeqNo,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=TINYINT},
@@ -240,11 +315,18 @@
     update sc_acc_sep_record
     set acc_sep_record_id = #{record.accSepRecordId,jdbcType=INTEGER},
       user_acc_info_id = #{record.userAccInfoId,jdbcType=INTEGER},
-      income_amount = #{record.incomeAmount,jdbcType=INTEGER},
+      po_card_name = #{record.poCardName,jdbcType=VARCHAR},
+      po_bank_name = #{record.poBankName,jdbcType=VARCHAR},
+      po_card_no = #{record.poCardNo,jdbcType=VARCHAR},
       payout_amount = #{record.payoutAmount,jdbcType=INTEGER},
+      card_name = #{record.cardName,jdbcType=VARCHAR},
+      bank_name = #{record.bankName,jdbcType=VARCHAR},
+      card_number = #{record.cardNumber,jdbcType=VARCHAR},
+      income_amount = #{record.incomeAmount,jdbcType=INTEGER},
       out_order_id = #{record.outOrderId,jdbcType=INTEGER},
       out_product_id = #{record.outProductId,jdbcType=INTEGER},
       product_id = #{record.productId,jdbcType=INTEGER},
+      handler_seq_no = #{record.handlerSeqNo,jdbcType=VARCHAR},
       `status` = #{record.status,jdbcType=TINYINT},
       reason = #{record.reason,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -259,11 +341,29 @@
       <if test="userAccInfoId != null">
         user_acc_info_id = #{userAccInfoId,jdbcType=INTEGER},
       </if>
-      <if test="incomeAmount != null">
-        income_amount = #{incomeAmount,jdbcType=INTEGER},
+      <if test="poCardName != null">
+        po_card_name = #{poCardName,jdbcType=VARCHAR},
+      </if>
+      <if test="poBankName != null">
+        po_bank_name = #{poBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="poCardNo != null">
+        po_card_no = #{poCardNo,jdbcType=VARCHAR},
       </if>
       <if test="payoutAmount != null">
         payout_amount = #{payoutAmount,jdbcType=INTEGER},
+      </if>
+      <if test="cardName != null">
+        card_name = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNumber != null">
+        card_number = #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeAmount != null">
+        income_amount = #{incomeAmount,jdbcType=INTEGER},
       </if>
       <if test="outOrderId != null">
         out_order_id = #{outOrderId,jdbcType=INTEGER},
@@ -273,6 +373,9 @@
       </if>
       <if test="productId != null">
         product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="handlerSeqNo != null">
+        handler_seq_no = #{handlerSeqNo,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
@@ -292,11 +395,18 @@
   <update id="updateByPrimaryKey" parameterType="com.sc.act.api.model.auto.AccSepRecord">
     update sc_acc_sep_record
     set user_acc_info_id = #{userAccInfoId,jdbcType=INTEGER},
-      income_amount = #{incomeAmount,jdbcType=INTEGER},
+      po_card_name = #{poCardName,jdbcType=VARCHAR},
+      po_bank_name = #{poBankName,jdbcType=VARCHAR},
+      po_card_no = #{poCardNo,jdbcType=VARCHAR},
       payout_amount = #{payoutAmount,jdbcType=INTEGER},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      card_number = #{cardNumber,jdbcType=VARCHAR},
+      income_amount = #{incomeAmount,jdbcType=INTEGER},
       out_order_id = #{outOrderId,jdbcType=INTEGER},
       out_product_id = #{outProductId,jdbcType=INTEGER},
       product_id = #{productId,jdbcType=INTEGER},
+      handler_seq_no = #{handlerSeqNo,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=TINYINT},
       reason = #{reason,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

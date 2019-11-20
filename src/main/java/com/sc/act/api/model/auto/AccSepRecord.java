@@ -8,15 +8,29 @@ public class AccSepRecord implements Serializable {
 
     private Integer userAccInfoId;
 
-    private Integer incomeAmount;
+    private String poCardName;
+
+    private String poBankName;
+
+    private String poCardNo;
 
     private Integer payoutAmount;
+
+    private String cardName;
+
+    private String bankName;
+
+    private String cardNumber;
+
+    private Integer incomeAmount;
 
     private Integer outOrderId;
 
     private Integer outProductId;
 
     private Integer productId;
+
+    private String handlerSeqNo;
 
     private Integer status;
 
@@ -44,12 +58,28 @@ public class AccSepRecord implements Serializable {
         this.userAccInfoId = userAccInfoId;
     }
 
-    public Integer getIncomeAmount() {
-        return incomeAmount;
+    public String getPoCardName() {
+        return poCardName;
     }
 
-    public void setIncomeAmount(Integer incomeAmount) {
-        this.incomeAmount = incomeAmount;
+    public void setPoCardName(String poCardName) {
+        this.poCardName = poCardName == null ? null : poCardName.trim();
+    }
+
+    public String getPoBankName() {
+        return poBankName;
+    }
+
+    public void setPoBankName(String poBankName) {
+        this.poBankName = poBankName == null ? null : poBankName.trim();
+    }
+
+    public String getPoCardNo() {
+        return poCardNo;
+    }
+
+    public void setPoCardNo(String poCardNo) {
+        this.poCardNo = poCardNo == null ? null : poCardNo.trim();
     }
 
     public Integer getPayoutAmount() {
@@ -58,6 +88,38 @@ public class AccSepRecord implements Serializable {
 
     public void setPayoutAmount(Integer payoutAmount) {
         this.payoutAmount = payoutAmount;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName == null ? null : cardName.trim();
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName == null ? null : bankName.trim();
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber == null ? null : cardNumber.trim();
+    }
+
+    public Integer getIncomeAmount() {
+        return incomeAmount;
+    }
+
+    public void setIncomeAmount(Integer incomeAmount) {
+        this.incomeAmount = incomeAmount;
     }
 
     public Integer getOutOrderId() {
@@ -82,6 +144,14 @@ public class AccSepRecord implements Serializable {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public String getHandlerSeqNo() {
+        return handlerSeqNo;
+    }
+
+    public void setHandlerSeqNo(String handlerSeqNo) {
+        this.handlerSeqNo = handlerSeqNo == null ? null : handlerSeqNo.trim();
     }
 
     public Integer getStatus() {
