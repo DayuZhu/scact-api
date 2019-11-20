@@ -44,6 +44,9 @@ public enum ResultEnum implements IResultEnum {
 
     ACTIVITY_COUPON_NO("-108", "没有可用券", "没有可用券"),
 
+    PRODUCT_ISNOT_EXIST("-109", "产品不存在", "产品不存在"),
+    PRODUCT_TICKET_ISNOT_EXIST("-111", "产品券不存在", "产品券不存在"),
+
     ACTIVITY_COUPON_INSUFFICIENT("-107", "券数量金额不足", "券数量金额不足");
 
     ResultEnum(String code, String message, String desc) {

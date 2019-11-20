@@ -1,10 +1,8 @@
 package com.sc.act.api.service;
 
-import com.sc.act.api.request.ProductTicketRequest;
-import com.sc.act.api.commons.web.base.PageResponse;
-import com.sc.act.api.request.ProductTicketListRequest;
-import com.sc.act.api.response.ProductTicketContentResponse;
-import com.sc.act.api.response.ProductTicketResponse;
+import com.sc.act.api.model.auto.Ticket;
+
+import java.util.List;
 
 /**
  * 功能描述:产品与券码关系服务类
@@ -16,38 +14,14 @@ import com.sc.act.api.response.ProductTicketResponse;
  */
 public interface ProductTicketService {
 
-    /**
-     * 新增产品与券码关系
-     *
-     * @param productTicketRequest
-     */
-    void insertProductTicket(ProductTicketRequest productTicketRequest);
-
-
-    /**
-     * 更新产品与券码关系
-     *
-     * @param productTicketRequest
-     */
-    void updateProductTicket(ProductTicketRequest productTicketRequest);
-
 
     /**
      * 查询产品与券码关系
      *
-     * @param productTicketId
+     * @param outProductId
      * @return
      */
-    ProductTicketContentResponse selectProductTicketContent(Integer productTicketId);
-
-
-    /**
-     * 查询产品与券码关系列表
-     *
-     * @param productTicketListRequest
-     * @return
-     */
-    PageResponse<ProductTicketResponse> selectProductTicket(ProductTicketListRequest productTicketListRequest);
+    List<Ticket> selectProductTicketContent(Integer outProductId);
 
 
 }

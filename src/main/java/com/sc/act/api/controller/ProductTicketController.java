@@ -1,22 +1,21 @@
 package com.sc.act.api.controller;
 
-import com.sc.act.api.request.ProductTicketRequest;
 import com.sc.act.api.commons.web.base.BaseController;
-import com.sc.act.api.commons.web.base.PageResponse;
 import com.sc.act.api.commons.web.base.Result;
-import com.sc.act.api.request.ProductTicketListRequest;
-import com.sc.act.api.response.ProductTicketContentResponse;
-import com.sc.act.api.response.ProductTicketResponse;
+import com.sc.act.api.model.auto.Ticket;
 import com.sc.act.api.service.ProductTicketService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 功能描述: 产品与券码关系控制类
@@ -36,41 +35,15 @@ public class ProductTicketController extends BaseController {
     @Autowired
     private ProductTicketService productTicketService;
 
-    @ApiOperation("创建或更新产品与券码关系")
-    @PostMapping("/create_modify")
-    public Result creationOrModify(@RequestBody @Valid ProductTicketRequest productTicketRequest) {
-        LOG.info("创建或更新产品与券码关系请求参数{}", productTicketRequest.toString());
-        Result result = new Result();
 
-        if (null != productTicketRequest.getProductTicketId()) {
-            productTicketService.updateProductTicket(productTicketRequest);
-        } else {
-            productTicketService.insertProductTicket(productTicketRequest);
-        }
-        result.setRetMsg("操作成功");
-        return result;
-    }
-
-    @ApiOperation("查询产品与券码关系")
+    @ApiOperation("查询券明细信息")
     @GetMapping("/info")
-    public Result<ProductTicketContentResponse> queryInfo(@NotNull @RequestParam(name = "productTicketId") Integer productTicketId) {
-        LOG.info("查询产品与券码关系请求参数productTicketId={}", productTicketId);
-        Result<ProductTicketContentResponse> result = new Result<>();
-        ProductTicketContentResponse response =
-                productTicketService.selectProductTicketContent(productTicketId);
+    public Result<List<Ticket>> queryInfo(@NotNull @RequestParam(name = "outProductId") Integer outProductId) {
+        LOG.info("查询券明细信息请求参数outProductId={}", outProductId);
+        Result<List<Ticket>> result = new Result<>();
+        List<Ticket> tickets = productTicketService.selectProductTicketContent(outProductId);
         result.setRetMsg("查询成功");
-        result.setData(response);
-        return result;
-    }
-
-    @ApiOperation("查询产品与券码关系列表")
-    @PostMapping("/info/list")
-    public Result<PageResponse<ProductTicketResponse>> queryInfoList(@RequestBody @Valid ProductTicketListRequest productTicketListRequest) {
-        LOG.info("查询产品与券码关系列表请求参数{}", productTicketListRequest.toString());
-        Result<PageResponse<ProductTicketResponse>> result = new Result<>();
-        PageResponse<ProductTicketResponse> response = productTicketService.selectProductTicket(productTicketListRequest);
-        result.setRetMsg("查询成功");
-        result.setData(response);
+        result.setData(tickets);
         return result;
     }
 
