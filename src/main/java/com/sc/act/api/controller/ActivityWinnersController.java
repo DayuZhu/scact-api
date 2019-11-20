@@ -6,6 +6,7 @@ import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.util.ResourceUtil;
 import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
+import com.sc.act.api.response.ActivityWinnersUserAccResponse;
 import com.sc.act.api.service.ActivityWinnersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,10 +27,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -294,5 +295,15 @@ public class ActivityWinnersController extends BaseController {
 
     }
 
+    @ApiOperation("查询中奖名单")
+    @GetMapping("/info")
+    public Result<List<ActivityWinnersUserAccResponse>> queryInfo(@NotNull @RequestParam(name = "activityId") Integer activityId) {
+        LOG.info("查询中奖名单请求参数activityId={}", activityId);
+        Result<List<ActivityWinnersUserAccResponse>> result = new Result<>();
+        List<ActivityWinnersUserAccResponse> activityWinnersUserAccResponses = activityWinnersService.selectActivityWinnersContent(activityId);
+        result.setRetMsg("查询成功");
+        result.setData(activityWinnersUserAccResponses);
+        return result;
+    }
 
 }

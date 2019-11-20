@@ -12,10 +12,12 @@ import com.sc.act.api.mapper.ext.TicketExtMapper;
 import com.sc.act.api.model.auto.*;
 import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
 import com.sc.act.api.model.bo.ProductShopXoBmo;
+import com.sc.act.api.response.ActivityWinnersUserAccResponse;
 import com.sc.act.api.service.ActivityWinnersService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -148,45 +150,43 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         }
 
         if (CollectionUtils.isNotEmpty(productIdList)) {
-            LOG.info("进入处理中奖名单新建产品信息productIdList={}服务参数list={} activityId={}",
+            LOG.info("进入处理中奖名单调用B2C新建产品信息开始productIdList={}服务参数list={} activityId={}",
                     JSON.toJSONString(productIdList), JSON.toJSONString(list), activityId);
 
             //调B2C
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-                ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = restTemplate
-                        .exchange(
-                                b2cUrl,
-                                HttpMethod.POST,
-                                new HttpEntity<>(JSON.toJSONString(productIdList), headers),
-                                new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
-                                });
 
-                Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
-                if (ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
-                    List<ProductShopXoBmo> listResponse = body.getData();
-                    if (CollectionUtils.isNotEmpty(listResponse)) {
-                        //更新product
-                        for (ProductShopXoBmo productShopXoBmo : listResponse) {
-                            Product updRecord = new Product();
-                            updRecord.setProductId(productShopXoBmo.getProductId());
-                            updRecord.setProductName(productShopXoBmo.getProductName());
-                            updRecord.setOutProductId(productShopXoBmo.getOutProductId());
-                            updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
-                            productMapper.updateByPrimaryKeySelective(updRecord);
-                        }
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+            ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = restTemplate
+                    .exchange(
+                            b2cUrl,
+                            HttpMethod.POST,
+                            new HttpEntity<>(JSON.toJSONString(productIdList), headers),
+                            new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
+                            });
+
+            Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
+            if (ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
+                List<ProductShopXoBmo> listResponse = body.getData();
+                if (CollectionUtils.isNotEmpty(listResponse)) {
+                    //更新product
+                    for (ProductShopXoBmo productShopXoBmo : listResponse) {
+                        Product updRecord = new Product();
+                        updRecord.setProductId(productShopXoBmo.getProductId());
+                        updRecord.setProductName(productShopXoBmo.getProductName());
+                        updRecord.setOutProductId(productShopXoBmo.getOutProductId());
+                        updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
+                        productMapper.updateByPrimaryKeySelective(updRecord);
                     }
                 }
-
-            } catch (Exception ex) {
-                LOG.error("进入处理中奖名单调用B2C新建产品信息出错productIdList={}服务参数list={} activityId={}",
-                        JSON.toJSONString(productIdList), JSON.toJSONString(list), activityId);
             }
+            LOG.info("进入处理中奖名单调用B2C新建产品信息结束productIdList={}服务参数list={} activityId={}",
+                    JSON.toJSONString(productIdList), JSON.toJSONString(list), activityId);
 
         }
 
     }
+
 
     private UserAccInfo insertOrUpdateUserAccInfo(ExcelWinnersInfoBmo excelWinnersInfoBmo, User user, Date currentTime) {
 
@@ -348,5 +348,80 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         return ticketMapper.selectByExample(ticketExample);
     }
 
+
+    @Override
+    public List<ActivityWinnersUserAccResponse> selectActivityWinnersContent(Integer activityId) {
+        LOG.info("进入查询活动服务请求参数activityId{}", activityId);
+        Activity activity = activityMapper.selectByPrimaryKey(activityId);
+
+        if (null == activity) {
+            LOG.error("查询活动中奖名单activityId={}", activityId);
+            throw new BaseRuntimeException(ResultEnum.ACTIVITY_NULL);
+        }
+
+        List<ActivityWinnersUserAccResponse> list = new ArrayList<>();
+
+        ActivityWinnersExample activityWinnersExample = new ActivityWinnersExample();
+        ActivityWinnersExample.Criteria activityWinnersExampleCriteria = activityWinnersExample.createCriteria();
+        activityWinnersExampleCriteria.andActivityIdEqualTo(activityId);
+        List<ActivityWinners> activityWinners = activityWinnersMapper.selectByExample(activityWinnersExample);
+        if (CollectionUtils.isNotEmpty(activityWinners)) {
+            activityWinners.forEach(activityWinner -> {
+                ActivityWinnersUserAccResponse activityWinnersUserAccResponse = new ActivityWinnersUserAccResponse();
+                BeanUtils.copyProperties(activityWinner, activityWinnersUserAccResponse);
+                User user = userMapper.selectByPrimaryKey(activityWinner.getUserId());
+                if (null != user) {
+                    activityWinnersUserAccResponse.setUser(user);
+                }
+
+                UserAccInfo userAccInfo = userAccInfoMapper.selectByPrimaryKey(activityWinner.getUserAccInfoId());
+                if (null != userAccInfo) {
+                    activityWinnersUserAccResponse.setUserAccInfo(userAccInfo);
+                }
+                ActivityWinsPdtExample activityWinsPdtExample = new ActivityWinsPdtExample();
+                activityWinsPdtExample.createCriteria().andActivityWinnersIdEqualTo(activityWinner.getActivityWinnersId());
+                List<ActivityWinsPdt> activityWinsPdts = activityWinsPdtMapper.selectByExample(activityWinsPdtExample);
+                if (CollectionUtils.isNotEmpty(activityWinsPdts)) {
+                    ActivityWinsPdt activityWinsPdt = activityWinsPdts.get(0);
+                    Product product = productMapper.selectByPrimaryKey(activityWinsPdt.getProductId());
+                    if (null != product) {
+                        product.setCreateTime(null);
+                        product.setUpdateTime(null);
+                        activityWinnersUserAccResponse.setProduct(product);
+                        ProductTicketExample productTicketExample = new ProductTicketExample();
+                        productTicketExample.createCriteria().andProductIdEqualTo(product.getProductId());
+
+                        List<ProductTicket> productTickets = productTicketMapper.selectByExample(productTicketExample);
+                        if (CollectionUtils.isNotEmpty(productTickets)) {
+                            TicketExample ticketExample = new TicketExample();
+                            ticketExample.createCriteria()
+                                    .andTicketIdIn(
+                                            productTickets
+                                                    .stream()
+                                                    .map(ProductTicket::getTicketId)
+                                                    .collect(Collectors.toList()));
+                            List<Ticket> tickets = ticketMapper.selectByExample(ticketExample);
+                            if (CollectionUtils.isNotEmpty(tickets)) {
+
+                                tickets.forEach(ticket -> {
+                                    ticket.setCreateTime(null);
+                                    ticket.setUpdateTime(null);
+                                    ticket.setRemark3(null);
+                                    ticket.setRemark2(null);
+                                    ticket.setRemark1(null);
+                                    ticket.setTicketPwd(null);
+                                });
+                                activityWinnersUserAccResponse.setTickets(tickets);
+                            }
+                        }
+                    }
+                }
+
+                list.add(activityWinnersUserAccResponse);
+            });
+        }
+
+        return list;
+    }
 
 }

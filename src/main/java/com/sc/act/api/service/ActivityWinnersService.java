@@ -1,6 +1,7 @@
 package com.sc.act.api.service;
 
 import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
+import com.sc.act.api.response.ActivityWinnersUserAccResponse;
 
 import java.util.List;
 
@@ -22,4 +23,11 @@ public interface ActivityWinnersService {
     void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list, Integer activityId);
 
 
+    /**
+     * 查询中奖人info
+     *
+     * @param activityId
+     * @return
+     */
+    List<ActivityWinnersUserAccResponse> selectActivityWinnersContent(Integer activityId);
 }
