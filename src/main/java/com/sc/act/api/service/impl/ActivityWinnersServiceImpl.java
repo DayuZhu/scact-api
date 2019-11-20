@@ -2,7 +2,6 @@ package com.sc.act.api.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
-import com.google.common.collect.Lists;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
@@ -47,10 +46,6 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
     private String b2cUrl;
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityWinnersServiceImpl.class);
-    /**
-     * 面值单位为分
-     */
-    private static final List<Integer> LIST_TICKET_PRICE = Lists.newArrayList(100, 500, 1000, 10000, 50000, 100000);
 
     @Autowired
     private RestTemplate restTemplate;

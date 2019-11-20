@@ -6,7 +6,6 @@ import com.sc.act.api.mapper.auto.ProductMapper;
 import com.sc.act.api.mapper.auto.ProductTicketMapper;
 import com.sc.act.api.mapper.auto.TicketMapper;
 import com.sc.act.api.model.auto.*;
-import com.sc.act.api.response.ProductTicketContentResponse;
 import com.sc.act.api.service.ProductTicketService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -41,7 +40,6 @@ public class ProductTicketServiceImpl implements ProductTicketService {
     @Override
     public List<Ticket> selectProductTicketContent(Integer outProductId) {
         LOG.info("进入查询券明细信息服务请求参数outProductId{}", outProductId);
-        ProductTicketContentResponse productTicketContentResponse = new ProductTicketContentResponse();
 
         ProductExample productExample = new ProductExample();
         productExample.createCriteria().andOutProductIdEqualTo(outProductId);
