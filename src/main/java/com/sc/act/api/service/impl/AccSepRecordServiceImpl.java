@@ -1,16 +1,18 @@
 package com.sc.act.api.service.impl;
 
-import com.sc.act.api.request.AccSepRecordRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
+import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.PageResponse;
-import com.sc.act.api.mapper.auto.AccSepRecordMapper;
-import com.sc.act.api.model.auto.AccSepRecord;
-import com.sc.act.api.model.auto.AccSepRecordExample;
+import com.sc.act.api.commons.web.constant.CommonConstant;
+import com.sc.act.api.commons.web.enums.ResultEnum;
+import com.sc.act.api.mapper.auto.*;
+import com.sc.act.api.model.auto.*;
 import com.sc.act.api.request.AccSepRecordListRequest;
-import com.sc.act.api.response.AccSepRecordContentResponse;
+import com.sc.act.api.request.AccSepRecordOutRequest;
 import com.sc.act.api.response.AccSepRecordResponse;
 import com.sc.act.api.service.AccSepRecordService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -37,59 +39,99 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
     @Autowired
     private AccSepRecordMapper accSepRecordMapper;
 
-    @Override
-    public void insertAccSepRecord(AccSepRecordRequest accSepRecordRequest) {
-        LOG.info("进入创建分账流水服务请求参数{}", accSepRecordRequest.toString());
+    @Autowired
+    private ProductMapper productMapper;
 
-        //TODO 必要的校验，如去重校验 需要修改
+    @Autowired
+    private ActivityWinsPdtMapper activityWinsPdtMapper;
 
-        //TODO 统一入库时间
-        Date currentTime = new Date();
+    @Autowired
+    private ActivityWinnersMapper activityWinnersMapper;
 
-
-        AccSepRecord accSepRecord = new AccSepRecord();
-        BeanUtils.copyProperties(accSepRecordRequest, accSepRecord);
-
-        //TODO 必要的逻辑补充，如默认数据状态补充
-
-        accSepRecordMapper.insertSelective(accSepRecord);
-
-    }
+    @Autowired
+    private UserAccInfoMapper userAccInfoMapper;
 
     @Override
-    public void updateAccSepRecord(AccSepRecordRequest accSepRecordRequest) {
-        LOG.info("进入更新分账流水服务请求参数{}", accSepRecordRequest.toString());
+    public void insertAccSepRecord(AccSepRecordOutRequest accSepRecordRequest) {
+        LOG.info("进入创建支付入账服务请求参数{}", accSepRecordRequest.toString());
+        ProductExample productExample = new ProductExample();
+        productExample.createCriteria().andOutProductIdEqualTo(accSepRecordRequest.getOutProductId());
+        List<Product> products = productMapper.selectByExample(productExample);
+        if (CollectionUtils.isEmpty(products)) {
+            LOG.error("进入创建支付入账服务产品不存在请求参数{}", accSepRecordRequest.toString());
+            throw new BaseRuntimeException(ResultEnum.PRODUCT_ISNOT_EXIST);
+        }
+        Product product = products.get(0);
 
-        //TODO 必要的业务校验
+        ActivityWinsPdtExample activityWinsPdtExample = new ActivityWinsPdtExample();
+        activityWinsPdtExample.createCriteria().andProductIdEqualTo(product.getProductId());
+        List<ActivityWinsPdt> activityWinsPdts = activityWinsPdtMapper.selectByExample(activityWinsPdtExample);
 
-        //TODO 统一入库时间
-        Date currentTime = new Date();
-
-
-        AccSepRecord accSepRecord = new AccSepRecord();
-        BeanUtils.copyProperties(accSepRecordRequest, accSepRecord);
-
-        //TODO 必要的逻辑补充，如默认数据状态补充
-
-        accSepRecordMapper.updateByPrimaryKeySelective(accSepRecord);
-    }
-
-    @Override
-    public AccSepRecordContentResponse selectAccSepRecordContent(Integer accSepRecordId) {
-        LOG.info("进入查询分账流水服务请求参数accSepRecordId{}", accSepRecordId);
-        AccSepRecordContentResponse accSepRecordContentResponse = new AccSepRecordContentResponse();
-        AccSepRecord accSepRecord = accSepRecordMapper.selectByPrimaryKey(accSepRecordId);
-        if (null == accSepRecord) {
-            return accSepRecordContentResponse;
+        if (CollectionUtils.isEmpty(activityWinsPdts)) {
+            LOG.error("进入创建支付入账服务产品未配置中奖名单关系请求参数{}", accSepRecordRequest.toString());
+            throw new BaseRuntimeException(ResultEnum.PRODUCT_ISNOT_WINNER_REL);
         }
 
-        //TODO 必要业务逻辑补充
+        ActivityWinsPdt activityWinsPdt = activityWinsPdts.get(0);
 
-        //TODO 有些不需要的字段，可以不用 bean copy
-        BeanUtils.copyProperties(accSepRecord, accSepRecordContentResponse);
+        ActivityWinners activityWinners = activityWinnersMapper.selectByPrimaryKey(activityWinsPdt.getActivityWinnersId());
+        if (null == activityWinners) {
+            LOG.error("进入创建支付入账服务产品未配置中奖名单请求参数{}", accSepRecordRequest.toString());
+            throw new BaseRuntimeException(ResultEnum.PRODUCT_ISNOT_WINNER);
+        }
 
-        return accSepRecordContentResponse;
+        if (!accSepRecordRequest.getAmount().equals(activityWinners.getAwardAmount())) {
+            LOG.error("进入创建支付入账服务产品中奖金额不正确请求参数{}", accSepRecordRequest.toString());
+            throw new BaseRuntimeException(ResultEnum.PRODUCT_WINNER_AMOUNT_ERROR);
+        }
+
+        UserAccInfo userAccInfo = userAccInfoMapper.selectByPrimaryKey(activityWinners.getUserAccInfoId());
+        if (null == userAccInfo) {
+            LOG.error("进入创建支付入账服务产品没有对应的账户信息请求参数{}", accSepRecordRequest.toString());
+            throw new BaseRuntimeException(ResultEnum.PRODUCT_ACCOUNT_ISNOT_EXIST);
+        }
+
+        Date currentTime = new Date();
+
+        AccSepRecord accSepRecord = new AccSepRecord();
+        accSepRecord.setUserAccInfoId(userAccInfo.getUserAccInfoId());
+
+        accSepRecord.setPayoutAmount(activityWinners.getAwardAmount());
+
+        accSepRecord.setCardName(userAccInfo.getCardName());
+        accSepRecord.setBankName(userAccInfo.getBankName());
+        accSepRecord.setCardNumber(userAccInfo.getCardNumber());
+        accSepRecord.setIncomeAmount(activityWinners.getAwardAmount());
+        accSepRecord.setOutOrderId(accSepRecordRequest.getOutOrderId());
+        accSepRecord.setOutProductId(accSepRecordRequest.getOutProductId());
+        accSepRecord.setProductId(product.getProductId());
+        accSepRecord.setCreateTime(currentTime);
+        accSepRecord.setUpdateTime(currentTime);
+        //默认处理中
+        // 0-处理中，1-成功，2-失败，3-未知失败
+        accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_0);
+        //TODO 出金方信息
+        //  accSepRecord.setPoCardName(copy.getPoCardName());
+        //  accSepRecord.setPoBankName(copy.getPoBankName());
+        //  accSepRecord.setPoCardNo(copy.getPoCardNo());
+
+        try {
+            //TODO 成功处理批次号
+            //TODO调接口
+
+            //accSepRecord.setHandlerSeqNo(copy.getHandlerSeqNo());
+            accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_1);
+        } catch (Exception ex) {
+            LOG.error("进入创建支付入账服务调用分账接口失败请求参数accSepRecordRequest=" + accSepRecordRequest.toString(), ex);
+            // 0-处理中，1-成功，2-失败，3-未知失败
+            accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_2);
+            accSepRecord.setReason(ex.getLocalizedMessage());
+        } finally {
+            accSepRecordMapper.insertSelective(accSepRecord);
+        }
+
     }
+
 
     @Override
     public PageResponse<AccSepRecordResponse> selectAccSepRecord(AccSepRecordListRequest accSepRecordListRequest) {
@@ -98,9 +140,25 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
         accSepRecordExample.setOrderByClause("acc_sep_record_id desc");
         AccSepRecordExample.Criteria criteria = accSepRecordExample.createCriteria();
 
-        //TODO 必要的业务查询条件补充
         if (null != accSepRecordListRequest.getAccSepRecordId()) {
             criteria.andAccSepRecordIdEqualTo(accSepRecordListRequest.getAccSepRecordId());
+        }
+
+        if (null != accSepRecordListRequest.getUserAccInfoId()) {
+            criteria.andUserAccInfoIdEqualTo(accSepRecordListRequest.getUserAccInfoId());
+        }
+
+
+        if (null != accSepRecordListRequest.getAmount()) {
+            criteria.andIncomeAmountEqualTo(accSepRecordListRequest.getAmount());
+        }
+
+        if (null != accSepRecordListRequest.getCardName()) {
+            criteria.andCardNameLike("%" + accSepRecordListRequest.getCardName() + "%");
+        }
+
+        if (null != accSepRecordListRequest.getStatus()) {
+            criteria.andStatusEqualTo(accSepRecordListRequest.getStatus());
         }
 
         PageHelper.startPage(accSepRecordListRequest.getPageIndex(), accSepRecordListRequest.getPageSize());
@@ -112,10 +170,7 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
         response.setList(list);
         accSepRecordList.forEach(accSepRecord -> {
             AccSepRecordResponse accSepRecordResponse = new AccSepRecordResponse();
-
-            //TODO 有些不需要的字段，可以不用 bean copy
             BeanUtils.copyProperties(accSepRecord, accSepRecordResponse);
-
             list.add(accSepRecordResponse);
         });
         return response;

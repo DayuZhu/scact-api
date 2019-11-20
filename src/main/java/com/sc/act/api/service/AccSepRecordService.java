@@ -1,9 +1,8 @@
 package com.sc.act.api.service;
 
-import com.sc.act.api.request.AccSepRecordRequest;
 import com.sc.act.api.commons.web.base.PageResponse;
 import com.sc.act.api.request.AccSepRecordListRequest;
-import com.sc.act.api.response.AccSepRecordContentResponse;
+import com.sc.act.api.request.AccSepRecordOutRequest;
 import com.sc.act.api.response.AccSepRecordResponse;
 
 /**
@@ -19,26 +18,9 @@ public interface AccSepRecordService {
     /**
      * 新增分账流水
      *
-     * @param accSepRecordRequest
+     * @param accSepRecordOutRequest
      */
-    void insertAccSepRecord(AccSepRecordRequest accSepRecordRequest);
-
-
-    /**
-     * 更新分账流水
-     *
-     * @param accSepRecordRequest
-     */
-    void updateAccSepRecord(AccSepRecordRequest accSepRecordRequest);
-
-
-    /**
-     * 查询分账流水
-     *
-     * @param accSepRecordId
-     * @return
-     */
-    AccSepRecordContentResponse selectAccSepRecordContent(Integer accSepRecordId);
+    void insertAccSepRecord(AccSepRecordOutRequest accSepRecordOutRequest);
 
 
     /**

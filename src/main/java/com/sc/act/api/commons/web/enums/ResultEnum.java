@@ -46,7 +46,12 @@ public enum ResultEnum implements IResultEnum {
 
     PRODUCT_ISNOT_EXIST("-109", "产品不存在", "产品不存在"),
     PRODUCT_TICKET_ISNOT_EXIST("-111", "产品券不存在", "产品券不存在"),
+    PRODUCT_ISNOT_WINNER("-113", "产品未配置中奖名单", "产品未配置中奖名单"),
+    PRODUCT_ISNOT_WINNER_REL("-114", "产品未配置中奖名单关系", "产品未配置中奖名单关系"),
 
+
+    PRODUCT_WINNER_AMOUNT_ERROR("-115", "产品中奖金额错误", "产品中奖金额错误"),
+    PRODUCT_ACCOUNT_ISNOT_EXIST("-116", "产品没有对应的账户信息", "产品没有对应的账户信息"),
     ACTIVITY_COUPON_INSUFFICIENT("-107", "券数量金额不足", "券数量金额不足");
 
     ResultEnum(String code, String message, String desc) {

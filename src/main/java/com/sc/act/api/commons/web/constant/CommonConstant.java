@@ -52,5 +52,13 @@ public interface CommonConstant {
     Integer PRODUCT_TICKET_0 = 0;
     Integer PRODUCT_TICKET_1 = 1;
 
+    /**
+     * 0-处理中，1-成功，2-失败，3-未知失败
+     */
+    Integer ACC_SEP_RECORD_STATUS_0 = 0;
+    Integer ACC_SEP_RECORD_STATUS_1 = 1;
+    Integer ACC_SEP_RECORD_STATUS_2 = 2;
+    Integer ACC_SEP_RECORD_STATUS_3 = 3;
+
 
 }

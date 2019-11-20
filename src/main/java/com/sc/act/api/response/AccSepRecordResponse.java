@@ -13,7 +13,7 @@ import java.util.Date;
  * @className:AccSepRecordResponse
  * @projectName:
  * @author: generater-code
- * @date: 2019-11-17 18:34:48
+ * @date: 2019-11-20 19:20:16
  */
 @ApiModel(value = "分账流水响应参数", description = "分账流水响应参数")
 public class AccSepRecordResponse extends BasePojo {
@@ -24,8 +24,41 @@ public class AccSepRecordResponse extends BasePojo {
     @ApiModelProperty("账户信息id")
     private Integer userAccInfoId;
 
-    @ApiModelProperty("金额")
-    private Integer amount;
+    @ApiModelProperty("出金持卡人")
+    private String poCardName;
+
+    @ApiModelProperty("出金银行名称")
+    private String poBankName;
+
+    @ApiModelProperty("出金银行卡号")
+    private String poCardNo;
+
+    @ApiModelProperty("出金金额(分）")
+    private Integer payoutAmount;
+
+    @ApiModelProperty("入金持卡人姓名")
+    private String cardName;
+
+    @ApiModelProperty("入金银行名称")
+    private String bankName;
+
+    @ApiModelProperty("入金持卡人姓名")
+    private String cardNumber;
+
+    @ApiModelProperty("入金金额(分)")
+    private Integer incomeAmount;
+
+    @ApiModelProperty("外部订单ID")
+    private Integer outOrderId;
+
+    @ApiModelProperty("外部商品ID")
+    private Integer outProductId;
+
+    @ApiModelProperty("产品ID")
+    private Integer productId;
+
+    @ApiModelProperty("处理批次号")
+    private String handlerSeqNo;
 
     @ApiModelProperty("0-处理中，1-成功，2-失败，3-未知失败")
     private Integer status;
@@ -58,12 +91,100 @@ public class AccSepRecordResponse extends BasePojo {
         this.userAccInfoId = userAccInfoId;
     }
 
-    public Integer getAmount() {
-        return this.amount;
+    public String getPoCardName() {
+        return this.poCardName;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setPoCardName(String poCardName) {
+        this.poCardName = poCardName;
+    }
+
+    public String getPoBankName() {
+        return this.poBankName;
+    }
+
+    public void setPoBankName(String poBankName) {
+        this.poBankName = poBankName;
+    }
+
+    public String getPoCardNo() {
+        return this.poCardNo;
+    }
+
+    public void setPoCardNo(String poCardNo) {
+        this.poCardNo = poCardNo;
+    }
+
+    public Integer getPayoutAmount() {
+        return this.payoutAmount;
+    }
+
+    public void setPayoutAmount(Integer payoutAmount) {
+        this.payoutAmount = payoutAmount;
+    }
+
+    public String getCardName() {
+        return this.cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
+    public String getBankName() {
+        return this.bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getCardNumber() {
+        return this.cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public Integer getIncomeAmount() {
+        return this.incomeAmount;
+    }
+
+    public void setIncomeAmount(Integer incomeAmount) {
+        this.incomeAmount = incomeAmount;
+    }
+
+    public Integer getOutOrderId() {
+        return this.outOrderId;
+    }
+
+    public void setOutOrderId(Integer outOrderId) {
+        this.outOrderId = outOrderId;
+    }
+
+    public Integer getOutProductId() {
+        return this.outProductId;
+    }
+
+    public void setOutProductId(Integer outProductId) {
+        this.outProductId = outProductId;
+    }
+
+    public Integer getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public String getHandlerSeqNo() {
+        return this.handlerSeqNo;
+    }
+
+    public void setHandlerSeqNo(String handlerSeqNo) {
+        this.handlerSeqNo = handlerSeqNo;
     }
 
     public Integer getStatus() {
