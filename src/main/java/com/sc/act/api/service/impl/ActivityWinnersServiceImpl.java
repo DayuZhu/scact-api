@@ -270,29 +270,30 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
 
         matchTiket(excelWinnersInfoBmo, list, resultTicket);
 
-        if (CollectionUtils.isNotEmpty(resultTicket)) {
-            for (Ticket ticket : resultTicket) {
-                ProductTicket productTicket = new ProductTicket();
-                productTicket.setProductId(productInsert.getProductId());
-                productTicket.setTicketId(ticket.getTicketId());
-                productTicket.setCreateTime(currentTime);
-                productTicket.setUpdateTime(currentTime);
-                productTicketMapper.insertSelective(productTicket);
-            }
-
-            Ticket updTicket = new Ticket();
-            updTicket.setState(CommonConstant.PRODUCT_TICKET_1);
-            TicketExample updTicketExample = new TicketExample();
-            updTicketExample.createCriteria().andTicketIdIn(resultTicket.stream().map(Ticket::getTicketId).collect(Collectors.toList()));
-            ticketMapper.updateByExampleSelective(updTicket, updTicketExample);
-
-            ProductPriceInfoBmo productPriceInfoBmo = new ProductPriceInfoBmo();
-            productPriceInfoBmo.setProductId(productInsert.getProductId());
-            productPriceInfoBmo.setPrice(productInsert.getSellPrice());
-            return productPriceInfoBmo;
+        if (CollectionUtils.isEmpty(resultTicket)) {
+            LOG.error("处理中奖名单没用匹配到券信息");
+            throw new BaseRuntimeException(ResultEnum.PRODUCT_TICKET_INFO_ERROR);
         }
 
-        return null;
+        for (Ticket ticket : resultTicket) {
+            ProductTicket productTicket = new ProductTicket();
+            productTicket.setProductId(productInsert.getProductId());
+            productTicket.setTicketId(ticket.getTicketId());
+            productTicket.setCreateTime(currentTime);
+            productTicket.setUpdateTime(currentTime);
+            productTicketMapper.insertSelective(productTicket);
+        }
+
+        Ticket updTicket = new Ticket();
+        updTicket.setState(CommonConstant.PRODUCT_TICKET_1);
+        TicketExample updTicketExample = new TicketExample();
+        updTicketExample.createCriteria().andTicketIdIn(resultTicket.stream().map(Ticket::getTicketId).collect(Collectors.toList()));
+        ticketMapper.updateByExampleSelective(updTicket, updTicketExample);
+
+        ProductPriceInfoBmo productPriceInfoBmo = new ProductPriceInfoBmo();
+        productPriceInfoBmo.setProductId(productInsert.getProductId());
+        productPriceInfoBmo.setPrice(productInsert.getSellPrice());
+        return productPriceInfoBmo;
 
     }
 
