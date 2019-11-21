@@ -92,7 +92,7 @@ CREATE TABLE `sc_ticket` (
   `ticket_code` varchar(32) NOT NULL DEFAULT '' COMMENT '券码',
   `ticket_pwd` varchar(16) NOT NULL DEFAULT '' COMMENT '券密',
   `nominal_value` int unsigned NOT NULL DEFAULT '0' COMMENT '券面值（分）',
-  `state` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态：0初始，1已发放，2已使用，3已冻结',
+  `state` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态：0初始，1已发放则绑定到产品，2已使用则已分账成功，3已冻结',
   `remark1` varchar(255) NOT NULL DEFAULT '' COMMENT '预留字段1',
   `remark2` varchar(255) NOT NULL DEFAULT '' COMMENT '预留字段2',
   `remark3` varchar(255) NOT NULL DEFAULT '' COMMENT '预留字段3',
