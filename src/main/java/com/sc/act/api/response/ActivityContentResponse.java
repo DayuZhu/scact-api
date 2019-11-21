@@ -15,7 +15,7 @@ import java.util.Date;
  * @author: generater-code
  * @date: 2019-11-17 18:34:48
  */
-@ApiModel(value = "活动响应参数", description = "活动响应参数")
+@ApiModel(value = "活动Content响应参数", description = "活动Content响应参数")
 public class ActivityContentResponse extends BasePojo {
 
     @ApiModelProperty("主键id")

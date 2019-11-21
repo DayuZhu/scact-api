@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
  * @author: generater-code
  * @date: 2019-11-17 18:34:48
  */
-@ApiModel(value = "活动请求参数", description = "活动请求参数")
+@ApiModel(value = "活动List请求参数", description = "活动List请求参数")
 public class ActivityListRequest extends PageRequest {
 
     @ApiModelProperty("主键id")
