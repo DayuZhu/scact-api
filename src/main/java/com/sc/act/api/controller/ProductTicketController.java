@@ -38,10 +38,11 @@ public class ProductTicketController extends BaseController {
 
     @ApiOperation("查询券明细信息")
     @GetMapping("/info")
-    public Result<List<Ticket>> queryInfo(@NotNull @RequestParam(name = "outProductId") Integer outProductId) {
-        LOG.info("查询券明细信息请求参数outProductId={}", outProductId);
+    public Result<List<Ticket>> queryInfo(@NotNull @RequestParam(name = "outProductId") Integer outProductId,
+                                          @NotNull @RequestParam(name = "outOrderId") Integer outOrderId) {
+        LOG.info("查询券明细信息请求参数outProductId={} outOrderId={}", outProductId, outOrderId);
         Result<List<Ticket>> result = new Result<>();
-        List<Ticket> tickets = productTicketService.selectProductTicketContent(outProductId);
+        List<Ticket> tickets = productTicketService.selectProductTicketContent(outProductId, outOrderId);
         result.setRetMsg("查询成功");
         result.setData(tickets);
         return result;

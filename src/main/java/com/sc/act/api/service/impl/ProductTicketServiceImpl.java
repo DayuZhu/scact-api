@@ -3,6 +3,7 @@ package com.sc.act.api.service.impl;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.enums.ResultEnum;
+import com.sc.act.api.mapper.auto.AccSepRecordMapper;
 import com.sc.act.api.mapper.auto.ProductMapper;
 import com.sc.act.api.mapper.auto.ProductTicketMapper;
 import com.sc.act.api.mapper.auto.TicketMapper;
@@ -36,25 +37,37 @@ public class ProductTicketServiceImpl implements ProductTicketService {
     private ProductMapper productMapper;
     @Autowired
     private TicketMapper ticketMapper;
+    @Autowired
+    private AccSepRecordMapper accSepRecordMapper;
 
 
     @Override
-    public List<Ticket> selectProductTicketContent(Integer outProductId) {
-        LOG.info("进入查询券明细信息服务请求参数outProductId{}", outProductId);
+    public List<Ticket> selectProductTicketContent(Integer outProductId, Integer outOrderId) {
+        LOG.info("进入查询券明细信息服务请求参数outProductId={} outOrderId={}", outProductId, outOrderId);
 
-        ProductExample productExample = new ProductExample();
-        productExample.createCriteria().andOutProductIdEqualTo(outProductId);
-        List<Product> products = productMapper.selectByExample(productExample);
-        if (CollectionUtils.isEmpty(products)) {
-            LOG.error("进入查询券明细信息服务产品不存在请求参数outProductId{}", outProductId);
+        AccSepRecordExample accSepRecordExample = new AccSepRecordExample();
+        accSepRecordExample.createCriteria()
+                .andOutOrderIdEqualTo(outOrderId)
+                .andOutProductIdEqualTo(outProductId)
+                .andStatusEqualTo(CommonConstant.ACC_SEP_RECORD_STATUS_1);
+        List<AccSepRecord> accSepRecords = accSepRecordMapper.selectByExample(accSepRecordExample);
+        if (CollectionUtils.isEmpty(accSepRecords)) {
+            LOG.error("进入查询券明细信息服务分账失败请求参数outProductId={} outOrderId={}", outProductId, outOrderId);
+            throw new BaseRuntimeException(ResultEnum.USER_MONEY_INFO_ERROR);
+        }
+        AccSepRecord accSepRecord = accSepRecords.get(0);
+
+        Product product = productMapper.selectByPrimaryKey(accSepRecord.getProductId());
+        if (null == product) {
+            LOG.error("进入查询券明细信息服务产品不存在请求参数outProductId={} outOrderId={}", outProductId, outOrderId);
             throw new BaseRuntimeException(ResultEnum.PRODUCT_ISNOT_EXIST);
         }
 
         ProductTicketExample productTicketExample = new ProductTicketExample();
-        productTicketExample.createCriteria().andProductIdEqualTo(products.get(0).getProductId());
+        productTicketExample.createCriteria().andProductIdEqualTo(product.getProductId());
         List<ProductTicket> productTickets = productTicketMapper.selectByExample(productTicketExample);
         if (CollectionUtils.isEmpty(productTickets)) {
-            LOG.error("进入查询券明细信息服务产品对应券不存在请求参数outProductId{}", outProductId);
+            LOG.error("进入查询券明细信息服务产品对应券不存在请求参数outProductId={} outOrderId={}", outProductId, outOrderId);
             throw new BaseRuntimeException(ResultEnum.PRODUCT_TICKET_ISNOT_EXIST);
         }
 

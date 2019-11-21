@@ -21,7 +21,7 @@ public interface ProductTicketService {
      * @param outProductId
      * @return
      */
-    List<Ticket> selectProductTicketContent(Integer outProductId);
+    List<Ticket> selectProductTicketContent(Integer outProductId,Integer outOrderId);
 
 
 }
