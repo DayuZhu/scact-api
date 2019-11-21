@@ -131,6 +131,8 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
 
             //accSepRecord.setHandlerSeqNo(copy.getHandlerSeqNo());
             accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_1);
+            accSepRecordMapper.insertSelective(accSepRecord);
+
             //分账接口调用成功 更新券状态
             ProductTicketExample productTicketExample = new ProductTicketExample();
             productTicketExample.createCriteria().andProductIdEqualTo(product.getProductId());
@@ -151,10 +153,9 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
             // 0-处理中，1-成功，2-失败，3-未知失败
             accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_2);
             accSepRecord.setReason(ex.getLocalizedMessage());
-        } finally {
             accSepRecordMapper.insertSelective(accSepRecord);
+            throw new BaseRuntimeException(ResultEnum.USER_MONEY_ERROR);
         }
-
     }
 
     @Override
