@@ -1,6 +1,5 @@
 package com.sc.act.api.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
@@ -14,13 +13,11 @@ import com.sc.act.api.request.AccSepRecordOutRequest;
 import com.sc.act.api.response.AccSepRecordResponse;
 import com.sc.act.api.service.AccSepRecordService;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
