@@ -36,7 +36,7 @@ public class ProductTicketController extends BaseController {
     private ProductTicketService productTicketService;
 
 
-    @ApiOperation("查询券明细信息")
+    @ApiOperation("下载查询券明细信息")
     @GetMapping("/info")
     public Result<List<Ticket>> queryInfo(@NotNull @RequestParam(name = "outProductId") Integer outProductId,
                                           @NotNull @RequestParam(name = "outOrderId") Integer outOrderId) {
