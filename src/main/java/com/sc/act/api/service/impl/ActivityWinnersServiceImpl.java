@@ -168,6 +168,15 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
             throw new BaseRuntimeException(ResultEnum.PRODUCT_OUT_PRODUCTID_B2C_ERROR);
         }
 
+        // 测试数据
+//        List<ProductShopXoBmo> listResponse = new ArrayList<>();
+//        productPriceInfoList.forEach(productPriceInfoBmo -> {
+//            ProductShopXoBmo productShopXoBmo = new ProductShopXoBmo();
+//            productShopXoBmo.setProductId(productPriceInfoBmo.getProductId());
+//            productShopXoBmo.setProductName("测试" + productPriceInfoBmo.getProductId());
+//            productShopXoBmo.setOutProductId((int) ((Math.random() * 9 + 1) * 100000));
+//            listResponse.add(productShopXoBmo);
+//        });
         List<ProductShopXoBmo> listResponse = body.getData();
         if (CollectionUtils.isEmpty(listResponse)) {
             LOG.error("处理中奖名单调用B2C返回实体错误list={} activityId={}", JSON.toJSONString(list), activityId);
