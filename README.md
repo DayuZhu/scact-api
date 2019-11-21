@@ -31,7 +31,12 @@ php功能
 ```
 POST 请求 
 请求体(JSON 一个productID的列表):
-[1,2]
+[
+  {
+    "price": 100000,
+    "productId": 32
+  }
+]
 
 响应体格式(对应productId和B2C的outProductId以及B2C的productName):
 {

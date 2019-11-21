@@ -10,6 +10,7 @@ import com.sc.act.api.mapper.auto.*;
 import com.sc.act.api.mapper.ext.TicketExtMapper;
 import com.sc.act.api.model.auto.*;
 import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
+import com.sc.act.api.model.bo.ProductPriceInfoBmo;
 import com.sc.act.api.model.bo.ProductShopXoBmo;
 import com.sc.act.api.response.ActivityWinnersUserAccResponse;
 import com.sc.act.api.service.ActivityWinnersService;
@@ -103,7 +104,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         }
 
         Date currentTime = new Date();
-        List<Integer> productIdList = new ArrayList<>();
+        List<ProductPriceInfoBmo> productPriceInfoList = new ArrayList<>();
         for (ExcelWinnersInfoBmo excelWinnersInfoBmo : list) {
 
             Integer awardAmount = excelWinnersInfoBmo.getAwardAmount();
@@ -125,8 +126,8 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                 userMapper.updateByPrimaryKeySelective(userRecord);
                 UserAccInfo userAccInfo = insertOrUpdateUserAccInfo(excelWinnersInfoBmo, user, currentTime);
                 //创建中奖人
-                Integer productId = insertActivityWinners(excelWinnersInfoBmo, userAccInfo, user, currentTime, activity);
-                productIdList.add(productId);
+                ProductPriceInfoBmo productPriceInfoBmo = insertActivityWinners(excelWinnersInfoBmo, userAccInfo, user, currentTime, activity);
+                productPriceInfoList.add(productPriceInfoBmo);
 
             } else {
                 User user = new User();
@@ -137,16 +138,16 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                 userMapper.insertSelective(user);
                 UserAccInfo userAccInfo = insertOrUpdateUserAccInfo(excelWinnersInfoBmo, user, currentTime);
                 //创建中奖人
-                Integer productId = insertActivityWinners(excelWinnersInfoBmo, userAccInfo, user, currentTime, activity);
-                productIdList.add(productId);
+                ProductPriceInfoBmo productPriceInfoBmo = insertActivityWinners(excelWinnersInfoBmo, userAccInfo, user, currentTime, activity);
+                productPriceInfoList.add(productPriceInfoBmo);
             }
 
 
         }
 
-        if (CollectionUtils.isNotEmpty(productIdList)) {
+        if (CollectionUtils.isNotEmpty(productPriceInfoList)) {
             LOG.info("进入处理中奖名单调用B2C新建产品信息开始productIdList={}服务参数list={} activityId={}",
-                    JSON.toJSONString(productIdList), JSON.toJSONString(list), activityId);
+                    JSON.toJSONString(productPriceInfoList), JSON.toJSONString(list), activityId);
 
             //调B2C
 
@@ -156,7 +157,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                     .exchange(
                             b2cUrl,
                             HttpMethod.POST,
-                            new HttpEntity<>(JSON.toJSONString(productIdList), headers),
+                            new HttpEntity<>(JSON.toJSONString(productPriceInfoList), headers),
                             new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
                             });
 
@@ -176,7 +177,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                 }
             }
             LOG.info("进入处理中奖名单调用B2C新建产品信息结束productIdList={}服务参数list={} activityId={}",
-                    JSON.toJSONString(productIdList), JSON.toJSONString(list), activityId);
+                    JSON.toJSONString(productPriceInfoList), JSON.toJSONString(list), activityId);
 
         }
 
@@ -212,11 +213,11 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         }
     }
 
-    private Integer insertActivityWinners(ExcelWinnersInfoBmo excelWinnersInfoBmo,
-                                          UserAccInfo userAccInfo,
-                                          User user,
-                                          Date currentTime,
-                                          Activity activity) {
+    private ProductPriceInfoBmo insertActivityWinners(ExcelWinnersInfoBmo excelWinnersInfoBmo,
+                                                      UserAccInfo userAccInfo,
+                                                      User user,
+                                                      Date currentTime,
+                                                      Activity activity) {
         ActivityWinners activityWinners = new ActivityWinners();
         activityWinners.setActivityId(activity.getActivityId());
         activityWinners.setUserId(user.getUserId());
@@ -266,7 +267,10 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
             updTicketExample.createCriteria().andTicketIdIn(resultTicket.stream().map(Ticket::getTicketId).collect(Collectors.toList()));
             ticketMapper.updateByExampleSelective(updTicket, updTicketExample);
 
-            return productInsert.getProductId();
+            ProductPriceInfoBmo productPriceInfoBmo = new ProductPriceInfoBmo();
+            productPriceInfoBmo.setProductId(productInsert.getProductId());
+            productPriceInfoBmo.setPrice(productInsert.getSellPrice());
+            return productPriceInfoBmo;
         }
 
         return null;
