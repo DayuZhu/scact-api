@@ -188,6 +188,11 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                     updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
                     productMapper.updateByPrimaryKeySelective(updRecord);
                 }
+                LOG.info("进入处理中奖名单调用B2C新建产品信息结束b2c返回{}productIdList={}服务参数list={} activityId={}",
+                        JSON.toJSONString(listResponse),
+                        JSON.toJSONString(productPriceInfoList),
+                        JSON.toJSONString(list),
+                        activityId);
             }
 
             LOG.info("进入处理中奖名单调用B2C新建产品信息结束productIdList={}服务参数list={} activityId={}",
