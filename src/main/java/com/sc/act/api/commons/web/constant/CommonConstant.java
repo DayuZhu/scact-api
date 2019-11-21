@@ -51,6 +51,7 @@ public interface CommonConstant {
     Integer PRODUCT_PLATFORM_SHOPXO_0 = 0;
     Integer PRODUCT_TICKET_0 = 0;
     Integer PRODUCT_TICKET_1 = 1;
+    Integer PRODUCT_TICKET_2 = 2;
 
     /**
      * 0-处理中，1-成功，2-失败，3-未知失败

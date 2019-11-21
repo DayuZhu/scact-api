@@ -1,6 +1,7 @@
 package com.sc.act.api.service.impl;
 
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
+import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.mapper.auto.ProductMapper;
 import com.sc.act.api.mapper.auto.ProductTicketMapper;
@@ -60,7 +61,7 @@ public class ProductTicketServiceImpl implements ProductTicketService {
         List<Integer> tickeIds = productTickets.stream().map(ProductTicket::getTicketId).collect(Collectors.toList());
 
         TicketExample ticketExample = new TicketExample();
-        ticketExample.createCriteria().andTicketIdIn(tickeIds);
+        ticketExample.createCriteria().andTicketIdIn(tickeIds).andStateEqualTo(CommonConstant.PRODUCT_TICKET_2);
         return ticketMapper.selectByExample(ticketExample);
     }
 

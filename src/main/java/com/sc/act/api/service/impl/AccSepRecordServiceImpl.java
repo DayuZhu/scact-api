@@ -1,5 +1,6 @@
 package com.sc.act.api.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
@@ -13,15 +14,18 @@ import com.sc.act.api.request.AccSepRecordOutRequest;
 import com.sc.act.api.response.AccSepRecordResponse;
 import com.sc.act.api.service.AccSepRecordService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 功能描述:分账流水服务实现类
@@ -50,6 +54,12 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
 
     @Autowired
     private UserAccInfoMapper userAccInfoMapper;
+
+    @Autowired
+    private ProductTicketMapper productTicketMapper;
+
+    @Autowired
+    private TicketMapper ticketMapper;
 
     @Override
     public void insertAccSepRecord(AccSepRecordOutRequest accSepRecordRequest) {
@@ -121,6 +131,21 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
 
             //accSepRecord.setHandlerSeqNo(copy.getHandlerSeqNo());
             accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_1);
+            //分账接口调用成功 更新券状态
+            ProductTicketExample productTicketExample = new ProductTicketExample();
+            productTicketExample.createCriteria().andProductIdEqualTo(product.getProductId());
+            List<ProductTicket> productTickets = productTicketMapper.selectByExample(productTicketExample);
+            List<Integer> tickets = productTickets.stream().map(ProductTicket::getTicketId).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(tickets)) {
+                LOG.error("进入创建支付入账服务未查询到券请求参数accSepRecordRequest={}", accSepRecordRequest.toString());
+                throw new BaseRuntimeException(ResultEnum.PRODUCT_TICKET_INFO_ERROR);
+            }
+            Ticket record = new Ticket();
+            record.setState(CommonConstant.PRODUCT_TICKET_2);
+            TicketExample example = new TicketExample();
+            example.createCriteria().andTicketIdIn(tickets);
+            ticketMapper.updateByExampleSelective(record, example);
+
         } catch (Exception ex) {
             LOG.error("进入创建支付入账服务调用分账接口失败请求参数accSepRecordRequest=" + accSepRecordRequest.toString(), ex);
             // 0-处理中，1-成功，2-失败，3-未知失败
@@ -131,7 +156,6 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
         }
 
     }
-
 
     @Override
     public PageResponse<AccSepRecordResponse> selectAccSepRecord(AccSepRecordListRequest accSepRecordListRequest) {
