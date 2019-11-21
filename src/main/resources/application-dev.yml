@@ -3,7 +3,7 @@ swagger2:
 shopxo:
   url: http://localhost:8623/mis/product/ticket/info
 upload:
-  path: D://upload/test
+  path: D://upload/test/
 server:
   port: 8323
   tomcat:
