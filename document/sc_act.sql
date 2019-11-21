@@ -74,7 +74,7 @@ CREATE TABLE `sc_product` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`product_id`),
-  UNIQUE KEY `idx_uni_out_product_id` (`out_product_id`)
+  KEY `idx_out_product_id` (`out_product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品表';
 
 CREATE TABLE `sc_product_ticket` (

@@ -52,6 +52,8 @@ public enum ResultEnum implements IResultEnum {
 
     PRODUCT_WINNER_AMOUNT_ERROR("-115", "产品中奖金额错误", "产品中奖金额错误"),
     PRODUCT_ACCOUNT_ISNOT_EXIST("-116", "产品没有对应的账户信息", "产品没有对应的账户信息"),
+    PRODUCT_OUT_PRODUCTID_IS_ERROR("-117", "产品不能绑定多个外部产品ID", "产品不能绑定多个外部产品ID"),
+    PRODUCT_OUT_PRODUCTID_B2C_ERROR("-118", "调用第三方创建产品返回码错误", "调用第三方创建产品返回码错误"),
     ACTIVITY_COUPON_INSUFFICIENT("-107", "券数量金额不足", "券数量金额不足");
 
     ResultEnum(String code, String message, String desc) {

@@ -162,20 +162,34 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                             });
 
             Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
-            if (ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
-                List<ProductShopXoBmo> listResponse = body.getData();
-                if (CollectionUtils.isNotEmpty(listResponse)) {
-                    //更新product
-                    for (ProductShopXoBmo productShopXoBmo : listResponse) {
-                        Product updRecord = new Product();
-                        updRecord.setProductId(productShopXoBmo.getProductId());
-                        updRecord.setProductName(productShopXoBmo.getProductName());
-                        updRecord.setOutProductId(productShopXoBmo.getOutProductId());
-                        updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
-                        productMapper.updateByPrimaryKeySelective(updRecord);
-                    }
+            if (!ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
+                LOG.error("处理中奖名单调用B2C返回码错误list={} activityId={}", JSON.toJSONString(list), activityId);
+                throw new BaseRuntimeException(ResultEnum.PRODUCT_OUT_PRODUCTID_B2C_ERROR);
+            }
+
+            List<ProductShopXoBmo> listResponse = body.getData();
+            if (CollectionUtils.isNotEmpty(listResponse)) {
+
+                List<Integer> outProductIds = listResponse.stream().map(ProductShopXoBmo::getOutProductId).collect(Collectors.toList());
+                ProductExample productSelectExample = new ProductExample();
+                productSelectExample.createCriteria().andOutProductIdIn(outProductIds);
+                List<Product> products = productMapper.selectByExample(productSelectExample);
+                if (CollectionUtils.isNotEmpty(products)) {
+                    LOG.error("处理中奖名单调用B2C产品不能绑定多个外部产品IDlist={} activityId={}", JSON.toJSONString(list), activityId);
+                    throw new BaseRuntimeException(ResultEnum.PRODUCT_OUT_PRODUCTID_IS_ERROR);
+                }
+
+                //更新product
+                for (ProductShopXoBmo productShopXoBmo : listResponse) {
+                    Product updRecord = new Product();
+                    updRecord.setProductId(productShopXoBmo.getProductId());
+                    updRecord.setProductName(productShopXoBmo.getProductName());
+                    updRecord.setOutProductId(productShopXoBmo.getOutProductId());
+                    updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
+                    productMapper.updateByPrimaryKeySelective(updRecord);
                 }
             }
+
             LOG.info("进入处理中奖名单调用B2C新建产品信息结束productIdList={}服务参数list={} activityId={}",
                     JSON.toJSONString(productPriceInfoList), JSON.toJSONString(list), activityId);
 
