@@ -3,13 +3,16 @@ package com.sc.act.api.test;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
+import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.commons.web.util.SnowflakeUitl;
 import com.sc.act.api.mapper.auto.TicketMapper;
 import com.sc.act.api.mapper.ext.TicketExtMapper;
 import com.sc.act.api.model.auto.Ticket;
 import com.sc.act.api.model.auto.TicketExample;
+import com.sc.act.api.model.bo.ProductPriceInfoBmo;
 import com.sc.act.api.model.bo.ProductShopXoBmo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -208,6 +211,39 @@ public class ScactServiceTest {
 
         Result<List<ProductShopXoBmo>> body1 = responseEntity.getBody();
         System.out.println(body1);
+
+    }
+
+    @Test
+    public void test07() {
+        List<ProductPriceInfoBmo> productPriceInfoList = new ArrayList<>();
+        ProductPriceInfoBmo productPriceInfoBmo = new ProductPriceInfoBmo();
+        productPriceInfoBmo.setProductId(143);
+        productPriceInfoBmo.setPrice(10300);
+        productPriceInfoList.add(productPriceInfoBmo);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.set(CommonConstant.X_REQUESTED_WITH, CommonConstant.XMLHTTPREQUEST);
+        try {
+            ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = restTemplate
+                    .exchange(
+                            b2cUrl,
+                            HttpMethod.POST,
+                            new HttpEntity<>(JSON.toJSONString(productPriceInfoList), headers),
+                            new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
+                            });
+
+            Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
+            if (!ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
+                LOG.error("处理中奖名单调用B2C返回码错误");
+                throw new BaseRuntimeException(ResultEnum.PRODUCT_OUT_PRODUCTID_B2C_ERROR);
+            }
+            List<ProductShopXoBmo> data = body.getData();
+            System.out.println(JSON.toJSONString(data));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 

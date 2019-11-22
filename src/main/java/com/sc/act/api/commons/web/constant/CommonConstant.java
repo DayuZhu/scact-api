@@ -46,6 +46,11 @@ public interface CommonConstant {
     String EXCEL_XLS = "xls";
     String EXCEL_XLSX = "xlsx";
     String EXCEL_FILENAME_COMMA = ".";
+    /**
+     *
+     */
+    String X_REQUESTED_WITH = "X-Requested-With";
+    String XMLHTTPREQUEST = "XMLHttpRequest";
     Integer EXCEL_ROW_NUM = 51;
     Integer PRODUCT_STATE_1 = 1;
     Integer PRODUCT_PLATFORM_SHOPXO_0 = 0;

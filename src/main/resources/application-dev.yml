@@ -1,11 +1,11 @@
 swagger2:
   enable : true
 shopxo:
-  url: http://localhost:8623/mis/product/ticket/info
+  url: http://shop.potens.top/index.php?s=/index/goods/push.html
 upload:
   path: D://upload/test/
 server:
-  port: 8323
+  port: 8623
   tomcat:
     uri-encoding: UTF-8
 spring:
