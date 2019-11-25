@@ -91,4 +91,5 @@ POST 请求
 
 # 商城项目
 1 部署流程:https://ask.shopxo.net/article/5
+
 2 配置scact-api项目对应的ip和端口,文件在shopox/public/core.php, 修改define('SCACT_API','http://scact-api:port');
