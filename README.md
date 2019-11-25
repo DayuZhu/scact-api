@@ -87,3 +87,8 @@ POST 请求
 - 进入目录front
 - 执行npm i => npm run dev 启动项目
 - 打包执行 npm run build  => 打包完成后生成dist目录
+
+
+# 商城项目
+1 部署流程:https://ask.shopxo.net/article/5
+2 配置scact-api项目对应的ip和端口,文件在shopox/public/core.php, 修改define('SCACT_API','http://scact-api:port');
