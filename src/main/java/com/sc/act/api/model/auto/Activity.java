@@ -6,6 +6,8 @@ import java.util.Date;
 public class Activity implements Serializable {
     private Integer activityId;
 
+    private Integer merchantId;
+
     private String activityName;
 
     private String activityDesc;
@@ -42,6 +44,14 @@ public class Activity implements Serializable {
 
     public void setActivityId(Integer activityId) {
         this.activityId = activityId;
+    }
+
+    public Integer getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(Integer merchantId) {
+        this.merchantId = merchantId;
     }
 
     public String getActivityName() {

@@ -3,6 +3,7 @@
 <mapper namespace="com.sc.act.api.mapper.auto.ActivityMapper">
   <resultMap id="BaseResultMap" type="com.sc.act.api.model.auto.Activity">
     <id column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="merchant_id" jdbcType="INTEGER" property="merchantId" />
     <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
     <result column="activity_desc" jdbcType="VARCHAR" property="activityDesc" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
@@ -77,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    activity_id, activity_name, activity_desc, start_time, end_time, `state`, remark1, 
-    remark2, remark3, create_user_id, create_user_name, update_user_id, update_user_name, 
+    activity_id, merchant_id, activity_name, activity_desc, start_time, end_time, `state`, 
+    remark1, remark2, remark3, create_user_id, create_user_name, update_user_id, update_user_name, 
     create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.sc.act.api.model.auto.ActivityExample" resultMap="BaseResultMap">
@@ -115,16 +116,18 @@
     <selectKey keyProperty="activityId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sc_activity (activity_name, activity_desc, start_time, 
-      end_time, `state`, remark1, 
-      remark2, remark3, create_user_id, 
-      create_user_name, update_user_id, update_user_name, 
-      create_time, update_time)
-    values (#{activityName,jdbcType=VARCHAR}, #{activityDesc,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, #{remark1,jdbcType=VARCHAR}, 
-      #{remark2,jdbcType=VARCHAR}, #{remark3,jdbcType=VARCHAR}, #{createUserId,jdbcType=INTEGER}, 
-      #{createUserName,jdbcType=VARCHAR}, #{updateUserId,jdbcType=INTEGER}, #{updateUserName,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into sc_activity (merchant_id, activity_name, activity_desc, 
+      start_time, end_time, `state`, 
+      remark1, remark2, remark3, 
+      create_user_id, create_user_name, update_user_id, 
+      update_user_name, create_time, update_time
+      )
+    values (#{merchantId,jdbcType=INTEGER}, #{activityName,jdbcType=VARCHAR}, #{activityDesc,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, 
+      #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, #{remark3,jdbcType=VARCHAR}, 
+      #{createUserId,jdbcType=INTEGER}, #{createUserName,jdbcType=VARCHAR}, #{updateUserId,jdbcType=INTEGER}, 
+      #{updateUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.Activity">
     <selectKey keyProperty="activityId" order="AFTER" resultType="java.lang.Integer">
@@ -132,6 +135,9 @@
     </selectKey>
     insert into sc_activity
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="merchantId != null">
+        merchant_id,
+      </if>
       <if test="activityName != null">
         activity_name,
       </if>
@@ -176,6 +182,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="merchantId != null">
+        #{merchantId,jdbcType=INTEGER},
+      </if>
       <if test="activityName != null">
         #{activityName,jdbcType=VARCHAR},
       </if>
@@ -232,6 +241,9 @@
       <if test="record.activityId != null">
         activity_id = #{record.activityId,jdbcType=INTEGER},
       </if>
+      <if test="record.merchantId != null">
+        merchant_id = #{record.merchantId,jdbcType=INTEGER},
+      </if>
       <if test="record.activityName != null">
         activity_name = #{record.activityName,jdbcType=VARCHAR},
       </if>
@@ -282,6 +294,7 @@
   <update id="updateByExample" parameterType="map">
     update sc_activity
     set activity_id = #{record.activityId,jdbcType=INTEGER},
+      merchant_id = #{record.merchantId,jdbcType=INTEGER},
       activity_name = #{record.activityName,jdbcType=VARCHAR},
       activity_desc = #{record.activityDesc,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
@@ -303,6 +316,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sc.act.api.model.auto.Activity">
     update sc_activity
     <set>
+      <if test="merchantId != null">
+        merchant_id = #{merchantId,jdbcType=INTEGER},
+      </if>
       <if test="activityName != null">
         activity_name = #{activityName,jdbcType=VARCHAR},
       </if>
@@ -350,7 +366,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sc.act.api.model.auto.Activity">
     update sc_activity
-    set activity_name = #{activityName,jdbcType=VARCHAR},
+    set merchant_id = #{merchantId,jdbcType=INTEGER},
+      activity_name = #{activityName,jdbcType=VARCHAR},
       activity_desc = #{activityDesc,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
