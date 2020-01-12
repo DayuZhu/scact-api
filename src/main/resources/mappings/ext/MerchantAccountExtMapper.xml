@@ -5,7 +5,7 @@
   <update id="updateByBalanceAndMerchantIdSelective">
     update sc_merchant_account
     <set>
-        balance = balance - #{balance,jdbcType=INTEGER},
+        balance = balance - #{sum,jdbcType=INTEGER},
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>

@@ -124,9 +124,12 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
             LOG.error("处理中奖名单券商户资金不足list={} activityId={}", JSON.toJSONString(list), activityId);
             throw new BaseRuntimeException(ResultEnum.MERCHANT_ACCOUNT_MONEY_ERROR);
         }
+
         Date currentTime = new Date();
         int updateAccFlag = merchantAccountExtMapper.updateByBalanceAndMerchantIdSelective(
-                currentTime, balance,
+                currentTime,
+                sum,
+                balance,
                 activity.getMerchantId());
 
         if (updateAccFlag == 0) {

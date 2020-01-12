@@ -3,14 +3,21 @@ package com.sc.act.api.test;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
+import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.commons.web.util.SnowflakeUitl;
+import com.sc.act.api.mapper.auto.MerchantAccountMapper;
 import com.sc.act.api.mapper.auto.TicketMapper;
+import com.sc.act.api.mapper.ext.MerchantAccountExtMapper;
 import com.sc.act.api.mapper.ext.TicketExtMapper;
+import com.sc.act.api.model.auto.MerchantAccount;
+import com.sc.act.api.model.auto.MerchantAccountExample;
 import com.sc.act.api.model.auto.Ticket;
 import com.sc.act.api.model.auto.TicketExample;
 import com.sc.act.api.model.bo.ProductShopXoBmo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -45,6 +52,12 @@ public class ScactServiceTest {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private MerchantAccountExtMapper merchantAccountExtMapper;
+
+    @Autowired
+    private MerchantAccountMapper merchantAccountMapper;
 
 
     @Test
@@ -209,6 +222,26 @@ public class ScactServiceTest {
         Result<List<ProductShopXoBmo>> body1 = responseEntity.getBody();
         System.out.println(body1);
 
+    }
+
+    @Test
+    public void test07() {
+
+        Integer merchantId = 123;
+        MerchantAccountExample merchantAccountExample = new MerchantAccountExample();
+        merchantAccountExample.createCriteria().andMerchantIdEqualTo(merchantId);
+        List<MerchantAccount> merchantAccounts = merchantAccountMapper.selectByExample(merchantAccountExample);
+        if (CollectionUtils.isEmpty(merchantAccounts)) {
+            LOG.error("处理中奖名单券商户账户不存在");
+            throw new BaseRuntimeException(ResultEnum.MERCHANT_ACCOUNT_INFO_ERROR);
+        }
+
+        MerchantAccount merchantAccount = merchantAccounts.get(0);
+
+        Integer balance = merchantAccount.getBalance();
+        int i = merchantAccountExtMapper.updateByBalanceAndMerchantIdSelective(new Date(), 500, balance, merchantId);
+
+        System.out.println(i);
     }
 
 
