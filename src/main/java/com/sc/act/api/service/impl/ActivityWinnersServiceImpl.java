@@ -85,6 +85,9 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
     @Autowired
     private MerchantAccountExtMapper merchantAccountExtMapper;
 
+    @Autowired
+    private MerchantAccountRecordMapper merchantAccountRecordMapper;
+
     @Override
     public void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list, Integer activityId) {
         LOG.info("进入处理中奖名单服务请求参数list={} activityId={}", JSON.toJSONString(list), activityId);
@@ -288,6 +291,17 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         activityWinners.setCreateTime(currentTime);
         activityWinners.setUpdateTime(currentTime);
         activityWinnersMapper.insertSelective(activityWinners);
+
+        MerchantAccountRecord merchantAccountRecord = new MerchantAccountRecord();
+        merchantAccountRecord.setMerchantId(activity.getMerchantId());
+        merchantAccountRecord.setRecordType(1);
+        merchantAccountRecord.setPayoutAmount(activityWinners.getAwardAmount());
+        merchantAccountRecord.setReasonDesc("活动中奖");
+        merchantAccountRecord.setActivityWinnersId(activityWinners.getActivityWinnersId());
+        merchantAccountRecord.setActivityId(activity.getActivityId());
+        merchantAccountRecord.setCreateTime(currentTime);
+        merchantAccountRecord.setUpdateTime(currentTime);
+        merchantAccountRecordMapper.insertSelective(merchantAccountRecord);
 
         Product productInsert = new Product();
         productInsert.setMarketPrice(excelWinnersInfoBmo.getAwardAmount());
