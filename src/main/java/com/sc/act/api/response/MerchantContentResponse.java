@@ -42,25 +42,15 @@ public class MerchantContentResponse extends BasePojo {
     @ApiModelProperty("店主电话")
     private Long bossTel;
 
-    @ApiModelProperty("创建人")
-    private Integer createUserId;
-
-    @ApiModelProperty("创建人姓名")
-    private String createUserName;
-
-    @ApiModelProperty("最后一次更新人")
-    private Integer updateUserId;
-
-    @ApiModelProperty("最后一次更新人姓名")
-    private String updateUserName;
-
     @ApiModelProperty("创建时间")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    @ApiModelProperty("更新时间")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
+    @ApiModelProperty("账户信息")
+    private MerchantAccInfoResponse merchantAccInfoResponse;
+
+    @ApiModelProperty("账户余额")
+    private MerchantAccountResponse merchantAccountResponse;
 
 
     public Integer getMerchantId() {
@@ -127,37 +117,6 @@ public class MerchantContentResponse extends BasePojo {
         this.bossTel = bossTel;
     }
 
-    public Integer getCreateUserId() {
-        return this.createUserId;
-    }
-
-    public void setCreateUserId(Integer createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public String getCreateUserName() {
-        return this.createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
-    public Integer getUpdateUserId() {
-        return this.updateUserId;
-    }
-
-    public void setUpdateUserId(Integer updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
-    public String getUpdateUserName() {
-        return this.updateUserName;
-    }
-
-    public void setUpdateUserName(String updateUserName) {
-        this.updateUserName = updateUserName;
-    }
 
     public Date getCreateTime() {
         return this.createTime;
@@ -167,13 +126,19 @@ public class MerchantContentResponse extends BasePojo {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return this.updateTime;
+    public MerchantAccInfoResponse getMerchantAccInfoResponse() {
+        return merchantAccInfoResponse;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setMerchantAccInfoResponse(MerchantAccInfoResponse merchantAccInfoResponse) {
+        this.merchantAccInfoResponse = merchantAccInfoResponse;
     }
 
+    public MerchantAccountResponse getMerchantAccountResponse() {
+        return merchantAccountResponse;
+    }
 
+    public void setMerchantAccountResponse(MerchantAccountResponse merchantAccountResponse) {
+        this.merchantAccountResponse = merchantAccountResponse;
+    }
 }

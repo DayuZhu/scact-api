@@ -30,14 +30,6 @@ public class MerchantAccountResponse extends BasePojo {
     @ApiModelProperty("用户账户状态，0-冻结，1-正常")
     private Integer state;
 
-    @ApiModelProperty("创建时间")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    @ApiModelProperty("更新时间")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
-
 
     public Integer getMerchantAccountId() {
         return this.merchantAccountId;
@@ -71,21 +63,6 @@ public class MerchantAccountResponse extends BasePojo {
         this.state = state;
     }
 
-    public Date getCreateTime() {
-        return this.createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return this.updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
 
 }

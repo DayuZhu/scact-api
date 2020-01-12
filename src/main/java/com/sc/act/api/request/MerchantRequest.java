@@ -3,8 +3,10 @@ package com.sc.act.api.request;
 import com.sc.act.api.commons.web.base.BasePojo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotBlank;
 
-import java.util.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * 功能描述: 商户请求类
@@ -21,25 +23,45 @@ public class MerchantRequest extends BasePojo {
     private Integer merchantId;
 
     @ApiModelProperty("商家名称")
+    @NotBlank
     private String merchantName;
 
     @ApiModelProperty("社会统一代码")
+    @NotBlank
     private String socialCode;
 
     @ApiModelProperty("法人姓名")
+    @NotBlank
     private String name;
 
     @ApiModelProperty("法人手机号")
+    @NotNull
+    @Pattern(regexp = "^1[3-9]\\d{9}$", message = "请输入正确的手机号")
     private Long mobile;
 
+    @ApiModelProperty("开户行")
+    @NotBlank
+    private String merchantBank;
+
+    @ApiModelProperty("银行卡号")
+    @NotBlank
+    private String merchantCard;
+
     @ApiModelProperty("商家地址")
+    @NotBlank
     private String address;
 
     @ApiModelProperty("店主名称")
+    @NotBlank
     private String bossName;
 
     @ApiModelProperty("店主电话")
+    @NotBlank
     private Long bossTel;
+
+    @ApiModelProperty("余额")
+    @NotNull
+    private Integer balance;
 
     @ApiModelProperty("创建人")
     private Integer createUserId;
@@ -52,12 +74,6 @@ public class MerchantRequest extends BasePojo {
 
     @ApiModelProperty("最后一次更新人姓名")
     private String updateUserName;
-
-    @ApiModelProperty("创建时间")
-    private Date createTime;
-
-    @ApiModelProperty("更新时间")
-    private Date updateTime;
 
 
     public Integer getMerchantId() {
@@ -156,21 +172,28 @@ public class MerchantRequest extends BasePojo {
         this.updateUserName = updateUserName;
     }
 
-    public Date getCreateTime() {
-        return this.createTime;
+    public String getMerchantBank() {
+        return merchantBank;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setMerchantBank(String merchantBank) {
+        this.merchantBank = merchantBank;
     }
 
-    public Date getUpdateTime() {
-        return this.updateTime;
+    public String getMerchantCard() {
+        return merchantCard;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setMerchantCard(String merchantCard) {
+        this.merchantCard = merchantCard;
     }
 
+    @NotNull
+    public Integer getBalance() {
+        return balance;
+    }
 
+    public void setBalance(@NotNull Integer balance) {
+        this.balance = balance;
+    }
 }

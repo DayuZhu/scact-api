@@ -1,11 +1,8 @@
 package com.sc.act.api.response;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.sc.act.api.commons.web.base.BasePojo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.util.Date;
 
 /**
  * 功能描述: 商户账户信息响应类
@@ -24,32 +21,18 @@ public class MerchantAccInfoResponse extends BasePojo {
     @ApiModelProperty("商户ID")
     private Integer merchantId;
 
-    @ApiModelProperty("姓名")
-    private String accName;
-
     @ApiModelProperty("开户行")
     private String merchantBank;
 
     @ApiModelProperty("银行卡号")
     private String merchantCard;
 
-    @ApiModelProperty("手机号")
-    private Long mobile;
 
     @ApiModelProperty("状态：0 弃用 1使用")
     private Integer state;
 
-    @ApiModelProperty("创建时间")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    @ApiModelProperty("更新时间")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
-
-
     public Integer getMerchantAccInfoId() {
-        return this.merchantAccInfoId;
+        return merchantAccInfoId;
     }
 
     public void setMerchantAccInfoId(Integer merchantAccInfoId) {
@@ -57,23 +40,15 @@ public class MerchantAccInfoResponse extends BasePojo {
     }
 
     public Integer getMerchantId() {
-        return this.merchantId;
+        return merchantId;
     }
 
     public void setMerchantId(Integer merchantId) {
         this.merchantId = merchantId;
     }
 
-    public String getAccName() {
-        return this.accName;
-    }
-
-    public void setAccName(String accName) {
-        this.accName = accName;
-    }
-
     public String getMerchantBank() {
-        return this.merchantBank;
+        return merchantBank;
     }
 
     public void setMerchantBank(String merchantBank) {
@@ -81,44 +56,18 @@ public class MerchantAccInfoResponse extends BasePojo {
     }
 
     public String getMerchantCard() {
-        return this.merchantCard;
+        return merchantCard;
     }
 
     public void setMerchantCard(String merchantCard) {
         this.merchantCard = merchantCard;
     }
 
-    public Long getMobile() {
-        return this.mobile;
-    }
-
-    public void setMobile(Long mobile) {
-        this.mobile = mobile;
-    }
-
     public Integer getState() {
-        return this.state;
+        return state;
     }
 
     public void setState(Integer state) {
         this.state = state;
     }
-
-    public Date getCreateTime() {
-        return this.createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return this.updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-
 }
