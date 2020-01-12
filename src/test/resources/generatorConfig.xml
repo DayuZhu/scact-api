@@ -74,6 +74,17 @@
 <!--        <table tableName="sc_user_acc_info" domainObjectName="UserAccInfo">-->
 <!--            <generatedKey column="user_acc_info_id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
-
+<!--        <table tableName="sc_merchant" domainObjectName="Merchant">
+            <generatedKey column="merchant_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="sc_merchant_acc_info" domainObjectName="MerchantAccInfo">
+            <generatedKey column="merchant_acc_info_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="sc_merchant_account" domainObjectName="MerchantAccount">
+            <generatedKey column="merchant_account_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="sc_merchant_account_record" domainObjectName="MerchantAccountRecord">
+            <generatedKey column="merchant_account_record_id" sqlStatement="MySql" identity="true"/>
+        </table>-->
     </context>
 </generatorConfiguration>
