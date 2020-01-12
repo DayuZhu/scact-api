@@ -50,6 +50,10 @@ public class ActivityRequest extends BasePojo {
     @Max(1)
     private Integer state;
 
+    @ApiModelProperty("商户id")
+    @NotNull
+    private Integer merchantId;
+
     @ApiModelProperty("创建人")
     private Integer createUserId;
 
@@ -142,5 +146,12 @@ public class ActivityRequest extends BasePojo {
         this.updateUserName = updateUserName;
     }
 
+    @NotNull
+    public Integer getMerchantId() {
+        return merchantId;
+    }
 
+    public void setMerchantId(@NotNull Integer merchantId) {
+        this.merchantId = merchantId;
+    }
 }

@@ -54,6 +54,7 @@ public class ActivityServiceImpl implements ActivityService {
         activity.setStartTime(activityRequest.getStartTime());
         activity.setEndTime(activityRequest.getEndTime());
         activity.setState(activityRequest.getState());
+        activity.setMerchantId(activityRequest.getMerchantId());
 
         if (null != activityRequest.getCreateUserId()
                 && StringUtils.isNotBlank(activityRequest.getCreateUserName())) {
