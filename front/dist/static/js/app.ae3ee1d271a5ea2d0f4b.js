@@ -1,4 +1,4 @@
-webpackJsonp([7],{
+webpackJsonp([8],{
 
 /***/ 199:
 /***/ (function(module, exports) {
@@ -625,7 +625,7 @@ window.list = {
 
 //公用axios
 const instance = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.create({
-    // headers: {'authentication': getCookie('authentication') }
+	// headers: {'authentication': getCookie('authentication') }
 });
 instance.defaults.withCredentials = true;
 /*instance.defaults.transformRequest = [function (data) {
@@ -639,46 +639,47 @@ instance.defaults.withCredentials = true;
 //中间件
 // 请求
 instance.interceptors.request.use(request => {
-    // request.headers.Authentication = localStorage.getItem('token') || ''//store.getters.token
-    /*if (!sessionStorage.getItem('user')) {
-    window.location.href = '#/login'
-    }*/
-    return request;
+	// request.headers.Authentication = localStorage.getItem('token') || ''//store.getters.token
+	/*if (!sessionStorage.getItem('user')) {
+ 	window.location.href = '#/login'
+ }*/
+	return request;
 });
 
 // 响应
 instance.interceptors.response.use(response => {
-    if (response.headers.authentication) {
-        localStorage.setItem('token', response.headers.authentication);
-    }
-    if (response.data.retCode !== '0') {
-        __WEBPACK_IMPORTED_MODULE_1_element_ui__["Message"].error(response.data.retMsg);
-        return false;
-    } else if (response.data.retCode === 1000) {
-        window.location.href = '/#/login';
-    } else {
-        return response.data;
-    }
+	console.log(response.data.retCode, 12312321);
+	if (response.headers.authentication) {
+		localStorage.setItem('token', response.headers.authentication);
+	}
+	if (response.data.retCode !== '0') {
+		__WEBPACK_IMPORTED_MODULE_1_element_ui__["Message"].error(response.data.retMsg);
+		return Promise.resolve(err.response);
+	} else if (response.data.retCode === 1000) {
+		window.location.href = '/#/login';
+	} else {
+		return response.data;
+	}
 }, err => {
-    if (err && err.response) {
-        if (err.response.data.message === "用户未登录") {
-            sessionStorage.clear();
-            window.location.href = '/#/login';
-        }
-        //错误信息
-        __WEBPACK_IMPORTED_MODULE_1_element_ui__["Message"].error(err.response.data.message);
-    }
-    return Promise.resolve(err.response);
+	if (err && err.response) {
+		if (err.response.data.message === "用户未登录") {
+			sessionStorage.clear();
+			window.location.href = '/#/login';
+		}
+		//错误信息
+		__WEBPACK_IMPORTED_MODULE_1_element_ui__["Message"].error(err.response.data.message);
+	}
+	return Promise.resolve(err.response);
 });
 
 //图片上传
 const multipart = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.create({
-    withCredentials: true
+	withCredentials: true
 });
 
 multipart.interceptors.request.use(function (config) {
-    config.headers['Content-Type'] = 'multipart/form-data';
-    return config;
+	config.headers['Content-Type'] = 'multipart/form-data';
+	return config;
 });
 
 
@@ -10938,17 +10939,20 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
             component: resolve => __webpack_require__.e/* require */(0/* duplicate */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(208)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
         }, {
             path: '/bill',
-            component: resolve => __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(538)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
+            component: resolve => __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(538)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
+        }, {
+            path: '/merchant',
+            component: resolve => __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(539)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
         }]
     }, {
         path: '/login',
-        component: resolve => __webpack_require__.e/* require */(5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(535)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
+        component: resolve => __webpack_require__.e/* require */(6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(535)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
     }, {
         path: '/password',
-        component: resolve => __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(536)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
+        component: resolve => __webpack_require__.e/* require */(5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(536)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
     }, {
         path: '/test',
-        component: resolve => __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(537)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
+        component: resolve => __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(537)]; (resolve.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe)
     }]
 }));
 
@@ -10983,7 +10987,7 @@ var Component = __webpack_require__(87)(
   /* script */
   __webpack_require__(249),
   /* template */
-  __webpack_require__(526),
+  __webpack_require__(528),
   /* scopeId */
   null,
   /* cssModules */
@@ -11006,7 +11010,7 @@ var Component = __webpack_require__(87)(
   /* script */
   __webpack_require__(250),
   /* template */
-  __webpack_require__(527),
+  __webpack_require__(526),
   /* scopeId */
   null,
   /* cssModules */
@@ -11025,7 +11029,7 @@ var Component = __webpack_require__(87)(
   /* script */
   null,
   /* template */
-  __webpack_require__(528),
+  __webpack_require__(527),
   /* scopeId */
   null,
   /* cssModules */
@@ -11042,22 +11046,6 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    attrs: {
-      "id": _vm.idName
-    },
-    on: {
-      "click": _vm.generate
-    }
-  }, [_vm._t("default", [_vm._v("\n\t\tDownload " + _vm._s(_vm.name) + "\n\t")])], 2)
-},staticRenderFns: []}
-
-/***/ }),
-
-/***/ 527:
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
     staticClass: "quill-editor"
   }, [_vm._t("toolbar"), _vm._v(" "), _c('div', {
     ref: "editor"
@@ -11066,11 +11054,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ }),
 
-/***/ 528:
+/***/ 527:
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('router-view')
+},staticRenderFns: []}
+
+/***/ }),
+
+/***/ 528:
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    attrs: {
+      "id": _vm.idName
+    },
+    on: {
+      "click": _vm.generate
+    }
+  }, [_vm._t("default", [_vm._v("\n\t\tDownload " + _vm._s(_vm.name) + "\n\t")])], 2)
 },staticRenderFns: []}
 
 /***/ }),
@@ -11085,7 +11089,7 @@ var content = __webpack_require__(490);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(207)("66977389", content, true);
+var update = __webpack_require__(207)("0c05b58f", content, true);
 
 /***/ }),
 

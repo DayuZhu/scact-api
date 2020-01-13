@@ -17,6 +17,11 @@
                         index: 'active',
                         title: '活动管理'
                     },
+		                {
+			                icon: 'el-icon-coin',
+			                index: 'merchant',
+			                title: '商户管理'
+		                },
                     {
                         icon: 'el-icon-coin',
                         index: 'bill',

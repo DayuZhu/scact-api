@@ -25,6 +25,10 @@ export default new Router({
                     path: '/bill',
                     component: resolve => require(['../components/page/bill.vue'], resolve)
                 },
+                {
+                    path: '/merchant',
+                    component: resolve => require(['../components/page/merchant.vue'], resolve)
+                },
             ]
         },
         {
