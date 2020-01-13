@@ -56,7 +56,7 @@ public class MerchantRequest extends BasePojo {
     private String bossName;
 
     @ApiModelProperty("店主电话")
-    @NotBlank
+    @NotNull
     private Long bossTel;
 
     @ApiModelProperty("余额")
@@ -75,9 +75,8 @@ public class MerchantRequest extends BasePojo {
     @ApiModelProperty("最后一次更新人姓名")
     private String updateUserName;
 
-
     public Integer getMerchantId() {
-        return this.merchantId;
+        return merchantId;
     }
 
     public void setMerchantId(Integer merchantId) {
@@ -85,7 +84,7 @@ public class MerchantRequest extends BasePojo {
     }
 
     public String getMerchantName() {
-        return this.merchantName;
+        return merchantName;
     }
 
     public void setMerchantName(String merchantName) {
@@ -93,7 +92,7 @@ public class MerchantRequest extends BasePojo {
     }
 
     public String getSocialCode() {
-        return this.socialCode;
+        return socialCode;
     }
 
     public void setSocialCode(String socialCode) {
@@ -101,75 +100,20 @@ public class MerchantRequest extends BasePojo {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    @NotNull
     public Long getMobile() {
-        return this.mobile;
+        return mobile;
     }
 
-    public void setMobile(Long mobile) {
+    public void setMobile(@NotNull Long mobile) {
         this.mobile = mobile;
-    }
-
-    public String getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getBossName() {
-        return this.bossName;
-    }
-
-    public void setBossName(String bossName) {
-        this.bossName = bossName;
-    }
-
-    public Long getBossTel() {
-        return this.bossTel;
-    }
-
-    public void setBossTel(Long bossTel) {
-        this.bossTel = bossTel;
-    }
-
-    public Integer getCreateUserId() {
-        return this.createUserId;
-    }
-
-    public void setCreateUserId(Integer createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public String getCreateUserName() {
-        return this.createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
-    public Integer getUpdateUserId() {
-        return this.updateUserId;
-    }
-
-    public void setUpdateUserId(Integer updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
-    public String getUpdateUserName() {
-        return this.updateUserName;
-    }
-
-    public void setUpdateUserName(String updateUserName) {
-        this.updateUserName = updateUserName;
     }
 
     public String getMerchantBank() {
@@ -188,6 +132,31 @@ public class MerchantRequest extends BasePojo {
         this.merchantCard = merchantCard;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBossName() {
+        return bossName;
+    }
+
+    public void setBossName(String bossName) {
+        this.bossName = bossName;
+    }
+
+    @NotNull
+    public Long getBossTel() {
+        return bossTel;
+    }
+
+    public void setBossTel(@NotNull Long bossTel) {
+        this.bossTel = bossTel;
+    }
+
     @NotNull
     public Integer getBalance() {
         return balance;
@@ -195,5 +164,37 @@ public class MerchantRequest extends BasePojo {
 
     public void setBalance(@NotNull Integer balance) {
         this.balance = balance;
+    }
+
+    public Integer getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(Integer createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public Integer getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(Integer updateUserId) {
+        this.updateUserId = updateUserId;
+    }
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
     }
 }
