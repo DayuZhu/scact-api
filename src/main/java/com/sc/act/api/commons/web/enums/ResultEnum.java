@@ -59,6 +59,9 @@ public enum ResultEnum implements IResultEnum {
     PRODUCT_TICKET_INFO_ERROR("-122", "没用匹配到券信息", "没用匹配到券信息"),
     USER_MONEY_ERROR("-123", "分账失败", "分账失败"),
     USER_MONEY_INFO_ERROR("-124", "无分账成功记录", "无分账成功记录"),
+    MERCHANT_ACCOUNT_INFO_ERROR("-125", "商户账户不存在", "商户账户不存在"),
+    MERCHANT_ACCOUNT_MONEY_ERROR("-126", "商户资金不足", "商户资金不足"),
+    MERCHANT_ACC_MONEY_ERROR("-127", "商户资金扣减异常", "商户资金扣减异常"),
     ACTIVITY_COUPON_INSUFFICIENT("-107", "券数量金额不足", "券数量金额不足");
 
     ResultEnum(String code, String message, String desc) {

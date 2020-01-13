@@ -3,26 +3,22 @@ package com.sc.act.api.model.auto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Activity implements Serializable {
-    private Integer activityId;
-
+public class Merchant implements Serializable {
     private Integer merchantId;
 
-    private String activityName;
+    private String merchantName;
 
-    private String activityDesc;
+    private String socialCode;
 
-    private Date startTime;
+    private String name;
 
-    private Date endTime;
+    private Long mobile;
 
-    private Integer state;
+    private String address;
 
-    private String remark1;
+    private String bossName;
 
-    private String remark2;
-
-    private String remark3;
+    private Long bossTel;
 
     private Integer createUserId;
 
@@ -38,14 +34,6 @@ public class Activity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
-
     public Integer getMerchantId() {
         return merchantId;
     }
@@ -54,68 +42,60 @@ public class Activity implements Serializable {
         this.merchantId = merchantId;
     }
 
-    public String getActivityName() {
-        return activityName;
+    public String getMerchantName() {
+        return merchantName;
     }
 
-    public void setActivityName(String activityName) {
-        this.activityName = activityName == null ? null : activityName.trim();
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName == null ? null : merchantName.trim();
     }
 
-    public String getActivityDesc() {
-        return activityDesc;
+    public String getSocialCode() {
+        return socialCode;
     }
 
-    public void setActivityDesc(String activityDesc) {
-        this.activityDesc = activityDesc == null ? null : activityDesc.trim();
+    public void setSocialCode(String socialCode) {
+        this.socialCode = socialCode == null ? null : socialCode.trim();
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public String getName() {
+        return name;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Long getMobile() {
+        return mobile;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setMobile(Long mobile) {
+        this.mobile = mobile;
     }
 
-    public Integer getState() {
-        return state;
+    public String getAddress() {
+        return address;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 
-    public String getRemark1() {
-        return remark1;
+    public String getBossName() {
+        return bossName;
     }
 
-    public void setRemark1(String remark1) {
-        this.remark1 = remark1 == null ? null : remark1.trim();
+    public void setBossName(String bossName) {
+        this.bossName = bossName == null ? null : bossName.trim();
     }
 
-    public String getRemark2() {
-        return remark2;
+    public Long getBossTel() {
+        return bossTel;
     }
 
-    public void setRemark2(String remark2) {
-        this.remark2 = remark2 == null ? null : remark2.trim();
-    }
-
-    public String getRemark3() {
-        return remark3;
-    }
-
-    public void setRemark3(String remark3) {
-        this.remark3 = remark3 == null ? null : remark3.trim();
+    public void setBossTel(Long bossTel) {
+        this.bossTel = bossTel;
     }
 
     public Integer getCreateUserId() {

@@ -124,6 +124,61 @@ CREATE TABLE `sc_user_acc_info` (
   UNIQUE KEY `idx_uni_userid_cardno` (`user_id`,`card_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户表信息表';
 
+CREATE TABLE `sc_merchant` (
+  `merchant_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '商户id',
+  `merchant_name` varchar(30) NOT NULL DEFAULT '' COMMENT '商家名称',
+  `social_code` varchar(50) NOT NULL DEFAULT '' COMMENT '社会统一代码',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '法人姓名',
+  `mobile` bigint unsigned NOT NULL DEFAULT '0' COMMENT '法人手机号',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '商家地址',
+  `boss_name` varchar(10) NOT NULL DEFAULT '' COMMENT '店主名称',
+  `boss_tel` bigint unsigned NOT NULL DEFAULT '0' COMMENT '店主电话',
+  `create_user_id` int unsigned NOT NULL DEFAULT '0' COMMENT '创建人',
+  `create_user_name` varchar(64) NOT NULL DEFAULT '' COMMENT '创建人姓名',
+  `update_user_id` int unsigned NOT NULL DEFAULT '0' COMMENT '最后一次更新人',
+  `update_user_name` varchar(64) NOT NULL DEFAULT '' COMMENT '最后一次更新人姓名',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`merchant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商户表';
 
+CREATE TABLE `sc_merchant_acc_info` (
+  `merchant_acc_info_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `merchant_id` int unsigned NOT NULL DEFAULT '0' COMMENT '商户ID',
+  `acc_name` varchar(32) NOT NULL DEFAULT '' COMMENT '姓名',
+  `merchant_bank` varchar(64) NOT NULL DEFAULT '' COMMENT '开户行',
+  `merchant_card` varchar(64) NOT NULL DEFAULT '' COMMENT '银行卡号',
+  `mobile` bigint unsigned NOT NULL DEFAULT '0' COMMENT '手机号',
+  `state` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态：0 弃用 1使用',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`merchant_acc_info_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商户账户信息表';
+
+CREATE TABLE `sc_merchant_account` (
+  `merchant_account_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `merchant_id` int unsigned NOT NULL DEFAULT '0' COMMENT '会员id',
+  `balance` int unsigned NOT NULL DEFAULT '0' COMMENT '余额',
+  `state` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '用户账户状态，0-冻结，1-正常',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`merchant_account_id`),
+  UNIQUE KEY `idx_unq_merchant_id` (`merchant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商户资金信息表';
+
+
+CREATE TABLE `sc_merchant_account_record` (
+  `merchant_account_record_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `merchant_id` int unsigned NOT NULL DEFAULT '0' COMMENT '商户id',
+  `record_type` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '类型 0无 1 活动中奖',
+  `income_amount` int unsigned DEFAULT '0' COMMENT '进账',
+  `payout_amount` int unsigned DEFAULT '0' COMMENT '出账',
+  `reason_desc` varchar(255) DEFAULT NULL COMMENT '描述:活动中奖',
+  `activity_winners_id` int unsigned NOT NULL DEFAULT '0' COMMENT '活动中奖名单ID',
+  `activity_id` int unsigned NOT NULL DEFAULT '0' COMMENT '活动id',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`merchant_account_record_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商户资金记录表';
 
 

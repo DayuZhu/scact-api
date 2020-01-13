@@ -8,12 +8,17 @@ import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.commons.web.util.SnowflakeUitl;
+import com.sc.act.api.mapper.auto.MerchantAccountMapper;
 import com.sc.act.api.mapper.auto.TicketMapper;
+import com.sc.act.api.mapper.ext.MerchantAccountExtMapper;
 import com.sc.act.api.mapper.ext.TicketExtMapper;
+import com.sc.act.api.model.auto.MerchantAccount;
+import com.sc.act.api.model.auto.MerchantAccountExample;
 import com.sc.act.api.model.auto.Ticket;
 import com.sc.act.api.model.auto.TicketExample;
 import com.sc.act.api.model.bo.ProductPriceInfoBmo;
 import com.sc.act.api.model.bo.ProductShopXoBmo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -48,6 +53,12 @@ public class ScactServiceTest {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private MerchantAccountExtMapper merchantAccountExtMapper;
+
+    @Autowired
+    private MerchantAccountMapper merchantAccountMapper;
 
 
     @Test
@@ -216,36 +227,25 @@ public class ScactServiceTest {
 
     @Test
     public void test07() {
-        List<ProductPriceInfoBmo> productPriceInfoList = new ArrayList<>();
-        ProductPriceInfoBmo productPriceInfoBmo = new ProductPriceInfoBmo();
-        productPriceInfoBmo.setProductId(143);
-        productPriceInfoBmo.setPrice(10300);
-        productPriceInfoList.add(productPriceInfoBmo);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        headers.set(CommonConstant.X_REQUESTED_WITH, CommonConstant.XMLHTTPREQUEST);
-        try {
-            ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = restTemplate
-                    .exchange(
-                            b2cUrl,
-                            HttpMethod.POST,
-                            new HttpEntity<>(JSON.toJSONString(productPriceInfoList), headers),
-                            new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
-                            });
 
-            Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
-            if (!ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
-                LOG.error("处理中奖名单调用B2C返回码错误");
-                throw new BaseRuntimeException(ResultEnum.PRODUCT_OUT_PRODUCTID_B2C_ERROR);
-            }
-            List<ProductShopXoBmo> data = body.getData();
-            System.out.println(JSON.toJSONString(data));
-        } catch (Exception e) {
-            e.printStackTrace();
+        Integer merchantId = 123;
+        MerchantAccountExample merchantAccountExample = new MerchantAccountExample();
+        merchantAccountExample.createCriteria().andMerchantIdEqualTo(merchantId);
+        List<MerchantAccount> merchantAccounts = merchantAccountMapper.selectByExample(merchantAccountExample);
+        if (CollectionUtils.isEmpty(merchantAccounts)) {
+            LOG.error("处理中奖名单券商户账户不存在");
+            throw new BaseRuntimeException(ResultEnum.MERCHANT_ACCOUNT_INFO_ERROR);
         }
 
+        MerchantAccount merchantAccount = merchantAccounts.get(0);
 
+        Integer balance = merchantAccount.getBalance();
+        int i = merchantAccountExtMapper.updateByBalanceAndMerchantIdSelective(new Date(), 500, balance, merchantId);
+
+        System.out.println(i);
     }
+
+
 
 
 }

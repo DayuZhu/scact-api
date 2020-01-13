@@ -7,6 +7,7 @@ import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.mapper.auto.*;
+import com.sc.act.api.mapper.ext.MerchantAccountExtMapper;
 import com.sc.act.api.mapper.ext.TicketExtMapper;
 import com.sc.act.api.model.auto.*;
 import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
@@ -78,8 +79,16 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
     @Autowired
     private ProductTicketMapper productTicketMapper;
 
+    @Autowired
+    private MerchantAccountMapper merchantAccountMapper;
+
+    @Autowired
+    private MerchantAccountExtMapper merchantAccountExtMapper;
+
+    @Autowired
+    private MerchantAccountRecordMapper merchantAccountRecordMapper;
+
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list, Integer activityId) {
         LOG.info("进入处理中奖名单服务请求参数list={} activityId={}", JSON.toJSONString(list), activityId);
         //
@@ -103,7 +112,35 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
             throw new BaseRuntimeException(ResultEnum.ACTIVITY_COUPON_INSUFFICIENT);
         }
 
+        MerchantAccountExample merchantAccountExample = new MerchantAccountExample();
+        merchantAccountExample.createCriteria().andMerchantIdEqualTo(activity.getMerchantId());
+        List<MerchantAccount> merchantAccounts = merchantAccountMapper.selectByExample(merchantAccountExample);
+        if (CollectionUtils.isEmpty(merchantAccounts)) {
+            LOG.error("处理中奖名单券商户账户不存在list={} activityId={}", JSON.toJSONString(list), activityId);
+            throw new BaseRuntimeException(ResultEnum.MERCHANT_ACCOUNT_INFO_ERROR);
+        }
+
+        MerchantAccount merchantAccount = merchantAccounts.get(0);
+
+        Integer balance = merchantAccount.getBalance();
+        if (sum > balance) {
+            LOG.error("处理中奖名单券商户资金不足list={} activityId={}", JSON.toJSONString(list), activityId);
+            throw new BaseRuntimeException(ResultEnum.MERCHANT_ACCOUNT_MONEY_ERROR);
+        }
+
         Date currentTime = new Date();
+        int updateAccFlag = merchantAccountExtMapper.updateByBalanceAndMerchantIdSelective(
+                currentTime,
+                sum,
+                balance,
+                activity.getMerchantId());
+
+        if (updateAccFlag == 0) {
+            LOG.error("处理中奖名单券商户资金扣减异常list={} activityId={}", JSON.toJSONString(list), activityId);
+            throw new BaseRuntimeException(ResultEnum.MERCHANT_ACC_MONEY_ERROR);
+        }
+
+
         List<ProductPriceInfoBmo> productPriceInfoList = new ArrayList<>();
         for (ExcelWinnersInfoBmo excelWinnersInfoBmo : list) {
 
@@ -255,6 +292,17 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         activityWinners.setCreateTime(currentTime);
         activityWinners.setUpdateTime(currentTime);
         activityWinnersMapper.insertSelective(activityWinners);
+
+        MerchantAccountRecord merchantAccountRecord = new MerchantAccountRecord();
+        merchantAccountRecord.setMerchantId(activity.getMerchantId());
+        merchantAccountRecord.setRecordType(1);
+        merchantAccountRecord.setPayoutAmount(activityWinners.getAwardAmount());
+        merchantAccountRecord.setReasonDesc("活动中奖");
+        merchantAccountRecord.setActivityWinnersId(activityWinners.getActivityWinnersId());
+        merchantAccountRecord.setActivityId(activity.getActivityId());
+        merchantAccountRecord.setCreateTime(currentTime);
+        merchantAccountRecord.setUpdateTime(currentTime);
+        merchantAccountRecordMapper.insertSelective(merchantAccountRecord);
 
         Product productInsert = new Product();
         productInsert.setMarketPrice(excelWinnersInfoBmo.getAwardAmount());

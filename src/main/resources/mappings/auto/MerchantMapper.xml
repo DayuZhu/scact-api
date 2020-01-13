@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sc.act.api.mapper.auto.ActivityMapper">
-  <resultMap id="BaseResultMap" type="com.sc.act.api.model.auto.Activity">
-    <id column="activity_id" jdbcType="INTEGER" property="activityId" />
-    <result column="merchant_id" jdbcType="INTEGER" property="merchantId" />
-    <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
-    <result column="activity_desc" jdbcType="VARCHAR" property="activityDesc" />
-    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="state" jdbcType="TINYINT" property="state" />
-    <result column="remark1" jdbcType="VARCHAR" property="remark1" />
-    <result column="remark2" jdbcType="VARCHAR" property="remark2" />
-    <result column="remark3" jdbcType="VARCHAR" property="remark3" />
+<mapper namespace="com.sc.act.api.mapper.auto.MerchantMapper">
+  <resultMap id="BaseResultMap" type="com.sc.act.api.model.auto.Merchant">
+    <id column="merchant_id" jdbcType="INTEGER" property="merchantId" />
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+    <result column="social_code" jdbcType="VARCHAR" property="socialCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="mobile" jdbcType="BIGINT" property="mobile" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="boss_name" jdbcType="VARCHAR" property="bossName" />
+    <result column="boss_tel" jdbcType="BIGINT" property="bossTel" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
     <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
     <result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
@@ -78,17 +76,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    activity_id, merchant_id, activity_name, activity_desc, start_time, end_time, `state`, 
-    remark1, remark2, remark3, create_user_id, create_user_name, update_user_id, update_user_name, 
-    create_time, update_time
+    merchant_id, merchant_name, social_code, `name`, mobile, address, boss_name, boss_tel, 
+    create_user_id, create_user_name, update_user_id, update_user_name, create_time, 
+    update_time
   </sql>
-  <select id="selectByExample" parameterType="com.sc.act.api.model.auto.ActivityExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.sc.act.api.model.auto.MerchantExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from sc_activity
+    from sc_merchant
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -99,68 +97,60 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from sc_activity
-    where activity_id = #{activityId,jdbcType=INTEGER}
+    from sc_merchant
+    where merchant_id = #{merchantId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from sc_activity
-    where activity_id = #{activityId,jdbcType=INTEGER}
+    delete from sc_merchant
+    where merchant_id = #{merchantId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.sc.act.api.model.auto.ActivityExample">
-    delete from sc_activity
+  <delete id="deleteByExample" parameterType="com.sc.act.api.model.auto.MerchantExample">
+    delete from sc_merchant
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.sc.act.api.model.auto.Activity">
-    <selectKey keyProperty="activityId" order="AFTER" resultType="java.lang.Integer">
+  <insert id="insert" parameterType="com.sc.act.api.model.auto.Merchant">
+    <selectKey keyProperty="merchantId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sc_activity (merchant_id, activity_name, activity_desc, 
-      start_time, end_time, `state`, 
-      remark1, remark2, remark3, 
-      create_user_id, create_user_name, update_user_id, 
-      update_user_name, create_time, update_time
-      )
-    values (#{merchantId,jdbcType=INTEGER}, #{activityName,jdbcType=VARCHAR}, #{activityDesc,jdbcType=VARCHAR}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, 
-      #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, #{remark3,jdbcType=VARCHAR}, 
-      #{createUserId,jdbcType=INTEGER}, #{createUserName,jdbcType=VARCHAR}, #{updateUserId,jdbcType=INTEGER}, 
-      #{updateUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+    insert into sc_merchant (merchant_name, social_code, `name`, 
+      mobile, address, boss_name, 
+      boss_tel, create_user_id, create_user_name, 
+      update_user_id, update_user_name, create_time, 
+      update_time)
+    values (#{merchantName,jdbcType=VARCHAR}, #{socialCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{bossName,jdbcType=VARCHAR}, 
+      #{bossTel,jdbcType=BIGINT}, #{createUserId,jdbcType=INTEGER}, #{createUserName,jdbcType=VARCHAR}, 
+      #{updateUserId,jdbcType=INTEGER}, #{updateUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.Activity">
-    <selectKey keyProperty="activityId" order="AFTER" resultType="java.lang.Integer">
+  <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.Merchant">
+    <selectKey keyProperty="merchantId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sc_activity
+    insert into sc_merchant
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="merchantId != null">
-        merchant_id,
+      <if test="merchantName != null">
+        merchant_name,
       </if>
-      <if test="activityName != null">
-        activity_name,
+      <if test="socialCode != null">
+        social_code,
       </if>
-      <if test="activityDesc != null">
-        activity_desc,
+      <if test="name != null">
+        `name`,
       </if>
-      <if test="startTime != null">
-        start_time,
+      <if test="mobile != null">
+        mobile,
       </if>
-      <if test="endTime != null">
-        end_time,
+      <if test="address != null">
+        address,
       </if>
-      <if test="state != null">
-        `state`,
+      <if test="bossName != null">
+        boss_name,
       </if>
-      <if test="remark1 != null">
-        remark1,
-      </if>
-      <if test="remark2 != null">
-        remark2,
-      </if>
-      <if test="remark3 != null">
-        remark3,
+      <if test="bossTel != null">
+        boss_tel,
       </if>
       <if test="createUserId != null">
         create_user_id,
@@ -182,32 +172,26 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="merchantId != null">
-        #{merchantId,jdbcType=INTEGER},
+      <if test="merchantName != null">
+        #{merchantName,jdbcType=VARCHAR},
       </if>
-      <if test="activityName != null">
-        #{activityName,jdbcType=VARCHAR},
+      <if test="socialCode != null">
+        #{socialCode,jdbcType=VARCHAR},
       </if>
-      <if test="activityDesc != null">
-        #{activityDesc,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="startTime != null">
-        #{startTime,jdbcType=TIMESTAMP},
+      <if test="mobile != null">
+        #{mobile,jdbcType=BIGINT},
       </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=TIMESTAMP},
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
       </if>
-      <if test="state != null">
-        #{state,jdbcType=TINYINT},
+      <if test="bossName != null">
+        #{bossName,jdbcType=VARCHAR},
       </if>
-      <if test="remark1 != null">
-        #{remark1,jdbcType=VARCHAR},
-      </if>
-      <if test="remark2 != null">
-        #{remark2,jdbcType=VARCHAR},
-      </if>
-      <if test="remark3 != null">
-        #{remark3,jdbcType=VARCHAR},
+      <if test="bossTel != null">
+        #{bossTel,jdbcType=BIGINT},
       </if>
       <if test="createUserId != null">
         #{createUserId,jdbcType=INTEGER},
@@ -229,44 +213,38 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.sc.act.api.model.auto.ActivityExample" resultType="java.lang.Long">
-    select count(*) from sc_activity
+  <select id="countByExample" parameterType="com.sc.act.api.model.auto.MerchantExample" resultType="java.lang.Long">
+    select count(*) from sc_merchant
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update sc_activity
+    update sc_merchant
     <set>
-      <if test="record.activityId != null">
-        activity_id = #{record.activityId,jdbcType=INTEGER},
-      </if>
       <if test="record.merchantId != null">
         merchant_id = #{record.merchantId,jdbcType=INTEGER},
       </if>
-      <if test="record.activityName != null">
-        activity_name = #{record.activityName,jdbcType=VARCHAR},
+      <if test="record.merchantName != null">
+        merchant_name = #{record.merchantName,jdbcType=VARCHAR},
       </if>
-      <if test="record.activityDesc != null">
-        activity_desc = #{record.activityDesc,jdbcType=VARCHAR},
+      <if test="record.socialCode != null">
+        social_code = #{record.socialCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.startTime != null">
-        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.endTime != null">
-        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=BIGINT},
       </if>
-      <if test="record.state != null">
-        `state` = #{record.state,jdbcType=TINYINT},
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
       </if>
-      <if test="record.remark1 != null">
-        remark1 = #{record.remark1,jdbcType=VARCHAR},
+      <if test="record.bossName != null">
+        boss_name = #{record.bossName,jdbcType=VARCHAR},
       </if>
-      <if test="record.remark2 != null">
-        remark2 = #{record.remark2,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remark3 != null">
-        remark3 = #{record.remark3,jdbcType=VARCHAR},
+      <if test="record.bossTel != null">
+        boss_tel = #{record.bossTel,jdbcType=BIGINT},
       </if>
       <if test="record.createUserId != null">
         create_user_id = #{record.createUserId,jdbcType=INTEGER},
@@ -292,17 +270,15 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update sc_activity
-    set activity_id = #{record.activityId,jdbcType=INTEGER},
-      merchant_id = #{record.merchantId,jdbcType=INTEGER},
-      activity_name = #{record.activityName,jdbcType=VARCHAR},
-      activity_desc = #{record.activityDesc,jdbcType=VARCHAR},
-      start_time = #{record.startTime,jdbcType=TIMESTAMP},
-      end_time = #{record.endTime,jdbcType=TIMESTAMP},
-      `state` = #{record.state,jdbcType=TINYINT},
-      remark1 = #{record.remark1,jdbcType=VARCHAR},
-      remark2 = #{record.remark2,jdbcType=VARCHAR},
-      remark3 = #{record.remark3,jdbcType=VARCHAR},
+    update sc_merchant
+    set merchant_id = #{record.merchantId,jdbcType=INTEGER},
+      merchant_name = #{record.merchantName,jdbcType=VARCHAR},
+      social_code = #{record.socialCode,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      boss_name = #{record.bossName,jdbcType=VARCHAR},
+      boss_tel = #{record.bossTel,jdbcType=BIGINT},
       create_user_id = #{record.createUserId,jdbcType=INTEGER},
       create_user_name = #{record.createUserName,jdbcType=VARCHAR},
       update_user_id = #{record.updateUserId,jdbcType=INTEGER},
@@ -313,35 +289,29 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sc.act.api.model.auto.Activity">
-    update sc_activity
+  <update id="updateByPrimaryKeySelective" parameterType="com.sc.act.api.model.auto.Merchant">
+    update sc_merchant
     <set>
-      <if test="merchantId != null">
-        merchant_id = #{merchantId,jdbcType=INTEGER},
+      <if test="merchantName != null">
+        merchant_name = #{merchantName,jdbcType=VARCHAR},
       </if>
-      <if test="activityName != null">
-        activity_name = #{activityName,jdbcType=VARCHAR},
+      <if test="socialCode != null">
+        social_code = #{socialCode,jdbcType=VARCHAR},
       </if>
-      <if test="activityDesc != null">
-        activity_desc = #{activityDesc,jdbcType=VARCHAR},
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="startTime != null">
-        start_time = #{startTime,jdbcType=TIMESTAMP},
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=BIGINT},
       </if>
-      <if test="endTime != null">
-        end_time = #{endTime,jdbcType=TIMESTAMP},
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="state != null">
-        `state` = #{state,jdbcType=TINYINT},
+      <if test="bossName != null">
+        boss_name = #{bossName,jdbcType=VARCHAR},
       </if>
-      <if test="remark1 != null">
-        remark1 = #{remark1,jdbcType=VARCHAR},
-      </if>
-      <if test="remark2 != null">
-        remark2 = #{remark2,jdbcType=VARCHAR},
-      </if>
-      <if test="remark3 != null">
-        remark3 = #{remark3,jdbcType=VARCHAR},
+      <if test="bossTel != null">
+        boss_tel = #{bossTel,jdbcType=BIGINT},
       </if>
       <if test="createUserId != null">
         create_user_id = #{createUserId,jdbcType=INTEGER},
@@ -362,25 +332,23 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where activity_id = #{activityId,jdbcType=INTEGER}
+    where merchant_id = #{merchantId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sc.act.api.model.auto.Activity">
-    update sc_activity
-    set merchant_id = #{merchantId,jdbcType=INTEGER},
-      activity_name = #{activityName,jdbcType=VARCHAR},
-      activity_desc = #{activityDesc,jdbcType=VARCHAR},
-      start_time = #{startTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP},
-      `state` = #{state,jdbcType=TINYINT},
-      remark1 = #{remark1,jdbcType=VARCHAR},
-      remark2 = #{remark2,jdbcType=VARCHAR},
-      remark3 = #{remark3,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.sc.act.api.model.auto.Merchant">
+    update sc_merchant
+    set merchant_name = #{merchantName,jdbcType=VARCHAR},
+      social_code = #{socialCode,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      boss_name = #{bossName,jdbcType=VARCHAR},
+      boss_tel = #{bossTel,jdbcType=BIGINT},
       create_user_id = #{createUserId,jdbcType=INTEGER},
       create_user_name = #{createUserName,jdbcType=VARCHAR},
       update_user_id = #{updateUserId,jdbcType=INTEGER},
       update_user_name = #{updateUserName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where activity_id = #{activityId,jdbcType=INTEGER}
+    where merchant_id = #{merchantId,jdbcType=INTEGER}
   </update>
 </mapper>
