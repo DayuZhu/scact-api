@@ -1,0 +1,151 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html,body{
+    height: 100%;
+}
+
+body{
+    background: #fff;
+}
+
+.content{
+    padding: 20px;
+}
+
+.login-wrap{
+    background: #324157;
+}
+
+.pagination{
+    text-align: center;
+    padding: 20px;
+}
+
+.formSelect .el-select{
+    width: 300px;
+}
+
+.adFile{
+    display: inline-block;
+    background: #409EFF;
+    padding: 12px 20px;
+    line-height: normal;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.adFile input{
+    display: none;
+}
+
+.el-table .cell img{
+    width: 200px;
+    display: block;
+    margin: 0 auto;
+}
+
+.wrapper{
+    position: relative;
+    height: 100%;
+    padding: 80px 0 0 170px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    background: #242f42;
+    color: #fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index:10;
+}
+
+.header h2{
+    font-size: 20px;
+    padding: 0 20px;
+}
+
+.userInfo{
+    padding: 0 20px;
+}
+
+.userInfo a{
+    color: #fff;
+}
+
+.el-menu{
+    position: fixed;
+    left:0;
+    top: 80px;
+    bottom: 0;
+    width: 170px;
+    border: 0 none;
+    background:rgb(50, 65, 87);
+}
+
+.el-menu-item{
+    width: 100%;
+}
+
+.el-menu-item.is-active{
+    background: #fff;
+}
+
+.cell button{
+    padding: 6px 10px;
+}
+
+.el-form-item{
+  margin-bottom: 20px;
+}
+
+.el-select-dropdown__item span:nth-child(2){
+  display: inline-block;
+  width: 12px;
+  height:12px;
+  position: absolute;
+  right: 10px;
+  top:10px;
+}
+
+.bannerImg span{
+  display: block;
+}
+
+.dialog-footer{
+  text-align: center;
+}
+
+.el-table .cell .aPush{
+  color: #3a8ee6;
+  cursor: pointer;
+}
+
+
+
+.bannerImg span{
+    padding-right: 30px;
+    position: relative;
+}
+
+.bannerImg span i{
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 20px;
+    font-style: normal;
+    color: red;
+}
+
+.el-menu{
+    overflow-y: auto;
+}

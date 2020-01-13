@@ -191,6 +191,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.set(CommonConstant.X_REQUESTED_WITH, CommonConstant.XMLHTTPREQUEST);
         ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = restTemplate
                 .exchange(
                         b2cUrl,
@@ -201,7 +202,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
 
         Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
         if (!ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
-            LOG.error("处理中奖名单调用B2C返回码错误list={} activityId={}", JSON.toJSONString(list), activityId);
+            LOG.error("处理中奖名单调用B2C返回码={}错误list={} activityId={}", body.getRetCode(), JSON.toJSONString(list), activityId);
             throw new BaseRuntimeException(ResultEnum.PRODUCT_OUT_PRODUCTID_B2C_ERROR);
         }
 

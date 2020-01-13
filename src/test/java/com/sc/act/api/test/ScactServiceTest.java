@@ -16,6 +16,7 @@ import com.sc.act.api.model.auto.MerchantAccount;
 import com.sc.act.api.model.auto.MerchantAccountExample;
 import com.sc.act.api.model.auto.Ticket;
 import com.sc.act.api.model.auto.TicketExample;
+import com.sc.act.api.model.bo.ProductPriceInfoBmo;
 import com.sc.act.api.model.bo.ProductShopXoBmo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
@@ -242,6 +243,39 @@ public class ScactServiceTest {
         int i = merchantAccountExtMapper.updateByBalanceAndMerchantIdSelective(new Date(), 500, balance, merchantId);
 
         System.out.println(i);
+    }
+
+    @Test
+    public void test07() {
+        List<ProductPriceInfoBmo> productPriceInfoList = new ArrayList<>();
+        ProductPriceInfoBmo productPriceInfoBmo = new ProductPriceInfoBmo();
+        productPriceInfoBmo.setProductId(143);
+        productPriceInfoBmo.setPrice(10300);
+        productPriceInfoList.add(productPriceInfoBmo);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.set(CommonConstant.X_REQUESTED_WITH, CommonConstant.XMLHTTPREQUEST);
+        try {
+            ResponseEntity<Result<List<ProductShopXoBmo>>> responseEntity = restTemplate
+                    .exchange(
+                            b2cUrl,
+                            HttpMethod.POST,
+                            new HttpEntity<>(JSON.toJSONString(productPriceInfoList), headers),
+                            new ParameterizedTypeReference<Result<List<ProductShopXoBmo>>>() {
+                            });
+
+            Result<List<ProductShopXoBmo>> body = responseEntity.getBody();
+            if (!ResultEnum.SUCCESS.getCode().equals(body.getRetCode())) {
+                LOG.error("处理中奖名单调用B2C返回码错误");
+                throw new BaseRuntimeException(ResultEnum.PRODUCT_OUT_PRODUCTID_B2C_ERROR);
+            }
+            List<ProductShopXoBmo> data = body.getData();
+            System.out.println(JSON.toJSONString(data));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
