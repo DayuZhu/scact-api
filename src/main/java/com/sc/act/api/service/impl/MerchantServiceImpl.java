@@ -2,7 +2,10 @@ package com.sc.act.api.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
+import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.PageResponse;
+import com.sc.act.api.commons.web.enums.ResultEnum;
+import com.sc.act.api.commons.web.util.StringUtil;
 import com.sc.act.api.mapper.auto.MerchantAccInfoMapper;
 import com.sc.act.api.mapper.auto.MerchantAccountMapper;
 import com.sc.act.api.mapper.auto.MerchantMapper;
@@ -54,6 +57,12 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public void insertMerchant(MerchantRequest merchantRequest) {
         LOG.info("进入创建商户服务请求参数{}", merchantRequest.toString());
+
+        if (!StringUtil.isTelNum(String.valueOf(merchantRequest.getMobile()))) {
+            LOG.error("进入创建商户服务手机号不正确请求参数{}", merchantRequest.toString());
+            throw new BaseRuntimeException(ResultEnum.MERCHANT_TEL_ERROR);
+        }
+
         Date currentTime = new Date();
 
         //创建商户

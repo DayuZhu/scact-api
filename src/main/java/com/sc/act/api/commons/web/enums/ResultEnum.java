@@ -62,6 +62,7 @@ public enum ResultEnum implements IResultEnum {
     MERCHANT_ACCOUNT_INFO_ERROR("-125", "商户账户不存在", "商户账户不存在"),
     MERCHANT_ACCOUNT_MONEY_ERROR("-126", "商户资金不足", "商户资金不足"),
     MERCHANT_ACC_MONEY_ERROR("-127", "商户资金扣减异常", "商户资金扣减异常"),
+    MERCHANT_TEL_ERROR("-128", "手机号不正确", "手机号不正确"),
     ACTIVITY_COUPON_INSUFFICIENT("-107", "券数量金额不足", "券数量金额不足");
 
     ResultEnum(String code, String message, String desc) {

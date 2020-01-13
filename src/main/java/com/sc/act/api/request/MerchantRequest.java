@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 /**
  * 功能描述: 商户请求类
@@ -36,7 +35,6 @@ public class MerchantRequest extends BasePojo {
 
     @ApiModelProperty("法人手机号")
     @NotNull
-    @Pattern(regexp = "^1[3-9]\\d{9}$", message = "请输入正确的手机号")
     private Long mobile;
 
     @ApiModelProperty("开户行")
