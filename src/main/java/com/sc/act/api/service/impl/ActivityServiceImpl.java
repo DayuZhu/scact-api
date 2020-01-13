@@ -5,8 +5,10 @@ import com.github.pagehelper.PageSerializable;
 import com.sc.act.api.commons.web.base.PageResponse;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.mapper.auto.ActivityMapper;
+import com.sc.act.api.mapper.auto.MerchantMapper;
 import com.sc.act.api.model.auto.Activity;
 import com.sc.act.api.model.auto.ActivityExample;
+import com.sc.act.api.model.auto.Merchant;
 import com.sc.act.api.request.ActivityListRequest;
 import com.sc.act.api.request.ActivityRequest;
 import com.sc.act.api.response.ActivityContentResponse;
@@ -39,6 +41,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     private ActivityMapper activityMapper;
+
+    @Autowired
+    private MerchantMapper merchantMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -103,6 +108,11 @@ public class ActivityServiceImpl implements ActivityService {
             return activityContentResponse;
         }
         BeanUtils.copyProperties(activity, activityContentResponse);
+        Merchant merchant = merchantMapper.selectByPrimaryKey(activity.getMerchantId());
+        if (null != merchant) {
+            activityContentResponse.setMerchantName(merchant.getMerchantName());
+        }
+
         return activityContentResponse;
     }
 
@@ -138,6 +148,10 @@ public class ActivityServiceImpl implements ActivityService {
         activityList.forEach(activity -> {
             ActivityResponse activityResponse = new ActivityResponse();
             BeanUtils.copyProperties(activity, activityResponse);
+            Merchant merchant = merchantMapper.selectByPrimaryKey(activity.getMerchantId());
+            if (null != merchant) {
+                activityResponse.setMerchantName(merchant.getMerchantName());
+            }
             list.add(activityResponse);
         });
         return response;
