@@ -58,6 +58,11 @@ public class ActivityContentResponse extends BasePojo {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
+    @ApiModelProperty("商户id")
+    private Integer merchantId;
+
+    @ApiModelProperty("商户名称")
+    private String merchantName;
 
     public Integer getActivityId() {
         return this.activityId;
@@ -155,5 +160,19 @@ public class ActivityContentResponse extends BasePojo {
         this.updateTime = updateTime;
     }
 
+    public Integer getMerchantId() {
+        return merchantId;
+    }
 
+    public void setMerchantId(Integer merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
 }
