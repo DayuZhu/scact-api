@@ -1,7 +1,6 @@
 package com.sc.act.api.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageHelper;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
@@ -14,6 +13,7 @@ import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
 import com.sc.act.api.model.bo.ProductPriceInfoBmo;
 import com.sc.act.api.model.bo.ProductShopXoBmo;
 import com.sc.act.api.response.ActivityWinnersUserAccResponse;
+import com.sc.act.api.service.ActivityWinnersProductService;
 import com.sc.act.api.service.ActivityWinnersService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
     private MerchantAccountExtMapper merchantAccountExtMapper;
 
     @Autowired
-    private MerchantAccountRecordMapper merchantAccountRecordMapper;
+    private ActivityWinnersProductService activityWinnersProductService;
 
     @Override
     public void handlerWinnersInfo(List<ExcelWinnersInfoBmo> list, Integer activityId) {
@@ -150,45 +149,8 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
 
 
         List<ProductPriceInfoBmo> productPriceInfoList = new ArrayList<>();
-        for (ExcelWinnersInfoBmo excelWinnersInfoBmo : list) {
-
-            Integer awardAmount = excelWinnersInfoBmo.getAwardAmount();
-            if (awardAmount == 0) {
-                continue;
-            }
-
-            UserExample userExample = new UserExample();
-            UserExample.Criteria userCriteria = userExample.createCriteria();
-            userCriteria.andMobileEqualTo(excelWinnersInfoBmo.getMobile());
-            List<User> users = userMapper.selectByExample(userExample);
-
-            if (CollectionUtils.isNotEmpty(users)) {
-                User user = users.get(0);
-                User userRecord = new User();
-                userRecord.setUserId(user.getUserId());
-                userRecord.setName(excelWinnersInfoBmo.getName());
-                userRecord.setUpdateTime(currentTime);
-                userMapper.updateByPrimaryKeySelective(userRecord);
-                UserAccInfo userAccInfo = insertOrUpdateUserAccInfo(excelWinnersInfoBmo, user, currentTime);
-                //创建中奖人
-                ProductPriceInfoBmo productPriceInfoBmo = insertActivityWinners(excelWinnersInfoBmo, userAccInfo, user, currentTime, activity);
-                productPriceInfoList.add(productPriceInfoBmo);
-
-            } else {
-                User user = new User();
-                user.setName(excelWinnersInfoBmo.getName());
-                user.setMobile(excelWinnersInfoBmo.getMobile());
-                user.setCreateTime(currentTime);
-                user.setUpdateTime(currentTime);
-                userMapper.insertSelective(user);
-                UserAccInfo userAccInfo = insertOrUpdateUserAccInfo(excelWinnersInfoBmo, user, currentTime);
-                //创建中奖人
-                ProductPriceInfoBmo productPriceInfoBmo = insertActivityWinners(excelWinnersInfoBmo, userAccInfo, user, currentTime, activity);
-                productPriceInfoList.add(productPriceInfoBmo);
-            }
-
-
-        }
+        //处理中奖名单
+        activityWinnersProductService.createWinnersProductInfo(list, activity, currentTime, productPriceInfoList);
 
         if (CollectionUtils.isEmpty(productPriceInfoList)) {
             LOG.info("进入处理中奖名单调用B2C新建产品信息为空开始productIdList={}服务参数list={} activityId={}",
@@ -255,183 +217,6 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                 activityId);
 
 
-    }
-
-
-    private UserAccInfo insertOrUpdateUserAccInfo(ExcelWinnersInfoBmo excelWinnersInfoBmo, User user, Date currentTime) {
-
-        UserAccInfoExample userAccInfoExample = new UserAccInfoExample();
-        UserAccInfoExample.Criteria userAccInfoCriteria = userAccInfoExample.createCriteria();
-        userAccInfoCriteria.andUserIdEqualTo(user.getUserId());
-        userAccInfoCriteria.andCardNumberEqualTo(excelWinnersInfoBmo.getCardNumber());
-        List<UserAccInfo> userAccInfos = userAccInfoMapper.selectByExample(userAccInfoExample);
-        if (CollectionUtils.isNotEmpty(userAccInfos)) {
-            UserAccInfo userAccInfo = userAccInfos.get(0);
-            UserAccInfo userAccInfoUpdate = new UserAccInfo();
-            userAccInfoUpdate.setUserAccInfoId(userAccInfo.getUserAccInfoId());
-            userAccInfoUpdate.setCardName(excelWinnersInfoBmo.getCardName());
-            userAccInfoUpdate.setBankName(excelWinnersInfoBmo.getBankName());
-            userAccInfoUpdate.setUpdateTime(currentTime);
-            userAccInfoMapper.updateByPrimaryKeySelective(userAccInfoUpdate);
-            return userAccInfo;
-        } else {
-            UserAccInfo userAccInfoInsert = new UserAccInfo();
-            userAccInfoInsert.setUserId(user.getUserId());
-            userAccInfoInsert.setCardName(excelWinnersInfoBmo.getCardName());
-            userAccInfoInsert.setBankName(excelWinnersInfoBmo.getBankName());
-            userAccInfoInsert.setCardNumber(excelWinnersInfoBmo.getCardNumber());
-            userAccInfoInsert.setCreateTime(currentTime);
-            userAccInfoInsert.setUpdateTime(currentTime);
-            userAccInfoMapper.insertSelective(userAccInfoInsert);
-            return userAccInfoInsert;
-        }
-    }
-
-    private ProductPriceInfoBmo insertActivityWinners(ExcelWinnersInfoBmo excelWinnersInfoBmo,
-                                                      UserAccInfo userAccInfo,
-                                                      User user,
-                                                      Date currentTime,
-                                                      Activity activity) {
-        ActivityWinners activityWinners = new ActivityWinners();
-        activityWinners.setActivityId(activity.getActivityId());
-        activityWinners.setUserId(user.getUserId());
-        activityWinners.setUserAccInfoId(userAccInfo.getUserAccInfoId());
-        activityWinners.setAwardAmount(excelWinnersInfoBmo.getAwardAmount());
-        activityWinners.setCreateTime(currentTime);
-        activityWinners.setUpdateTime(currentTime);
-        activityWinnersMapper.insertSelective(activityWinners);
-
-        MerchantAccountRecord merchantAccountRecord = new MerchantAccountRecord();
-        merchantAccountRecord.setMerchantId(activity.getMerchantId());
-        merchantAccountRecord.setRecordType(1);
-        merchantAccountRecord.setPayoutAmount(activityWinners.getAwardAmount());
-        merchantAccountRecord.setReasonDesc("活动中奖");
-        merchantAccountRecord.setActivityWinnersId(activityWinners.getActivityWinnersId());
-        merchantAccountRecord.setActivityId(activity.getActivityId());
-        merchantAccountRecord.setCreateTime(currentTime);
-        merchantAccountRecord.setUpdateTime(currentTime);
-        merchantAccountRecordMapper.insertSelective(merchantAccountRecord);
-
-        Product productInsert = new Product();
-        productInsert.setMarketPrice(excelWinnersInfoBmo.getAwardAmount());
-        productInsert.setSellPrice(excelWinnersInfoBmo.getAwardAmount());
-        productInsert.setState(CommonConstant.PRODUCT_STATE_1);
-        productInsert.setCreateTime(currentTime);
-        productInsert.setUpdateTime(currentTime);
-        productMapper.insertSelective(productInsert);
-
-        ActivityWinsPdt activityWinsPdt = new ActivityWinsPdt();
-        activityWinsPdt.setActivityWinnersId(activityWinners.getActivityWinnersId());
-        activityWinsPdt.setActivityId(activity.getActivityId());
-        activityWinsPdt.setProductId(productInsert.getProductId());
-        activityWinsPdt.setCreateTime(currentTime);
-        activityWinsPdt.setUpdateTime(currentTime);
-        activityWinsPdtMapper.insertSelective(activityWinsPdt);
-
-
-        //关联券
-
-        List<Integer> list = ticketExtMapper.selectDistinctNominalValue();
-
-        List<Ticket> resultTicket = new ArrayList<>();
-
-        matchTiket(excelWinnersInfoBmo, list, resultTicket);
-
-        if (CollectionUtils.isEmpty(resultTicket)) {
-            LOG.error("处理中奖名单没用匹配到券信息");
-            throw new BaseRuntimeException(ResultEnum.PRODUCT_TICKET_INFO_ERROR);
-        }
-
-        for (Ticket ticket : resultTicket) {
-            ProductTicket productTicket = new ProductTicket();
-            productTicket.setProductId(productInsert.getProductId());
-            productTicket.setTicketId(ticket.getTicketId());
-            productTicket.setCreateTime(currentTime);
-            productTicket.setUpdateTime(currentTime);
-            productTicketMapper.insertSelective(productTicket);
-        }
-
-        Ticket updTicket = new Ticket();
-        updTicket.setState(CommonConstant.PRODUCT_TICKET_1);
-        TicketExample updTicketExample = new TicketExample();
-        updTicketExample.createCriteria().andTicketIdIn(resultTicket.stream().map(Ticket::getTicketId).collect(Collectors.toList()));
-        ticketMapper.updateByExampleSelective(updTicket, updTicketExample);
-
-        ProductPriceInfoBmo productPriceInfoBmo = new ProductPriceInfoBmo();
-        productPriceInfoBmo.setProductId(productInsert.getProductId());
-        productPriceInfoBmo.setPrice(productInsert.getSellPrice());
-        return productPriceInfoBmo;
-
-    }
-
-    private void matchTiket(ExcelWinnersInfoBmo excelWinnersInfoBmo, List<Integer> list, List<Ticket> resultTicket) {
-        int yu = excelWinnersInfoBmo.getAwardAmount();
-        for (Integer price : list) {
-            int sum = resultTicket.stream().mapToInt(Ticket::getNominalValue).sum();
-            if (sum == excelWinnersInfoBmo.getAwardAmount()) {
-                break;
-            }
-            if (yu < price) {
-                continue;
-            }
-
-            int count = queryTicketCount(price);
-            if (count == 0) {
-                continue;
-            }
-
-            int i = yu % price;
-            if (i == 0) {
-                int pageSize = yu / price;
-                if (pageSize > count) {
-                    List<Ticket> tickets = queryTicketInfo(price, count);
-                    //绑定券
-                    resultTicket.addAll(tickets);
-                    yu = yu - price * count;
-                    continue;
-                }
-
-                List<Ticket> tickets = queryTicketInfo(price, pageSize);
-                //绑定券
-                resultTicket.addAll(tickets);
-
-            } else {
-                int pageSize = yu / price;
-                if (pageSize > count) {
-                    List<Ticket> tickets = queryTicketInfo(price, count);
-                    //绑定券
-                    resultTicket.addAll(tickets);
-                    yu = yu - price * count;
-                    continue;
-                }
-
-                List<Ticket> tickets = queryTicketInfo(price, pageSize);
-                //绑定券
-                resultTicket.addAll(tickets);
-                yu = yu % price;
-            }
-        }
-    }
-
-    private int queryTicketCount(Integer price) {
-
-        TicketExample ticketExample = new TicketExample();
-        TicketExample.Criteria criteria = ticketExample.createCriteria();
-        criteria.andStateEqualTo(CommonConstant.PRODUCT_TICKET_0);
-        criteria.andNominalValueEqualTo(price);
-        long l = ticketMapper.countByExample(ticketExample);
-        return (int) l;
-    }
-
-    private List<Ticket> queryTicketInfo(Integer price, int pageSize) {
-
-        TicketExample ticketExample = new TicketExample();
-        ticketExample.setOrderByClause(" ticket_id desc");
-        TicketExample.Criteria criteria = ticketExample.createCriteria();
-        criteria.andStateEqualTo(CommonConstant.PRODUCT_TICKET_0);
-        criteria.andNominalValueEqualTo(price);
-        PageHelper.startPage(1, pageSize, false);
-        return ticketMapper.selectByExample(ticketExample);
     }
 
 
