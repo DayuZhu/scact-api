@@ -100,6 +100,14 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
             throw new BaseRuntimeException(ResultEnum.ACTIVITY_NULL);
         }
 
+        ActivityWinsPdtExample activityWinsPdtExample = new ActivityWinsPdtExample();
+        activityWinsPdtExample.createCriteria().andActivityIdEqualTo(activityId);
+        List<ActivityWinsPdt> activityWinsPdts = activityWinsPdtMapper.selectByExample(activityWinsPdtExample);
+        if (CollectionUtils.isNotEmpty(activityWinsPdts)) {
+            LOG.error("处理中奖名单该活动已绑定产品请重新建立活动list={} activityId={}", JSON.toJSONString(list), activityId);
+            throw new BaseRuntimeException(ResultEnum.ACTIVITY_PRODUCT_EXIST);
+        }
+
         int sum = list.stream().mapToInt(ExcelWinnersInfoBmo::getAwardAmount).sum();
         Integer total = ticketExtMapper.selectNominalValueTotal();
         if (null == total) {
