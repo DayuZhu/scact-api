@@ -11,6 +11,8 @@ import com.sc.act.api.request.BankInfoRequest;
 import com.sc.act.api.response.BankInfoContentResponse;
 import com.sc.act.api.response.BankInfoResponse;
 import com.sc.act.api.service.BankInfoService;
+import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -37,42 +39,6 @@ public class BankInfoServiceImpl implements BankInfoService {
     @Autowired
     private BankInfoMapper bankInfoMapper;
 
-    @Override
-    public void insertBankInfo(BankInfoRequest bankInfoRequest) {
-        LOG.info("进入创建银行信息服务请求参数{}", bankInfoRequest.toString());
-
-        //TODO 必要的校验，如去重校验
-
-        //TODO 统一入库时间
-        Date currentTime = new Date();
-
-
-        BankInfo bankInfo = new BankInfo();
-        BeanUtils.copyProperties(bankInfoRequest, bankInfo);
-
-        //TODO 必要的逻辑补充，如默认数据状态补充
-
-        bankInfoMapper.insertSelective(bankInfo);
-
-    }
-
-    @Override
-    public void updateBankInfo(BankInfoRequest bankInfoRequest) {
-        LOG.info("进入更新银行信息服务请求参数{}", bankInfoRequest.toString());
-
-        //TODO 必要的业务校验
-
-        //TODO 统一入库时间
-        Date currentTime = new Date();
-
-
-        BankInfo bankInfo = new BankInfo();
-        BeanUtils.copyProperties(bankInfoRequest, bankInfo);
-
-        //TODO 必要的逻辑补充，如默认数据状态补充
-
-        bankInfoMapper.updateByPrimaryKeySelective(bankInfo);
-    }
 
     @Override
     public BankInfoContentResponse selectBankInfoContent(Integer bankInfoId) {
@@ -82,10 +48,6 @@ public class BankInfoServiceImpl implements BankInfoService {
         if (null == bankInfo) {
             return bankInfoContentResponse;
         }
-
-        //TODO 必要业务逻辑补充
-
-        //TODO 有些不需要的字段，可以不用 bean copy
         BeanUtils.copyProperties(bankInfo, bankInfoContentResponse);
 
         return bankInfoContentResponse;
@@ -98,10 +60,29 @@ public class BankInfoServiceImpl implements BankInfoService {
         bankInfoExample.setOrderByClause("bank_info_id desc");
         BankInfoExample.Criteria criteria = bankInfoExample.createCriteria();
 
-        //TODO 必要的业务查询条件补充
         if (null != bankInfoListRequest.getBankInfoId()) {
             criteria.andBankInfoIdEqualTo(bankInfoListRequest.getBankInfoId());
         }
+
+        if (StringUtils.isNotBlank(bankInfoListRequest.getBankName())) {
+            criteria.andBankNameLike(bankInfoListRequest.getBankName() + "%");
+        }
+
+        if (StringUtils.isNotBlank(bankInfoListRequest.getProvinceName())) {
+            criteria.andProvinceNameLike(bankInfoListRequest.getProvinceName() + "%");
+        }
+        if (StringUtils.isNotBlank(bankInfoListRequest.getCityName())) {
+            criteria.andCityNameLike(bankInfoListRequest.getCityName() + "%");
+        }
+
+        if (StringUtils.isNotBlank(bankInfoListRequest.getBankSubCode())) {
+            criteria.andBankSubCodeEqualTo(bankInfoListRequest.getBankSubCode());
+        }
+
+        if (StringUtils.isNotBlank(bankInfoListRequest.getBankSubName())) {
+            criteria.andBankSubNameLike(bankInfoListRequest.getBankSubName() + "%");
+        }
+
 
         PageHelper.startPage(bankInfoListRequest.getPageIndex(), bankInfoListRequest.getPageSize());
         List<BankInfo> bankInfoList = bankInfoMapper.selectByExample(bankInfoExample);
@@ -112,8 +93,6 @@ public class BankInfoServiceImpl implements BankInfoService {
         response.setList(list);
         bankInfoList.forEach(bankInfo -> {
             BankInfoResponse bankInfoResponse = new BankInfoResponse();
-
-            //TODO 有些不需要的字段，可以不用 bean copy
             BeanUtils.copyProperties(bankInfo, bankInfoResponse);
 
             list.add(bankInfoResponse);

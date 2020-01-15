@@ -36,21 +36,6 @@ public class BankInfoController extends BaseController {
     @Autowired
     private BankInfoService bankInfoService;
 
-    @ApiOperation("创建或更新银行信息")
-    @PostMapping("/create_modify")
-    public Result creationOrModify(@RequestBody @Valid BankInfoRequest bankInfoRequest) {
-        LOG.info("创建或更新银行信息请求参数{}", bankInfoRequest.toString());
-        Result result = new Result();
-
-        if (null != bankInfoRequest.getBankInfoId()) {
-            bankInfoService.updateBankInfo(bankInfoRequest);
-        } else {
-            bankInfoService.insertBankInfo(bankInfoRequest);
-        }
-        result.setRetMsg("操作成功");
-        return result;
-    }
-
     @ApiOperation("查询银行信息")
     @GetMapping("/info")
     public Result<BankInfoContentResponse> queryInfo(@NotNull @RequestParam(name = "bankInfoId") Integer bankInfoId) {
@@ -73,6 +58,8 @@ public class BankInfoController extends BaseController {
         result.setData(response);
         return result;
     }
+
+
 
 
 }

@@ -2,7 +2,6 @@ package com.sc.act.api.service;
 
 import com.sc.act.api.commons.web.base.PageResponse;
 import com.sc.act.api.request.BankInfoListRequest;
-import com.sc.act.api.request.BankInfoRequest;
 import com.sc.act.api.response.BankInfoContentResponse;
 import com.sc.act.api.response.BankInfoResponse;
 
@@ -15,21 +14,6 @@ import com.sc.act.api.response.BankInfoResponse;
  * @date: 2020-01-15 19:27:45
  */
 public interface BankInfoService {
-
-    /**
-     * 新增银行信息
-     *
-     * @param bankInfoRequest
-     */
-    void insertBankInfo(BankInfoRequest bankInfoRequest);
-
-
-    /**
-     * 更新银行信息
-     *
-     * @param bankInfoRequest
-     */
-    void updateBankInfo(BankInfoRequest bankInfoRequest);
 
 
     /**
