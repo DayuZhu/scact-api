@@ -92,6 +92,7 @@ public class MerchantServiceImpl implements MerchantService {
         merchantAccInfo.setState(1);
         merchantAccInfo.setCreateTime(currentTime);
         merchantAccInfo.setUpdateTime(currentTime);
+        merchantAccInfo.setBankInfoId(merchantRequest.getBankInfoId());
         merchantAccInfoMapper.insertSelective(merchantAccInfo);
 
         //录入商户余额

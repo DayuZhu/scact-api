@@ -61,6 +61,10 @@ public class MerchantRequest extends BasePojo {
     @NotNull
     private Integer balance;
 
+    @ApiModelProperty("银行卡信息主键id")
+    @NotNull
+    private Integer bankInfoId;
+
     @ApiModelProperty("创建人")
     private Integer createUserId;
 
@@ -194,5 +198,14 @@ public class MerchantRequest extends BasePojo {
 
     public void setUpdateUserName(String updateUserName) {
         this.updateUserName = updateUserName;
+    }
+
+    @NotNull
+    public Integer getBankInfoId() {
+        return bankInfoId;
+    }
+
+    public void setBankInfoId(@NotNull Integer bankInfoId) {
+        this.bankInfoId = bankInfoId;
     }
 }
