@@ -231,14 +231,14 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         }
 
         //更新product
-        for (ProductShopXoBmo productShopXoBmo : listResponse) {
+        listResponse.forEach(productShopXoBmo->{
             Product updRecord = new Product();
             updRecord.setProductId(productShopXoBmo.getProductId());
             updRecord.setProductName(productShopXoBmo.getProductName());
             updRecord.setOutProductId(productShopXoBmo.getOutProductId());
             updRecord.setOutProductPlatform(CommonConstant.PRODUCT_PLATFORM_SHOPXO_0);
             productMapper.updateByPrimaryKeySelective(updRecord);
-        }
+        });
 
         LOG.info("进入处理中奖名单调用B2C新建产品信息结束b2c返回{}productIdList={}服务参数list={} activityId={}",
                 JSON.toJSONString(listResponse),
