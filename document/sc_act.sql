@@ -22,6 +22,7 @@ CREATE TABLE `sc_acc_sep_record` (
 
 CREATE TABLE `sc_activity` (
   `activity_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `merchant_id` int unsigned NOT NULL DEFAULT '0' COMMENT '商户ID',
   `activity_name` varchar(128) NOT NULL DEFAULT '' COMMENT '活动名称',
   `activity_desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '活动描述',
   `start_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '活动开始时间',
