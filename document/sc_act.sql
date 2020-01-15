@@ -184,3 +184,22 @@ CREATE TABLE `sc_merchant_account_record` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商户资金记录表';
 
 
+CREATE TABLE `sc_bank info` (
+  `bank info_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `bank_name` varchar(64) NOT NULL DEFAULT '' COMMENT '总行名称',
+  `code_acronym` varchar(32) NOT NULL DEFAULT '' COMMENT '总行编码',
+  `province_name` varchar(32) NOT NULL DEFAULT '' COMMENT '省名称',
+  `bank_province_code` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '省编码',
+  `province_code` int unsigned NOT NULL DEFAULT '0' COMMENT '省编码6位',
+  `city_name` varchar(32) DEFAULT NULL COMMENT '市名称',
+  `bank_city_code` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '市编码',
+  `city_code` int unsigned NOT NULL DEFAULT '0' COMMENT '市编码6位',
+  `bank_sub_code` varchar(32) NOT NULL DEFAULT '' COMMENT '支行编码',
+  `bank_sub_name` varchar(128) NOT NULL DEFAULT '' COMMENT '支行名称',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`bank info_id`),
+  UNIQUE KEY `idx_unq_bank_sub_code` (`bank_sub_code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='银行信息表';
+
+
