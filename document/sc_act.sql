@@ -57,6 +57,7 @@ CREATE TABLE `sc_activity_winners` (
 CREATE TABLE `sc_activity_wins_pdt` (
   `activity_wins_pdt_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `activity_winners_id` int unsigned NOT NULL DEFAULT '0' COMMENT '中奖名单ID',
+  `activity_id` int unsigned NOT NULL DEFAULT '0' COMMENT '活动ID',
   `product_id` int unsigned NOT NULL DEFAULT '0' COMMENT '产品ID',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
