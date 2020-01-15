@@ -8,6 +8,8 @@ public class MerchantAccInfo implements Serializable {
 
     private Integer merchantId;
 
+    private Integer bankInfoId;
+
     private String accName;
 
     private String merchantBank;
@@ -38,6 +40,14 @@ public class MerchantAccInfo implements Serializable {
 
     public void setMerchantId(Integer merchantId) {
         this.merchantId = merchantId;
+    }
+
+    public Integer getBankInfoId() {
+        return bankInfoId;
+    }
+
+    public void setBankInfoId(Integer bankInfoId) {
+        this.bankInfoId = bankInfoId;
     }
 
     public String getAccName() {

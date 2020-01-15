@@ -56,9 +56,9 @@
 <!--        <table tableName="sc_activity_winners" domainObjectName="ActivityWinners">-->
 <!--            <generatedKey column="activity_winners_id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
-        <table tableName="sc_activity_wins_pdt" domainObjectName="ActivityWinsPdt">
+<!--        <table tableName="sc_activity_wins_pdt" domainObjectName="ActivityWinsPdt">
             <generatedKey column="activity_wins_pdt_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        </table>-->
 <!--        <table tableName="sc_product" domainObjectName="Product">-->
 <!--            <generatedKey column="product_id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
@@ -76,15 +76,15 @@
 <!--        </table>-->
 <!--        <table tableName="sc_merchant" domainObjectName="Merchant">
             <generatedKey column="merchant_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        </table>-->
         <table tableName="sc_merchant_acc_info" domainObjectName="MerchantAccInfo">
             <generatedKey column="merchant_acc_info_id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sc_merchant_account" domainObjectName="MerchantAccount">
-            <generatedKey column="merchant_account_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="sc_merchant_account_record" domainObjectName="MerchantAccountRecord">
-            <generatedKey column="merchant_account_record_id" sqlStatement="MySql" identity="true"/>
-        </table>-->
+        <!--   <table tableName="sc_merchant_account" domainObjectName="MerchantAccount">
+              <generatedKey column="merchant_account_id" sqlStatement="MySql" identity="true"/>
+          </table>
+          <table tableName="sc_merchant_account_record" domainObjectName="MerchantAccountRecord">
+              <generatedKey column="merchant_account_record_id" sqlStatement="MySql" identity="true"/>
+          </table>-->
     </context>
 </generatorConfiguration>

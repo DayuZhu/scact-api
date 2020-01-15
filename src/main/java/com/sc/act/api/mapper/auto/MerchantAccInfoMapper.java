@@ -2,9 +2,8 @@ package com.sc.act.api.mapper.auto;
 
 import com.sc.act.api.model.auto.MerchantAccInfo;
 import com.sc.act.api.model.auto.MerchantAccInfoExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface MerchantAccInfoMapper {
     long countByExample(MerchantAccInfoExample example);

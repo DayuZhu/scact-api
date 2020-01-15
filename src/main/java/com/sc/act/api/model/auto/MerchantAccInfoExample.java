@@ -225,6 +225,66 @@ public class MerchantAccInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andBankInfoIdIsNull() {
+            addCriterion("bank_info_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdIsNotNull() {
+            addCriterion("bank_info_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdEqualTo(Integer value) {
+            addCriterion("bank_info_id =", value, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdNotEqualTo(Integer value) {
+            addCriterion("bank_info_id <>", value, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdGreaterThan(Integer value) {
+            addCriterion("bank_info_id >", value, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("bank_info_id >=", value, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdLessThan(Integer value) {
+            addCriterion("bank_info_id <", value, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdLessThanOrEqualTo(Integer value) {
+            addCriterion("bank_info_id <=", value, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdIn(List<Integer> values) {
+            addCriterion("bank_info_id in", values, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdNotIn(List<Integer> values) {
+            addCriterion("bank_info_id not in", values, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdBetween(Integer value1, Integer value2) {
+            addCriterion("bank_info_id between", value1, value2, "bankInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBankInfoIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("bank_info_id not between", value1, value2, "bankInfoId");
+            return (Criteria) this;
+        }
+
         public Criteria andAccNameIsNull() {
             addCriterion("acc_name is null");
             return (Criteria) this;

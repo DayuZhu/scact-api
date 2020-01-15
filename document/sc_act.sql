@@ -147,6 +147,7 @@ CREATE TABLE `sc_merchant` (
 CREATE TABLE `sc_merchant_acc_info` (
   `merchant_acc_info_id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `merchant_id` int unsigned NOT NULL DEFAULT '0' COMMENT '商户ID',
+  `bank_info_id` int unsigned NOT NULL DEFAULT '0' COMMENT '银行卡信息ID',
   `acc_name` varchar(32) NOT NULL DEFAULT '' COMMENT '姓名',
   `merchant_bank` varchar(64) NOT NULL DEFAULT '' COMMENT '开户行',
   `merchant_card` varchar(64) NOT NULL DEFAULT '' COMMENT '银行卡号',
