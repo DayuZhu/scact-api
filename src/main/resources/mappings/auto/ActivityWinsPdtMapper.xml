@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.sc.act.api.model.auto.ActivityWinsPdt">
     <id column="activity_wins_pdt_id" jdbcType="INTEGER" property="activityWinsPdtId" />
     <result column="activity_winners_id" jdbcType="INTEGER" property="activityWinnersId" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
     <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -67,7 +68,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    activity_wins_pdt_id, activity_winners_id, product_id, create_time, update_time
+    activity_wins_pdt_id, activity_winners_id, activity_id, product_id, create_time, 
+    update_time
   </sql>
   <select id="selectByExample" parameterType="com.sc.act.api.model.auto.ActivityWinsPdtExample" resultMap="BaseResultMap">
     select
@@ -103,10 +105,10 @@
     <selectKey keyProperty="activityWinsPdtId" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sc_activity_wins_pdt (activity_winners_id, product_id, create_time, 
-      update_time)
-    values (#{activityWinnersId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into sc_activity_wins_pdt (activity_winners_id, activity_id, product_id, 
+      create_time, update_time)
+    values (#{activityWinnersId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sc.act.api.model.auto.ActivityWinsPdt">
     <selectKey keyProperty="activityWinsPdtId" order="AFTER" resultType="java.lang.Integer">
@@ -116,6 +118,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="activityWinnersId != null">
         activity_winners_id,
+      </if>
+      <if test="activityId != null">
+        activity_id,
       </if>
       <if test="productId != null">
         product_id,
@@ -130,6 +135,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="activityWinnersId != null">
         #{activityWinnersId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
       </if>
       <if test="productId != null">
         #{productId,jdbcType=INTEGER},
@@ -157,6 +165,9 @@
       <if test="record.activityWinnersId != null">
         activity_winners_id = #{record.activityWinnersId,jdbcType=INTEGER},
       </if>
+      <if test="record.activityId != null">
+        activity_id = #{record.activityId,jdbcType=INTEGER},
+      </if>
       <if test="record.productId != null">
         product_id = #{record.productId,jdbcType=INTEGER},
       </if>
@@ -175,6 +186,7 @@
     update sc_activity_wins_pdt
     set activity_wins_pdt_id = #{record.activityWinsPdtId,jdbcType=INTEGER},
       activity_winners_id = #{record.activityWinnersId,jdbcType=INTEGER},
+      activity_id = #{record.activityId,jdbcType=INTEGER},
       product_id = #{record.productId,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -187,6 +199,9 @@
     <set>
       <if test="activityWinnersId != null">
         activity_winners_id = #{activityWinnersId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=INTEGER},
       </if>
       <if test="productId != null">
         product_id = #{productId,jdbcType=INTEGER},
@@ -203,6 +218,7 @@
   <update id="updateByPrimaryKey" parameterType="com.sc.act.api.model.auto.ActivityWinsPdt">
     update sc_activity_wins_pdt
     set activity_winners_id = #{activityWinnersId,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=INTEGER},
       product_id = #{productId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

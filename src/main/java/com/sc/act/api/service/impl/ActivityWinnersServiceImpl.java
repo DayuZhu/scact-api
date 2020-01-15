@@ -231,7 +231,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
         }
 
         //更新product
-        listResponse.forEach(productShopXoBmo->{
+        listResponse.forEach(productShopXoBmo -> {
             Product updRecord = new Product();
             updRecord.setProductId(productShopXoBmo.getProductId());
             updRecord.setProductName(productShopXoBmo.getProductName());
@@ -460,7 +460,11 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                 List<ActivityWinsPdt> activityWinsPdts = activityWinsPdtMapper.selectByExample(activityWinsPdtExample);
                 if (CollectionUtils.isNotEmpty(activityWinsPdts)) {
                     ActivityWinsPdt activityWinsPdt = activityWinsPdts.get(0);
-                    Product product = productMapper.selectByPrimaryKey(activityWinsPdt.getProductId());
+                    ProductExample productExample = new ProductExample();
+                    productExample.createCriteria()
+                            .andOutProductIdNotEqualTo(0)
+                            .andProductIdEqualTo(activityWinsPdt.getProductId());
+                    Product product = productMapper.selectByExample(productExample).stream().findFirst().orElse(null);
                     if (null != product) {
                         product.setCreateTime(null);
                         product.setUpdateTime(null);

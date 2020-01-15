@@ -8,6 +8,8 @@ public class ActivityWinsPdt implements Serializable {
 
     private Integer activityWinnersId;
 
+    private Integer activityId;
+
     private Integer productId;
 
     private Date createTime;
@@ -30,6 +32,14 @@ public class ActivityWinsPdt implements Serializable {
 
     public void setActivityWinnersId(Integer activityWinnersId) {
         this.activityWinnersId = activityWinnersId;
+    }
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
     public Integer getProductId() {

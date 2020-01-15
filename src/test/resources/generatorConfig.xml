@@ -47,18 +47,18 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="sc_activity" domainObjectName="Activity">
-            <generatedKey column="activity_id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="sc_activity" domainObjectName="Activity">-->
+            <!--<generatedKey column="activity_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 <!--        <table tableName="sc_acc_sep_record" domainObjectName="AccSepRecord">-->
 <!--            <generatedKey column="acc_sep_record_id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
 <!--        <table tableName="sc_activity_winners" domainObjectName="ActivityWinners">-->
 <!--            <generatedKey column="activity_winners_id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
-<!--        <table tableName="sc_activity_wins_pdt" domainObjectName="ActivityWinsPdt">-->
-<!--            <generatedKey column="activity_wins_pdt_id" sqlStatement="MySql" identity="true"/>-->
-<!--        </table>-->
+        <table tableName="sc_activity_wins_pdt" domainObjectName="ActivityWinsPdt">
+            <generatedKey column="activity_wins_pdt_id" sqlStatement="MySql" identity="true"/>
+        </table>
 <!--        <table tableName="sc_product" domainObjectName="Product">-->
 <!--            <generatedKey column="product_id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
