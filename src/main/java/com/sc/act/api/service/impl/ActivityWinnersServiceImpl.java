@@ -314,6 +314,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
 
         ActivityWinsPdt activityWinsPdt = new ActivityWinsPdt();
         activityWinsPdt.setActivityWinnersId(activityWinners.getActivityWinnersId());
+        activityWinsPdt.setActivityId(activity.getActivityId());
         activityWinsPdt.setProductId(productInsert.getProductId());
         activityWinsPdt.setCreateTime(currentTime);
         activityWinsPdt.setUpdateTime(currentTime);
