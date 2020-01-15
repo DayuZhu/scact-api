@@ -6,16 +6,14 @@ import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.base.PageResponse;
 import com.sc.act.api.commons.web.enums.ResultEnum;
 import com.sc.act.api.commons.web.util.StringUtil;
+import com.sc.act.api.mapper.auto.BankInfoMapper;
 import com.sc.act.api.mapper.auto.MerchantAccInfoMapper;
 import com.sc.act.api.mapper.auto.MerchantAccountMapper;
 import com.sc.act.api.mapper.auto.MerchantMapper;
 import com.sc.act.api.model.auto.*;
 import com.sc.act.api.request.MerchantListRequest;
 import com.sc.act.api.request.MerchantRequest;
-import com.sc.act.api.response.MerchantAccInfoResponse;
-import com.sc.act.api.response.MerchantAccountResponse;
-import com.sc.act.api.response.MerchantContentResponse;
-import com.sc.act.api.response.MerchantResponse;
+import com.sc.act.api.response.*;
 import com.sc.act.api.service.MerchantService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +49,9 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Autowired
     private MerchantAccountMapper merchantAccountMapper;
+
+    @Autowired
+    private BankInfoMapper bankInfoMapper;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -131,6 +132,13 @@ public class MerchantServiceImpl implements MerchantService {
             MerchantAccInfoResponse merchantAccInfoResponse = new MerchantAccInfoResponse();
             BeanUtils.copyProperties(merchantAccInfo, merchantAccInfoResponse);
             merchantContentResponse.setMerchantAccInfoResponse(merchantAccInfoResponse);
+
+            BankInfo bankInfo = bankInfoMapper.selectByPrimaryKey(merchantAccInfo.getBankInfoId());
+            if (null != bankInfo) {
+                BankInfoResponse bankInfoResponse = new BankInfoResponse();
+                BeanUtils.copyProperties(bankInfo, bankInfoResponse);
+                merchantContentResponse.setBankInfoResponse(bankInfoResponse);
+            }
         }
 
         MerchantAccountExample merchantAccountExample = new MerchantAccountExample();
@@ -143,6 +151,7 @@ public class MerchantServiceImpl implements MerchantService {
             BeanUtils.copyProperties(merchantAccount, merchantAccountResponse);
             merchantContentResponse.setMerchantAccountResponse(merchantAccountResponse);
         }
+
 
         return merchantContentResponse;
     }
@@ -190,6 +199,13 @@ public class MerchantServiceImpl implements MerchantService {
                 MerchantAccInfoResponse merchantAccInfoResponse = new MerchantAccInfoResponse();
                 BeanUtils.copyProperties(merchantAccInfos.get(0), merchantAccInfoResponse);
                 merchantResponse.setMerchantAccInfoResponse(merchantAccInfoResponse);
+
+                BankInfo bankInfo = bankInfoMapper.selectByPrimaryKey(merchantAccInfos.get(0).getBankInfoId());
+                if (null != bankInfo) {
+                    BankInfoResponse bankInfoResponse = new BankInfoResponse();
+                    BeanUtils.copyProperties(bankInfo, bankInfoResponse);
+                    merchantResponse.setBankInfoResponse(bankInfoResponse);
+                }
             }
 
             MerchantAccountExample merchantAccountExample = new MerchantAccountExample();

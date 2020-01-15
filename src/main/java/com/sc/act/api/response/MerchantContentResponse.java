@@ -52,6 +52,9 @@ public class MerchantContentResponse extends BasePojo {
     @ApiModelProperty("账户余额")
     private MerchantAccountResponse merchantAccountResponse;
 
+    @ApiModelProperty("银行信息")
+    private BankInfoResponse bankInfoResponse;
+
 
     public Integer getMerchantId() {
         return this.merchantId;
@@ -140,5 +143,13 @@ public class MerchantContentResponse extends BasePojo {
 
     public void setMerchantAccountResponse(MerchantAccountResponse merchantAccountResponse) {
         this.merchantAccountResponse = merchantAccountResponse;
+    }
+
+    public BankInfoResponse getBankInfoResponse() {
+        return bankInfoResponse;
+    }
+
+    public void setBankInfoResponse(BankInfoResponse bankInfoResponse) {
+        this.bankInfoResponse = bankInfoResponse;
     }
 }

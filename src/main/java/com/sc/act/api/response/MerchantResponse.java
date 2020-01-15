@@ -42,7 +42,6 @@ public class MerchantResponse extends BasePojo {
     @ApiModelProperty("店主电话")
     private Long bossTel;
 
-
     @ApiModelProperty("创建时间")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
@@ -52,6 +51,9 @@ public class MerchantResponse extends BasePojo {
 
     @ApiModelProperty("账户余额")
     private MerchantAccountResponse merchantAccountResponse;
+
+    @ApiModelProperty("银行信息")
+    private BankInfoResponse bankInfoResponse;
 
     public Integer getMerchantId() {
         return this.merchantId;
@@ -140,5 +142,13 @@ public class MerchantResponse extends BasePojo {
 
     public void setMerchantAccountResponse(MerchantAccountResponse merchantAccountResponse) {
         this.merchantAccountResponse = merchantAccountResponse;
+    }
+
+    public BankInfoResponse getBankInfoResponse() {
+        return bankInfoResponse;
+    }
+
+    public void setBankInfoResponse(BankInfoResponse bankInfoResponse) {
+        this.bankInfoResponse = bankInfoResponse;
     }
 }
