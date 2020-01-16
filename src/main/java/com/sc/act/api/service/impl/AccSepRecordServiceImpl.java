@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +59,7 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
     @Autowired
     private TicketMapper ticketMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void insertAccSepRecord(AccSepRecordOutRequest accSepRecordRequest) {
         LOG.info("进入创建支付入账服务请求参数{}", accSepRecordRequest.toString());
@@ -68,6 +70,12 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
             LOG.error("进入创建支付入账服务产品不存在请求参数{}", accSepRecordRequest.toString());
             throw new BaseRuntimeException(ResultEnum.PRODUCT_ISNOT_EXIST);
         }
+
+        if (products.size() != 1) {
+            LOG.error("进入创建支付入账服务out产品不能绑定多个local产品请求参数{}", accSepRecordRequest.toString());
+            throw new BaseRuntimeException(ResultEnum.PRODUCT_IS_MANY_ERROR);
+        }
+
         Product product = products.get(0);
 
         ActivityWinsPdtExample activityWinsPdtExample = new ActivityWinsPdtExample();
@@ -127,7 +135,9 @@ public class AccSepRecordServiceImpl implements AccSepRecordService {
             //TODO调接口
 
             //accSepRecord.setHandlerSeqNo(copy.getHandlerSeqNo());
-            accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_1);
+
+            //TODO 无接口默认全部失败
+            accSepRecord.setStatus(CommonConstant.ACC_SEP_RECORD_STATUS_2);
             accSepRecordMapper.insertSelective(accSepRecord);
 
             //分账接口调用成功 更新券状态
