@@ -1,5 +1,6 @@
 package com.sc.act.api.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.sc.act.api.commons.web.base.BaseRuntimeException;
 import com.sc.act.api.commons.web.constant.CommonConstant;
@@ -73,6 +74,9 @@ public class ActivityWinnersProductServiceImpl implements ActivityWinnersProduct
      */
     @Override
     public void createWinnersProductInfo(List<ExcelWinnersInfoBmo> list, Activity activity, Date currentTime, List<ProductPriceInfoBmo> productPriceInfoList) {
+
+        LOG.info("进入中奖人和奖品绑定服务list={} activity={} currentTime={} productPriceInfoList={}",
+                JSON.toJSONString(list), JSON.toJSONString(activity), currentTime, JSON.toJSONString(productPriceInfoList));
 
         for (ExcelWinnersInfoBmo excelWinnersInfoBmo : list) {
 
