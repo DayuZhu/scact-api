@@ -240,6 +240,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
             activityWinners.forEach(activityWinner -> {
                 ActivityWinnersUserAccResponse activityWinnersUserAccResponse = new ActivityWinnersUserAccResponse();
                 BeanUtils.copyProperties(activityWinner, activityWinnersUserAccResponse);
+                activityWinnersUserAccResponse.setOutProductFlag(0);
                 User user = userMapper.selectByPrimaryKey(activityWinner.getUserId());
                 if (null != user) {
                     activityWinnersUserAccResponse.setUser(user);
@@ -255,9 +256,7 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                 if (CollectionUtils.isNotEmpty(activityWinsPdts)) {
                     ActivityWinsPdt activityWinsPdt = activityWinsPdts.get(0);
                     ProductExample productExample = new ProductExample();
-                    productExample.createCriteria()
-                            .andOutProductIdNotEqualTo(0)
-                            .andProductIdEqualTo(activityWinsPdt.getProductId());
+                    productExample.createCriteria().andProductIdEqualTo(activityWinsPdt.getProductId());
                     Product product = productMapper.selectByExample(productExample).stream().findFirst().orElse(null);
                     if (null != product) {
                         product.setCreateTime(null);
@@ -289,6 +288,15 @@ public class ActivityWinnersServiceImpl implements ActivityWinnersService {
                                 activityWinnersUserAccResponse.setTickets(tickets);
                             }
                         }
+                    }
+
+                    productExample.clear();
+                    productExample.createCriteria()
+                            .andOutProductIdNotEqualTo(0)
+                            .andProductIdEqualTo(activityWinsPdt.getProductId());
+                    List<Product> productsFlag = productMapper.selectByExample(productExample);
+                    if (CollectionUtils.isNotEmpty(productsFlag)) {
+                        activityWinnersUserAccResponse.setOutProductFlag(1);
                     }
                 }
 

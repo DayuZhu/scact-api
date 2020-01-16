@@ -41,6 +41,9 @@ public class ActivityWinnersUserAccResponse {
     @ApiModelProperty("券信息")
     private List<Ticket> tickets;
 
+    @ApiModelProperty("外部产品创建状态 0 创建失败 1创建成功")
+    private Integer outProductFlag;
+
     public Integer getActivityWinnersId() {
         return activityWinnersId;
     }
@@ -95,5 +98,13 @@ public class ActivityWinnersUserAccResponse {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public Integer getOutProductFlag() {
+        return outProductFlag;
+    }
+
+    public void setOutProductFlag(Integer outProductFlag) {
+        this.outProductFlag = outProductFlag;
     }
 }
