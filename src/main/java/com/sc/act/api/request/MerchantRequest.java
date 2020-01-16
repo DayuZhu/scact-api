@@ -29,11 +29,11 @@ public class MerchantRequest extends BasePojo {
     @NotBlank
     private String socialCode;
 
-    @ApiModelProperty("法人姓名")
+    @ApiModelProperty("开户行姓名")
     @NotBlank
     private String name;
 
-    @ApiModelProperty("法人手机号")
+    @ApiModelProperty("开户行手机号")
     @NotNull
     private Long mobile;
 
@@ -49,11 +49,11 @@ public class MerchantRequest extends BasePojo {
     @NotBlank
     private String address;
 
-    @ApiModelProperty("店主名称")
+    @ApiModelProperty("法人名称")
     @NotBlank
     private String bossName;
 
-    @ApiModelProperty("店主电话")
+    @ApiModelProperty("法人电话")
     @NotNull
     private Long bossTel;
 
