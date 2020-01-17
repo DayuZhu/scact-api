@@ -3,6 +3,7 @@ package com.sc.act.api.request;
 import com.sc.act.api.commons.web.base.BasePojo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -42,6 +43,7 @@ public class ActivityWinnersRequest extends BasePojo {
 
     @ApiModelProperty("银行卡号")
     @NotBlank
+    @Length(min = 12, max = 35)
     @Pattern(regexp = "^\\d+$", message = "请输入正确的银行卡号")
     private String cardNumber;
 
