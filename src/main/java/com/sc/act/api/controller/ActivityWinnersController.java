@@ -323,6 +323,7 @@ public class ActivityWinnersController extends BaseController {
 
         ExcelWinnersInfoBmo excelWinnersInfoBmo = new ExcelWinnersInfoBmo();
         Integer price = activityWinnersRequest.getAwardAmount();
+        //（元）转成（分）
         excelWinnersInfoBmo.setAwardAmount(price * 100);
         excelWinnersInfoBmo.setName(activityWinnersRequest.getName());
         excelWinnersInfoBmo.setMobile(Long.valueOf(activityWinnersRequest.getMobile()));
