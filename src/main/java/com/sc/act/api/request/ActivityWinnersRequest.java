@@ -42,7 +42,7 @@ public class ActivityWinnersRequest extends BasePojo {
     private String bankName;
 
     @ApiModelProperty("银行卡号")
-    @NotBlank
+    @NotBlank(message = "银行卡号不能为空")
     @Length(min = 12, max = 35)
     @Pattern(regexp = "^\\d+$", message = "请输入正确的银行卡号")
     private String cardNumber;
