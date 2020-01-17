@@ -6,6 +6,7 @@ import com.sc.act.api.commons.web.base.Result;
 import com.sc.act.api.commons.web.constant.CommonConstant;
 import com.sc.act.api.commons.web.util.ResourceUtil;
 import com.sc.act.api.model.bo.ExcelWinnersInfoBmo;
+import com.sc.act.api.request.ActivityWinnersRequest;
 import com.sc.act.api.response.ActivityWinnersUserAccResponse;
 import com.sc.act.api.service.ActivityWinnersService;
 import io.swagger.annotations.Api;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.util.ArrayList;
@@ -303,6 +305,33 @@ public class ActivityWinnersController extends BaseController {
         List<ActivityWinnersUserAccResponse> activityWinnersUserAccResponses = activityWinnersService.selectActivityWinnersContent(activityId);
         result.setRetMsg("查询成功");
         result.setData(activityWinnersUserAccResponses);
+        return result;
+    }
+
+    /**
+     * 单个中奖人产品创建
+     */
+    @ApiOperation(value = "单个中奖人产品创建")
+    @PostMapping(value = "/winners")
+    public Result<String> activityWinners(@RequestBody @Valid ActivityWinnersRequest activityWinnersRequest) {
+        LOG.info("单个中奖人产品创建请求参数activityWinnersRequest={}", activityWinnersRequest.toString());
+
+        Result<String> result = new Result<>();
+        result.setRetMsg("操作成功");
+
+        List<ExcelWinnersInfoBmo> listSuccess = new ArrayList<>();
+
+        ExcelWinnersInfoBmo excelWinnersInfoBmo = new ExcelWinnersInfoBmo();
+        Integer price = activityWinnersRequest.getAwardAmount();
+        excelWinnersInfoBmo.setAwardAmount(price * 100);
+        excelWinnersInfoBmo.setName(activityWinnersRequest.getName());
+        excelWinnersInfoBmo.setMobile(Long.valueOf(activityWinnersRequest.getMobile()));
+        excelWinnersInfoBmo.setCardName(activityWinnersRequest.getName());
+        excelWinnersInfoBmo.setBankName(activityWinnersRequest.getBankName());
+        excelWinnersInfoBmo.setCardNumber(activityWinnersRequest.getCardNumber());
+
+        activityWinnersService.handlerWinnersInfo(listSuccess, activityWinnersRequest.getActivityId());
+
         return result;
     }
 
