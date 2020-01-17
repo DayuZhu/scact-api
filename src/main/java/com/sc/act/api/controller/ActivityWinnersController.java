@@ -218,7 +218,8 @@ public class ActivityWinnersController extends BaseController {
 
                 if (!Pattern.matches("^\\d+$", serNo)
                         || !Pattern.matches("^1[3-9]\\d{9}$", moblie)
-                        || !Pattern.matches("^\\d+$", price)) {
+                        || !Pattern.matches("^\\d+$", price)
+                        || !Pattern.matches("^\\d+$", bankNo)) {
                     listFail.add(serNo);
                     continue;
                 }
