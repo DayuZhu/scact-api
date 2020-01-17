@@ -331,6 +331,7 @@ public class ActivityWinnersController extends BaseController {
         excelWinnersInfoBmo.setCardName(activityWinnersRequest.getName());
         excelWinnersInfoBmo.setBankName(activityWinnersRequest.getBankName());
         excelWinnersInfoBmo.setCardNumber(activityWinnersRequest.getCardNumber());
+        listSuccess.add(excelWinnersInfoBmo);
 
         activityWinnersService.handlerWinnersInfo(listSuccess, activityWinnersRequest.getActivityId());
 
