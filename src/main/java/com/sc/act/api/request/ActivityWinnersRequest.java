@@ -21,24 +21,24 @@ import javax.validation.constraints.Pattern;
 public class ActivityWinnersRequest extends BasePojo {
 
     @ApiModelProperty(name = "activityId")
-    @NotNull
+    @NotNull(message = "活动ID不能为空")
     private Integer activityId;
 
     @ApiModelProperty("中奖金额(元)")
-    @NotNull
+    @NotNull(message = "中奖金额(元)不能为空")
     private Integer awardAmount;
 
     @ApiModelProperty("中奖人姓名")
-    @NotBlank
+    @NotBlank(message = "中奖人姓名不能为空")
     private String name;
 
     @ApiModelProperty("手机号")
     @NotBlank
-    @Pattern(regexp = "^1[3-9]\\d{9}$")
+    @Pattern(regexp = "^1[3-9]\\d{9}$", message = "请输入正确的手机号")
     private String mobile;
 
     @ApiModelProperty("开户行")
-    @NotBlank
+    @NotBlank(message = "开户行不能为空")
     private String bankName;
 
     @ApiModelProperty("银行卡号")
